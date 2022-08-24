@@ -21,6 +21,7 @@ import { Lexer } from './lex';
  TODO:
      statically typed base types
      dynamic typed dimensions (e.g. matrix dims)
+     support for function overloading (not the case for vanilla JS)
 
  TODO:
      let f(x) = x*x;
@@ -96,6 +97,7 @@ export class Code {
 export class TypedCode {
   public type = new Type();
   public code = new Code();
+  public sym: SymTabEntry = null;
 }
 
 export enum SymbolKind {
@@ -112,6 +114,7 @@ export class SymTabEntry {
   public scope = 0;
   public runtimeId = '';
   public subSymbols: SymTabEntry[] = [];
+  public functionOverloadSuccessor: SymTabEntry = null;
   constructor(
     id: string,
     kind: SymbolKind,
@@ -134,7 +137,26 @@ export class SellCode {
   private loopLevel = 0;
   private scope = 0;
 
-  public parse(src: string): void {
+  private getSymbol(id: string): SymTabEntry {
+    // TODO: scoping
+    // TODO: function parameters
+    for (const sym of this.symTab) {
+      if (sym.id === id) {
+        return sym;
+      }
+    }
+    return null;
+  }
+
+  public getLocalSymbols(): SymTabEntry[] {
+    const locals: SymTabEntry[] = [];
+    for (const s of this.symTab) {
+      if (s.kind === SymbolKind.Local) locals.push(s);
+    }
+    return locals;
+  }
+
+  public parse(src: string): string {
     this.loopLevel = 0;
     this.scope = 0;
     this.symTab = createFunctionPrototypes();
@@ -151,6 +173,7 @@ export class SellCode {
     this.lexer.pushSource('FILE', src);
     const c = this.parseProgram();
     console.log(c.str);
+    return c.str;
   }
 
   //G program = { statement };
@@ -196,10 +219,9 @@ export class SellCode {
     this.lexer.TER('=');
     const e = this.parseExpression();
     for (const id of ids) {
-      // TODO!!
-      /*const s = new SymTabEntry(); // TODO: push to symbol table
-      s.id = id;
-      s.type = e.type;*/
+      // TODO: check if symbol with same name is available at same scope
+      const s = new SymTabEntry(id, SymbolKind.Local, e.type, this.scope, []);
+      this.symTab.push(s);
       c.str += 'let ' + id + ' = ' + e.code.str;
     }
     // "," ...
@@ -323,10 +345,16 @@ export class SellCode {
   private parseUnary(): TypedCode {
     let tc = this.parseUnaryExpression();
     if (
+      tc.sym != null &&
+      tc.sym.kind === SymbolKind.Function &&
+      this.lexer.isNotTER('(')
+    ) {
+      this.lexer.errorExpected(['(']);
+    }
+    if (
       this.lexer.isTER('++') ||
       this.lexer.isTER('--') ||
       this.lexer.isTER('(') ||
-      this.lexer.isTER(')') ||
       this.lexer.isTER('[')
     ) {
       tc = this.parseUnaryPostfix(tc);
@@ -352,12 +380,16 @@ export class SellCode {
       tc.type = e.type;
     } else if (this.lexer.isID()) {
       const id = this.lexer.ID();
-      // TODO: get symbol
+      tc.sym = this.getSymbol(id);
+      if (tc.sym == null) this.lexer.errorUnknownSymbol(id);
+      tc.type = tc.sym.type;
+      tc.code.str = ' ' + id;
     } else this.lexer.errorExpected(['INT', 'IMAG', 'REAL', '(', 'ID']);
     return tc;
   }
 
   //G unaryPostfix = "++" | "--" | "(" [ expr { "," expr } ] ")" | "[" expr "]";
+  // TODO: dimensions via "<" ">"
   private parseUnaryPostfix(tc: TypedCode): TypedCode {
     if (this.lexer.isTER('++')) {
       this.lexer.next();
@@ -365,11 +397,57 @@ export class SellCode {
     } else if (this.lexer.isTER('--')) {
       this.lexer.next();
       tc.code.str += ' -- ';
+    } else if (this.lexer.isTER('(')) {
+      // function call
+      this.lexer.next();
+      if (tc.sym == null || tc.sym.kind != SymbolKind.Function)
+        this.lexer.errorNotAFunction();
+      let i = 0;
+      const params: TypedCode[] = [];
+      while (this.lexer.isNotTER(')')) {
+        if (i > 0) this.lexer.TER(',');
+        params.push(this.parseExpression());
+        i++;
+      }
+      this.lexer.TER(')');
+      // find matching function prototype (overloading)
+      let prototype = tc.sym;
+      while (prototype != null) {
+        if (prototype.subSymbols.length == params.length) {
+          const formalParams = prototype.subSymbols;
+          let match = true;
+          for (let k = 0; k < formalParams.length; k++) {
+            if (formalParams[k].type.base !== params[k].type.base) {
+              match = false;
+              break;
+            }
+          }
+          if (match) {
+            tc.type = tc.sym.type;
+            tc.code.str = 'runtime.' + tc.sym.runtimeId + '(';
+            for (let k = 0; k < formalParams.length; k++) {
+              if (k > 0) tc.code.str += ', ';
+              tc.code.str += params[k].code.str;
+            }
+            tc.code.str += ')';
+            tc.sym = null;
+            break;
+          }
+        }
+        // try next
+        prototype = prototype.functionOverloadSuccessor;
+      }
+      if (prototype == null) {
+        this.lexer.error(
+          'no matching function prototype for calling ' + tc.sym.id,
+        ); // TODO: create custom error method
+      }
     } else this.lexer.errorExpected(['++', '--', '(', '[']);
     return tc;
   }
 
   //G for = "for" "(" expression ";" expression ";" expression ")" block;
+  // TODO: implementation
 
   //G if = "if" "(" expression ")" block [ "else" block ];
   private parseIf(): Code {
@@ -433,6 +511,7 @@ export class SellCode {
   }
 
   //G switch = "switch" "(" expr ")" "{" { "case" INT ":" { statement } } "default" ":" { statement } "}";
+  // TODO: implementation
 
   //G function = "function" ID "(" [ ID { "," ID } ] ")" block;
   private parseFunction(): Code {
