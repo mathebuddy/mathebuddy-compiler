@@ -344,6 +344,16 @@ export class Lexer {
     this.error(s);
   }
 
+  errorUnknownSymbol(symId: string): void {
+    const s = 'unknown symbol ' + symId;
+    this.error(s);
+  }
+
+  errorNotAFunction(): void {
+    const s = 'symbol is not a function';
+    this.error(s);
+  }
+
   private err_pos(tk: LexerToken = null): string {
     if (tk == null) tk = this.token;
     return tk.fileID + ':' + tk.row + ':' + tk.col + ': ';
