@@ -11,6 +11,7 @@
  */
 
 import * as math from 'mathjs';
+import { SymTabEntry } from './code';
 
 export class RunError extends Error {
   constructor(srcRow: number, srcCol: number, msg: string) {
@@ -20,26 +21,37 @@ export class RunError extends Error {
 }
 
 export class SellInterpreter {
-  public interpret(code: string): void {
+  public interpret(code: string, locals: SymTabEntry[]): void {
     // TODO: prevent infinite loops
-    // TODO: get results via symbol table
-
-    //const f = Function(code + 'console.log(x);');
-    const f = Function('runtime', 'let x = runtime.rand(); console.log(x);');
+    code += 'return [';
+    let i = 0;
+    for (const local of locals) {
+      if (i > 0) code += ', ';
+      code += local.id;
+      i++;
+    }
+    code += '];';
+    const f = Function('runtime', code);
     try {
-      f(this);
+      const res = f(this);
+      const bp = 1337;
     } catch (e) {
       // TODO
+      console.log(e);
     }
   }
 
-  private rand(min: number, max: number): number {
+  private randIntMax(max: number): number {
+    return Math.floor(Math.random() * (max + 1));
+  }
+
+  private randIntMinMax(min: number, max: number): number {
     return Math.floor(min + Math.random() * (max + 1 - min));
   }
 
-  private randZ(min: number, max: number): number {
+  private randIntMinMaxZ(min: number, max: number): number {
     let r = 0;
-    while (r == 0) r = this.rand(min, max);
+    while (r == 0) r = this.randIntMinMax(min, max);
     return r;
   }
 
