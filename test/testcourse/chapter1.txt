@@ -1,0 +1,139 @@
+Introduction @intro
+###################
+
+---
+HIDDEN
+Some text that is only visible to course-developers.
+---
+
+---
+SUMMARY
+Some text.
+---
+
+---
+LEARNINGOUTCOMES
+* Learning outcome 1
+* Learning outcome 2
+---
+
+Some text here. %This text is a comment.
+
+Refer to @mySection.
+
+An itemization:
+
+* first item
+* second item
+
+A list with a), b), ...
+
+*) first item
+*) second item
+
+A list with 1., 2., ...
+
+#. first item
+#. second item
+
+
+Some **bold** and *italic* text.              % variant 1
+Some [bold]@bold and [italic]@italic text.    % variant 2
+
+Some text in [red]@red color.
+Some bold text in [red]@red+bold color.
+Some bold text in [[red]@red]@bold color.
+Some bold text in **[red]@red]** color.
+
+
+---
+EQUATION @myLabel
+a^2 + b^2 = c^2
+---
+
+Refer to @myLabel.    %displayed as "Refer to Eq. (1)"
+
+An inline equation $x^2+y^2+\sqrt(z)$.            % variant 1
+An inline equation [x^2+y^2+\sqrt(z)]@equation.   % variant 2
+
+---
+NOTE
+Some text within a note box.
+---
+
+My section @mySection
+=====================
+
+---
+DEFINITION "Menge"
+Unter einer Menge $M$ verstehen wir die Zusammenfassung von wohl unterschiedenen Objekten ("Elementen") zu einem Ganzen (nach Georg Cantor, 19. Jh.).
+---
+
+My subsection
+-------------
+
+---
+EXERCISE "My Exercise" @myExerciseLabel
+@code                         % javascript based code (embedded DSL)
+let x = rand(1, 5);
+let y = rand(1, 5);
+let z = x + y;
+@text
+Calculate $ x + y = #z $.
+---
+
+---
+EXERCISE "Ex 2" @myPythonExercise
+@python
+x = 4
+@text
+Blub.
+---
+
+---
+EXERCISE "My Multiple Choice Exercise"
+@text
+[x] a correct answer
+[ ] an incorrect answer
+---
+
+---
+EXERCISE "My Random Multiple Choice Exercise"
+@code
+let x = rand(1, 5)
+let y = rand(1, 5)
+let b = x > y
+@text
+[$b$] check this if $ x > y $
+[ ] an incorrect answer
+Second multiple choice:
+[x] correct
+[ ] incorrect
+---
+
+---
+PLOT "My plot" @plotlabel
+axis x from -3 to 3 tics 2 label "x"
+axis y from -1 to 5 tics 2 label "y"
+grid step 1
+plot x^2
+coord -1 1 label left
+coord 2 4 label right
+coord 0 0 label bottom
+---
+
+---
+TABLE "Negation"
+$A$ # $\not A$
+w # f
+f # w
+---
+
+---
+EQUATION
+\MAT(1, 1, -2, 0; -2, 0, 1, 1) \cdot
+\MAT(-3, 0, 1; 0, 1, 0; 1, 1, 1; 2, 0, 1) =
+\MAT(-5, -1, -1; 9, 1, 0)
+---
+
+Idea: auto-create statistics for each chapter (num exercises, num sections/subsections, num words, learning outcomes available, ...)

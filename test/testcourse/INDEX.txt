@@ -1,0 +1,15 @@
+@name
+Höhere Mathematik 1
+
+@author
+TH Köln
+
+@contents
+intro.txt
+blub.txt
+
+@write
+schwenk
+
+@read
+*

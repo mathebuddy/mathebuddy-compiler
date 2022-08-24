@@ -1,0 +1,43 @@
+>>>>>> INPUT >>>>>
+
+---
+EXERCISE "My Random Multiple Choice Exercise"
+@code
+let x = rand(1, 5)
+let y = rand(1, 5)
+let b = x > y
+@text
+[$b$] check this if $ x > y $
+[ ] an incorrect answer
+Second multiple choice:
+[x] correct
+[ ] incorrect
+---
+
+>>>>>> OUTPUT >>>>>
+
+"exercise": {
+  "title": "My Random Multiple Choice Exercise",
+  "code_raw": "let x = rand(1, 5)\nlet y = rand(1, 5)\nlet b = x > y\n",
+  "variables": [
+    {"name": "x", "type": "real", "values": [2, 4, 1, 2]},
+    {"name": "y", "type": "real", "values": [1, 2, 3, 2]},
+    {"name": "b", "type": "bool", "values": [true, true, false, false]},
+    {"name": "mc0", "type": "bool", "values": [true, true, false, false]},
+    {"name": "mc1", "type": "bool", "values": [false, false, false, false]},
+    {"name": "mc2", "type": "bool", "values": [true, true, true, true]},
+    {"name": "mc3", "type": "bool", "values": [false, false, false, false]},
+  ]
+  "text_raw": "[$b$] check...",
+  "text": [
+     { "type": "multi_choice", "items": [
+       { "variable": "mc0", "text": [
+         {"type": "string", "value": "check this if "},
+         {"type"; "math": "value": "$x$ > $y$"}]}
+     ] }
+  ]
+}
+
+>>>>>
+"*_raw" is NOT present in final output; just used to detect changes
+>>>>>

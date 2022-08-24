@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Run mathe:buddy Compiler",
+            "runtimeExecutable": "node",
+            "runtimeArgs": [
+                "--nolazy",
+                "-r",
+                "ts-node/register/transpile-only"
+            ],
+            "skipFiles": ["<node_internals>/**"],
+            "program": "${workspaceFolder}/src/index.ts",
+            "args": [""],
+            "sourceMaps": true,
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "console": "integratedTerminal"
+        }
+    ]
+}
