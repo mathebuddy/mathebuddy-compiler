@@ -41,61 +41,61 @@ export class SellInterpreter {
     }
   }
 
-  private randIntMax(max: number): number {
+  private _randIntMax(max: number): number {
     return Math.floor(Math.random() * (max + 1));
   }
 
-  private randIntMinMax(min: number, max: number): number {
+  private _randIntMinMax(min: number, max: number): number {
     return Math.floor(min + Math.random() * (max + 1 - min));
   }
 
-  private randIntMinMaxZ(min: number, max: number): number {
+  private _randIntMinMaxZ(min: number, max: number): number {
     let r = 0;
-    while (r == 0) r = this.randIntMinMax(min, max);
+    while (r == 0) r = this._randIntMinMax(min, max);
     return r;
   }
 
-  private sin(x: number): number {
+  private _sin(x: number): number {
     return Math.sin(x);
   }
 
-  private cos(x: number): number {
+  private _cos(x: number): number {
     return Math.cos(x);
   }
 
-  private tan(x: number): number {
+  private _tan(x: number): number {
     return Math.tan(x);
   }
 
-  private asin(x: number): number {
+  private _asin(x: number): number {
     return Math.asin(x);
   }
 
-  private acos(x: number): number {
+  private _acos(x: number): number {
     return Math.acos(x);
   }
 
-  private atan(x: number): number {
+  private _atan(x: number): number {
     return Math.atan(x);
   }
 
-  private exp(x: number): number {
+  private _exp(x: number): number {
     return Math.exp(x);
   }
 
-  private sqrt(x: number): number {
+  private _sqrt(x: number): number {
     return Math.sqrt(x);
   }
 
-  private zeros(rows: number, cols: number): math.MathCollection {
+  private _zeros(rows: number, cols: number): math.MathCollection {
     return math.zeros([rows, cols]);
   }
 
-  private ones(rows: number, cols: number): math.MathCollection {
+  private _ones(rows: number, cols: number): math.MathCollection {
     return math.ones([rows, cols]);
   }
 
-  private addMatrices(
+  private _addMatrices(
     a: math.MathCollection,
     b: math.MathCollection,
     srcRow: number,

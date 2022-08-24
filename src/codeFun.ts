@@ -8,7 +8,7 @@
 
 /**
  * This file populates the symbol table with function prototypes.
- * Each function must be implemented in file run.ts.
+ * Each function must be implemented in file codeRun.ts.
  */
 
 import { BaseType, SymbolKind, SymTabEntry, Type } from './code';
@@ -20,44 +20,44 @@ import { Lexer } from './lex';
 //G params = "ID" ":" type { "," "ID" ":" type };
 //G type = "INT" | "REAL" | "COMPLEX" | "MATRIX";
 const functions = `
-  abs(x:INT):INT -> absInt;
-  abs(x:REAL):REAL -> absReal;
-  abs(x:COMPLEX): REAL -> absComplex;
+  abs(x:INT):INT -> _absInt;
+  abs(x:REAL):REAL -> _absReal;
+  abs(x:COMPLEX): REAL -> _absComplex;
   # calculates the absolute value
-  exp(x:INT):REAL -> exp;
-  exp(x:REAL):REAL -> exp;
-  exp(x:COMPLEX):COMPLEX -> expComplex;
-  sqrt(x:REAL): REAL -> sqrt;
-  sqrt(x:COMPLEX): COMPLEX -> sqrtComplex;
-  sin(x:INT): REAL -> sin;
-  sin(x:REAL): REAL -> sin;
-  cos(x:INT): REAL -> cos;
-  cos(x:REAL): REAL -> cos;
-  tan(x:INT): REAL -> tan;
-  tan(x:REAL): REAL -> tan;
-  asin(x:INT): REAL -> asin;
-  asin(x:REAL): REAL -> asin;
-  acos(x:INT): REAL -> acos;
-  acos(x:REAL): REAL -> acos;
-  atan(x:INT): REAL -> atan;
-  atan(x:REAL): REAL -> atan;
-  floor(x:INT): INT -> floor;
-  floor(x:REAL): INT -> floor;
-  ceil(x:INT): INT -> ceil;
-  ceil(x:REAL): INT -> ceil;
-  round(x:INT): INT -> round;
-  round(x:REAL): INT -> round;
-  sign(x:INT): INT -> sign;
-  sign(x:REAL): INT -> sign;
-  rand(max:INT): INT -> randIntMax;
-  rand(min:INT,max:INT): INT -> randIntMinMax;
-  randZ(max:INT): INT -> randZIntMax;
-  randZ(min:INT,max:INT): INT -> randZIntMinMax;
-  rand<rows:INT,columns:INT>(min:INT,max:INT): MATRIX -> randMatrix;
-  randZ<rows:INT,columns:INT>(min:INT,max:INT): MATRIX -> randZMatrix;
-  binomial(n:INT,k:INT): INT -> binomial;
-  min(x:MATRIX): REAL -> minMatrix;
-  max(x:MATRIX): REAL -> maxMatrix;
+  exp(x:INT):REAL -> _exp;
+  exp(x:REAL):REAL -> _exp;
+  exp(x:COMPLEX):COMPLEX -> _expComplex;
+  sqrt(x:REAL): REAL -> _sqrt;
+  sqrt(x:COMPLEX): COMPLEX -> _sqrtComplex;
+  sin(x:INT): REAL -> _sin;
+  sin(x:REAL): REAL -> _sin;
+  cos(x:INT): REAL -> _cos;
+  cos(x:REAL): REAL -> _cos;
+  tan(x:INT): REAL -> _tan;
+  tan(x:REAL): REAL -> _tan;
+  asin(x:INT): REAL -> _asin;
+  asin(x:REAL): REAL -> _asin;
+  acos(x:INT): REAL -> _acos;
+  acos(x:REAL): REAL -> _acos;
+  atan(x:INT): REAL -> _atan;
+  atan(x:REAL): REAL -> _atan;
+  floor(x:INT): INT -> _floor;
+  floor(x:REAL): INT -> _floor;
+  ceil(x:INT): INT -> _ceil;
+  ceil(x:REAL): INT -> _ceil;
+  round(x:INT): INT -> _round;
+  round(x:REAL): INT -> _round;
+  sign(x:INT): INT -> _sign;
+  sign(x:REAL): INT -> _sign;
+  rand(max:INT): INT -> _randIntMax;
+  rand(min:INT,max:INT): INT -> _randIntMinMax;
+  randZ(max:INT): INT -> _randZIntMax;
+  randZ(min:INT,max:INT): INT -> _randZIntMinMax;
+  rand<rows:INT,columns:INT>(min:INT,max:INT): MATRIX -> _randMatrix;
+  randZ<rows:INT,columns:INT>(min:INT,max:INT): MATRIX -> _randZMatrix;
+  binomial(n:INT,k:INT): INT -> _binomial;
+  min(x:MATRIX): REAL -> _minMatrix;
+  max(x:MATRIX): REAL -> _maxMatrix;
 `;
 
 function getBaseType(lex: Lexer, str: string): BaseType {

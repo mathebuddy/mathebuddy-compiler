@@ -14,7 +14,7 @@ console.log('mathe:buddy Compiler (c) 2022 by TH Koeln');
 
 // just a test..
 import { SellCode } from './code';
-import { SellInterpreter } from './run';
+import { SellInterpreter } from './codeRun';
 const src = `let z = rand(3);
 let x = 3 + 4*5;
 let y = x + 1;
