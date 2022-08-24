@@ -15,11 +15,14 @@ console.log('mathe:buddy Compiler (c) 2022 by TH Koeln');
 // just a test..
 import { SellCode } from './code';
 import { SellInterpreter } from './run';
-const src = 'let x = 3 + 4*5;';
+const src = `let z = rand(3);
+let x = 3 + 4*5;
+let y = x + 1;
+`;
 const sc = new SellCode();
-sc.parse(src);
+const generatedCode = sc.parse(src);
 const int = new SellInterpreter();
-int.interpret(src);
+int.interpret(generatedCode, sc.getLocalSymbols());
 
 /*
 const inputPath = 'test/testcourse/chapter1.txt'; // TODO: get from args
