@@ -148,6 +148,14 @@ export function createFunctionPrototypes(): SymTabEntry[] {
       subSymbols,
     );
     s.runtimeId = runtimeID;
+    // function overloading?
+    for (let i = symTab.length - 1; i >= 0; i--) {
+      // TODO: this is slow: use a dictionary with ref to last entry for every id
+      if (symTab[i].id === funID) {
+        symTab[i].functionOverloadSuccessor = s;
+      }
+    }
+    // finally push symbol to symbol table
     symTab.push(s);
   }
   // return result
