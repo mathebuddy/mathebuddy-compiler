@@ -10,8 +10,9 @@
  * This file interprets SELL code.
  */
 
-import * as math from 'mathjs';
+import * as mathjs from 'mathjs';
 import { SymTabEntry } from './code';
+import { Matrix } from './data';
 
 export class RunError extends Error {
   constructor(srcRow: number, srcCol: number, msg: string) {
@@ -23,6 +24,7 @@ export class RunError extends Error {
 export class SellInterpreter {
   public interpret(code: string, locals: SymTabEntry[]): void {
     // TODO: prevent infinite loops
+    // TODO: call runtime._mathjsMatrix2Matrix(..):Matrix in case of matrices
     code += 'return [';
     let i = 0;
     for (const local of locals) {
@@ -39,6 +41,10 @@ export class SellInterpreter {
       // TODO
       console.log(e);
     }
+  }
+
+  private _mathjsMatrix2Matrix(m: mathjs.MathCollection): Matrix {
+    //
   }
 
   private _randIntMax(max: number): number {
@@ -87,23 +93,23 @@ export class SellInterpreter {
     return Math.sqrt(x);
   }
 
-  private _zeros(rows: number, cols: number): math.MathCollection {
-    return math.zeros([rows, cols]);
+  private _zeros(rows: number, cols: number): mathjs.MathCollection {
+    return mathjs.zeros([rows, cols]);
   }
 
-  private _ones(rows: number, cols: number): math.MathCollection {
-    return math.ones([rows, cols]);
+  private _ones(rows: number, cols: number): mathjs.MathCollection {
+    return mathjs.ones([rows, cols]);
   }
 
   private _addMatrices(
-    a: math.MathCollection,
-    b: math.MathCollection,
+    a: mathjs.MathCollection,
+    b: mathjs.MathCollection,
     srcRow: number,
     srcCol: number,
-  ): math.MathCollection {
-    let c: math.MathCollection;
+  ): mathjs.MathCollection {
+    let c: mathjs.MathCollection;
     try {
-      c = math.add(a, b);
+      c = mathjs.add(a, b);
     } catch (e) {
       throw new RunError(srcRow, srcCol, 'dimensions do not match');
     }
