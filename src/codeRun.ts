@@ -11,7 +11,7 @@
  */
 
 import * as mathjs from 'mathjs';
-import { SymTabEntry } from './code';
+import { BaseType, SymTabEntry, Type } from './code';
 import { Matrix } from './data';
 
 export class RunError extends Error {
@@ -33,9 +33,21 @@ export class SellInterpreter {
       i++;
     }
     code += '];';
-    const f = Function('runtime', code);
+    const f = new Function('runtime', code);
     try {
-      const res = f(this);
+      const values: (boolean | number | mathjs.Matrix)[] = f(this);
+      for (let i = 0; i < locals.length; i++) {
+        const local = locals[i];
+        switch (local.type.base) {
+          case BaseType.MATRIX:
+            local.value = this._mathjsMatrix2Matrix(values[i] as mathjs.Matrix);
+            break;
+          default:
+            console.log('unimplemented');
+            process.exit(-1);
+        }
+      }
+
       const bp = 1337;
     } catch (e) {
       // TODO
@@ -43,8 +55,11 @@ export class SellInterpreter {
     }
   }
 
-  private _mathjsMatrix2Matrix(m: mathjs.MathCollection): Matrix {
-    //
+  private _mathjsMatrix2Matrix(m: mathjs.Matrix): Matrix {
+    const r = new Matrix(m.size()[0], m.size()[1]);
+    for (let i = 0; i < r.rows; i++)
+      for (let j = 0; j < r.cols; j++) r.setValue(i, j, m.get([i, j]));
+    return r;
   }
 
   private _randIntMax(max: number): number {

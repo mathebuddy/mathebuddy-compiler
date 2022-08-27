@@ -7,6 +7,7 @@
  */
 
 import { createFunctionPrototypes } from './codeFun';
+import { Matrix } from './data';
 import { Lexer } from './lex';
 
 /*
@@ -115,6 +116,7 @@ export class SymTabEntry {
   public runtimeId = '';
   public subSymbols: SymTabEntry[] = [];
   public functionOverloadSuccessor: SymTabEntry = null;
+  public value: number | Matrix = null;
   constructor(
     id: string,
     kind: SymbolKind,
