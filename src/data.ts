@@ -6,39 +6,89 @@
  * License: GPL-3.0-or-later
  */
 
-import { assert } from 'console';
-import { row } from 'mathjs';
+import * as assert from 'assert';
+
+export type JSONValue =
+  | string
+  | number
+  | boolean
+  | { [x: string]: JSONValue }
+  | Array<JSONValue>;
 
 export class Course {
   id = '';
   author = '';
   modifiedDate = '';
   documents: CourseDocument[] = [];
+
+  toJSON(): JSONValue {
+    const docs: JSONValue = [];
+    for (const d of this.documents) {
+      docs.push(d.toJSON());
+    }
+    return {
+      id: this.id,
+      author: this.author,
+      modifiedDate: this.modifiedDate,
+      documents: docs,
+    };
+  }
 }
 
 export class CourseDocument {
   title = '';
   alias = '';
   items: DocumentItem[] = [];
+
+  toJSON(): JSONValue {
+    const items: JSONValue = [];
+    for (const item of this.items) {
+      items.push(item.toJSON());
+    }
+    return {
+      title: this.title,
+      alias: this.alias,
+      items: items,
+    };
+  }
 }
 
-export abstract class DocumentItem {}
+export abstract class DocumentItem {
+  toJSON(): JSONValue {
+    return {}; // overwritten by derived classes
+  }
+}
 
 export class Exercise extends DocumentItem {
   title = '';
   code_raw = '';
   variables: Variable[] = [];
   text_raw = '';
-  text: Text;
+  text: Text = new Text();
+
+  toJSON(): JSONValue {
+    const vars: JSONValue = [];
+    for (const v of this.variables) {
+      vars.push(v.toJSON());
+    }
+    return {
+      type: 'exercise',
+      title: this.title,
+      variables: vars,
+      text: this.text.toJSON(),
+    };
+  }
 }
 
 export class Matrix {
   rows = 1;
   cols = 1;
   values: number[] = [];
+
   constructor(rows = 1, cols = 1) {
     this.resize(rows, cols);
   }
+
   resize(rows: number, cols: number): void {
     this.rows = rows;
     this.cols = cols;
@@ -46,24 +96,62 @@ export class Matrix {
     const n = rows * cols;
     for (let i = 0; i < n; i++) this.values.push(0);
   }
+
   setValue(row: number, col: number, value: number): void {
-    assert(row >= 0 && row < this.rows);
-    assert(col >= 0 && col < this.cols);
+    assert.ok(row >= 0 && row < this.rows);
+    assert.ok(col >= 0 && col < this.cols);
     this.values[row * this.cols + col] = value;
   }
+
   getValue(row: number, col: number): number {
-    assert(row >= 0 && row < this.rows);
-    assert(col >= 0 && col < this.cols);
+    assert.ok(row >= 0 && row < this.rows);
+    assert.ok(col >= 0 && col < this.cols);
     return this.values[row * this.cols + col];
+  }
+
+  toJSON(): JSONValue {
+    return {
+      rows: this.rows,
+      cols: this.cols,
+      values: this.values,
+    };
   }
 }
 
 export class Variable {
   name = '';
   type: VariableType;
+
+  //TODO: better to NOT create arrays here???;
+
   realValues: number[] = [];
   boolValues: boolean[] = [];
   matrixValues: Matrix[] = [];
+
+  toJSON(): JSONValue {
+    let values: JSONValue = [];
+    switch (this.type) {
+      case VariableType.Bool:
+        values = this.boolValues;
+        break;
+      case VariableType.Real:
+        values = this.realValues;
+        break;
+      case VariableType.Matrix:
+        for (const v of this.matrixValues) {
+          values.push(v.toJSON());
+        }
+        break;
+      default:
+        console.error('Variable.toJSON(..): unimplemented type ' + this.type);
+        process.exit(-1);
+    }
+    return {
+      name: this.name,
+      type: this.type,
+      values: values,
+    };
+  }
 }
 
 export enum VariableType {
@@ -74,6 +162,12 @@ export enum VariableType {
 
 export class Text extends DocumentItem {
   items: TextItem[] = [];
+
+  toJSON(): JSONValue {
+    return {
+      TODO: 'TODO_Text2JSON',
+    };
+  }
 }
 
 export abstract class TextItem {}
@@ -86,11 +180,11 @@ export class TextString extends TextItem {
   value = '';
 }
 
-export class TextMultichoice extends TextItem {
-  items: TextMultichoiceItem[] = [];
+export class TextMultiChoice extends TextItem {
+  items: TextMultiChoiceItem[] = [];
 }
 
-export class TextMultichoiceItem extends TextItem {
+export class TextMultiChoiceItem extends TextItem {
   variable: Variable;
   text: Text;
 }
