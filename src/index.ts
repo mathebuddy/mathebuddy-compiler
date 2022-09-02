@@ -12,22 +12,11 @@ import { Parser } from './parse';
 
 console.log('mathe:buddy Compiler (c) 2022 by TH Koeln');
 
-// just a test..
-import { SellCode } from './code';
-import { SellInterpreter } from './codeRun';
-const src = `let z = rand(3);
-let x = 3 + 4*5;
-let y = x + 1;
-`;
-const sc = new SellCode();
-const generatedCode = sc.parse(src);
-const int = new SellInterpreter();
-int.interpret(generatedCode, sc.getLocalSymbols());
-
-/*
-const inputPath = 'test/testcourse/chapter1.txt'; // TODO: get from args
+const inputPath = 'testdata/testcourse/chapter1.txt'; // TODO: get from args
 const src = fs.readFileSync(inputPath, 'utf-8');
 
 const parser = new Parser();
 parser.run(src);
-*/
+
+const output = JSON.stringify(parser.getCourse().toJSON(), null, 2);
+console.log(output);
