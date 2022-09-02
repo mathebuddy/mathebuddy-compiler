@@ -1,22 +1,31 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Run mathe:buddy Compiler",
-            "runtimeExecutable": "node",
-            "runtimeArgs": [
-                "--nolazy",
-                "-r",
-                "ts-node/register/transpile-only"
-            ],
-            "skipFiles": ["<node_internals>/**"],
-            "program": "${workspaceFolder}/src/index.ts",
-            "args": [""],
-            "sourceMaps": true,
-            "preLaunchTask": "tsc: build - tsconfig.json",
-            "console": "integratedTerminal"
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run mathe:buddy Compiler",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only"],
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/src/index.ts",
+      "args": [""],
+      "sourceMaps": true,
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run mathe:buddy Compiler TESTS",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only"],
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/test/index_TEST.ts",
+      "args": [""],
+      "sourceMaps": true,
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "console": "integratedTerminal"
+    }
+  ]
 }
