@@ -5,12 +5,14 @@
  * Funded by: FREIRAUM 2022, Stiftung Innovation in der Hochschullehre
  * License: GPL-3.0-or-later
  */
-const esbuild = require('esbuild');
+
+import * as esbuild from 'esbuild';
 
 esbuild.buildSync({
-  platform: 'node',
+  platform: 'browser',
+  globalName: 'mathebuddyCOMPILER',
   minify: true,
-  target: 'node11',
+  target: 'es2020',
   entryPoints: ['src/index.ts'],
   bundle: true,
   outfile: 'build/mathebuddy-compiler.min.js',

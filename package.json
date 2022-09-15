@@ -4,7 +4,7 @@
   "description": "Compiler for the mathe:buddy App",
   "main": "build.js",
   "scripts": {
-    "build": "tsc -noEmit && node ./build.js"
+    "build": "tsc --project tsconfig.build.json && node ./build.mjs"
   },
   "repository": {
     "type": "git",
@@ -34,8 +34,8 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "mathebuddy-smpl": "file:../mathebuddy-smpl",
-    "mathjs": "^11.0.1",
-    "multila-lexer": "file:../../github-multila/multila-lexer"
+    "@mathebuddy/mathebuddy-smpl": "^0.0.3",
+    "@multila/multila-lexer": "^0.9.1",
+    "mathjs": "^11.0.1"
   }
 }

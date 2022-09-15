@@ -1,6 +1,7 @@
 package-lock.json
 node_modules/
 js-dist/
+lib/
 
 # ===== VS Code Extension =====
 
