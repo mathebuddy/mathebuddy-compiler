@@ -8,8 +8,8 @@
 
 import { Course, DocumentItem, Exercise } from './data';
 import { CourseDocument } from './data';
-import { Lexer } from 'multila-lexer/src/lex';
-import { SMPL } from 'mathebuddy-smpl/src/index';
+import { Lexer } from '@multila/multila-lexer';
+import * as SMPL from '@mathebuddy/mathebuddy-smpl';
 
 class Block {
   type = '';
@@ -182,19 +182,47 @@ export class Parser {
   /*G paragraph =
        { paragraphPart };
    paragraphPart =
-       ID
      | "**" paragraph('bold') "**"
      | "*" paragraph('italic') "*"
      | "[" paragraph('format') "]" "@" ID
-     | "$" inlineMath('math') "$";
+     | "$" inlineMath('math') "$"
+     | ID
+     | DEL;
   */
-  private parseParagraph(mode = ''): void {
+  private parseParagraph(): void {
+    // skip empty paragraphs
+    if (this.line.trim().length == 0) return;
+    // create lexer
     const lexer = new Lexer();
-
     lexer.pushSource('', this.line);
-
-    this.next();
-
+    lexer.setTerminals(['**']);
+    let isBold = false;
+    let isItalic = false;
+    let isMath = false;
+    while (lexer.isNotEND()) {
+      if (lexer.isTER('**')) {
+        this.next();
+        isBold = !isBold;
+      } else if (lexer.isTER('*')) {
+        this.next();
+        isItalic = !isItalic;
+      } else if (lexer.isTER('$')) {
+        this.next();
+        isMath = !isMath;
+      } else {
+        this.next();
+      }
+    }
+    // end open scopes
+    if (isBold) {
+      // TODO
+    }
+    if (isItalic) {
+      //TODO
+    }
+    if (isMath) {
+      //TODO
+    }
     const bp = 1337;
   }
 
