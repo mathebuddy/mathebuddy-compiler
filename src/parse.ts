@@ -252,19 +252,74 @@ export class Parser {
 
   private parseParagraph_part(lexer: Lexer): any {
     if (lexer.isTER('**')) {
+      // bold text
       lexer.next();
       const items: any[] = [];
       while (lexer.isNotTER('**')) {
         items.push(this.parseParagraph_part(lexer));
       }
-      if (lexer.isTER('**')) {
-        lexer.next();
-      }
+      if (lexer.isTER('**')) lexer.next();
       return {
         type: 'bold',
         items: items,
       };
+    } else if (lexer.isTER('*')) {
+      // italic text
+      lexer.next();
+      const items: any[] = [];
+      while (lexer.isNotTER('*')) {
+        items.push(this.parseParagraph_part(lexer));
+      }
+      if (lexer.isTER('*')) lexer.next();
+      return {
+        type: 'italic',
+        items: items,
+      };
+    } else if (lexer.isTER('@')) {
+      // reference
+      lexer.next();
+      let link = '';
+      if (lexer.isID()) {
+        link = lexer.getToken().token;
+        lexer.next();
+      }
+      return {
+        type: 'reference',
+        link: link,
+      };
+    } else if (lexer.isTER('\n')) {
+      // line feed
+      lexer.next();
+      return {
+        type: 'linefeed',
+      };
+    } else if (lexer.isTER('[')) {
+      lexer.next();
+      const items: any[] = [];
+      while (lexer.isNotTER(']')) {
+        items.push(this.parseParagraph_part(lexer));
+      }
+      if (lexer.isTER(']')) lexer.next();
+      if (lexer.isTER('@')) lexer.next();
+      let type = 'unknown';
+      if (lexer.isID()) {
+        const id = lexer.ID();
+        lexer.next();
+        switch (id) {
+          case 'red':
+            type = 'color-red';
+            break;
+          case 'blue':
+            type = 'color-blue';
+            break;
+        }
+      }
+      return {
+        type: type,
+        items: items,
+      };
     } else {
+      // text tokens (... or yet unimplemented paragraph items)
       const tk = lexer.getToken().token;
       lexer.next();
       return {
