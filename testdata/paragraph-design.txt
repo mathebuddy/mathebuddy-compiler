@@ -1,0 +1,59 @@
+
+
+>>>>> INPUT >>>>>
+
+Some **bold text** here. %This text is a comment.
+
+And some *italic* text there.
+
+Refer to @mySection.
+
+An itemization:
+
+* first item
+* second item
+
+{
+  "type": "itemize",
+  "items": [ ]
+}
+
+
+>>>>> OUTPUT >>>>>
+
+{
+  "items": [
+    {
+      "type": "text",
+      "value": "Some"
+    },
+    {
+      "type": "bold",
+      "items": [
+        {
+          "type": "text",
+          "value": "bold text"
+        }
+      ]
+    }
+    {
+      "type": "text",
+      "value": "here."
+    },
+    {
+      "type": "linefeed"
+    },
+    {
+      "type: "text",
+      "value": "Refer to"
+    },
+    {
+      "type": "reference",
+      "value": "mySection"
+    },
+    {
+      "type: "text",
+      "value": "."
+    }
+  ]
+}
