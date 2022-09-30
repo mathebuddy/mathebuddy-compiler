@@ -19,6 +19,10 @@ LEARNINGOUTCOMES
 
 Some **bold text** here. %This text is a comment.
 
+And some *italic* text there.
+
+Some text in [red]@red color.
+
 Refer to @mySection.
 
 An itemization:
