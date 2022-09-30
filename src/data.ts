@@ -6,7 +6,7 @@
  * License: GPL-3.0-or-later
  */
 
-import * as assert from 'assert';
+//import * as assert from 'assert';
 
 export type JSONValue =
   | string
@@ -98,14 +98,14 @@ export class Matrix {
   }
 
   setValue(row: number, col: number, value: number): void {
-    assert.ok(row >= 0 && row < this.rows);
-    assert.ok(col >= 0 && col < this.cols);
+    //TODO assert.ok(row >= 0 && row < this.rows);
+    //TODO assert.ok(col >= 0 && col < this.cols);
     this.values[row * this.cols + col] = value;
   }
 
   getValue(row: number, col: number): number {
-    assert.ok(row >= 0 && row < this.rows);
-    assert.ok(col >= 0 && col < this.cols);
+    //TODO assert.ok(row >= 0 && row < this.rows);
+    //TODO assert.ok(col >= 0 && col < this.cols);
     return this.values[row * this.cols + col];
   }
 

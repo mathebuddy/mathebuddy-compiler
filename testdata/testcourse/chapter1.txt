@@ -17,7 +17,7 @@ LEARNINGOUTCOMES
 * Learning outcome 2
 ---
 
-Some text here. %This text is a comment.
+Some **bold text** here. %This text is a comment.
 
 Refer to @mySection.
 

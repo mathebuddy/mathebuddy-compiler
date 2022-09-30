@@ -91,6 +91,7 @@ export class Parser {
   private i = -1; // current line index (starting from 0)
   private line = ''; // current line
   private line2 = ''; // next line
+  private paragraph = '';
 
   public getCourse(): Course {
     return this.course;
@@ -114,11 +115,26 @@ export class Parser {
     this.next();
     // parse
     while (this.line !== '§END') {
-      if (this.line.length == 0) this.next();
-      else if (this.line2.startsWith('###')) this.parseDocumentTitle();
-      else if (this.line === '---') this.parseBlock();
-      else this.parseParagraph();
+      if (this.line.length == 0) {
+        this.next();
+      } else if (this.line2.startsWith('#####')) {
+        this.parseParagraph();
+        this.parseDocumentTitle();
+      } else if (this.line2.startsWith('=====')) {
+        this.parseParagraph();
+        this.parseSectionTitle();
+      } else if (this.line2.startsWith('-----')) {
+        this.parseParagraph();
+        this.parseSubSectionTitle();
+      } else if (this.line === '---') {
+        this.parseParagraph();
+        this.parseBlock();
+      } else {
+        this.paragraph += this.line + '\n';
+        this.next();
+      }
     }
+    this.parseParagraph();
     const bp = 1337;
   }
 
@@ -132,13 +148,37 @@ export class Parser {
     } else this.line2 = '§END';
   }
 
-  //G documentTitle = { CHAR } "@" { ID } NEWLINE "###" { "#" } NEWLINE;
+  //G documentTitle = { CHAR } "@" { ID } NEWLINE "#####.." { "#" } NEWLINE;
   private parseDocumentTitle(): void {
     const tokens = this.line.split('@');
     this.document.title = tokens[0].trim();
-    if (tokens.length > 1) this.document.alias = tokens[1].trim();
+    if (tokens.length > 1) {
+      this.document.alias = tokens[1].trim();
+    }
     this.next(); // skip document title
-    this.next(); // skip '############'
+    this.next(); // skip '#####..'
+  }
+
+  //G sectionTitle = { CHAR } "@" { ID } NEWLINE "=====.." { "#" } NEWLINE;
+  private parseSectionTitle(): void {
+    const tokens = this.line.split('@');
+    const secTitle = tokens[0].trim();
+    if (tokens.length > 1) {
+      const secAlias = tokens[1].trim();
+    }
+    this.next(); // skip section title
+    this.next(); // skip '=====..'
+  }
+
+  //G subSectionTitle = { CHAR } "@" { ID } NEWLINE "-----.." { "#" } NEWLINE;
+  private parseSubSectionTitle(): void {
+    const tokens = this.line.split('@');
+    const subSecTitle = tokens[0].trim();
+    if (tokens.length > 1) {
+      const subSecAlias = tokens[1].trim();
+    }
+    this.next(); // skip section title
+    this.next(); // skip '-----..'
   }
 
   //G block = "---" NEWLINE { "@" ID NEWLINE | LINE } "---" NEWLINE;
@@ -179,51 +219,59 @@ export class Parser {
     if (docItem != null) this.document.items.push(docItem);
   }
 
-  /*G paragraph =
+  /*G
+    paragraphCore =
        { paragraphPart };
-   paragraphPart =
-     | "**" paragraph('bold') "**"
-     | "*" paragraph('italic') "*"
-     | "[" paragraph('format') "]" "@" ID
-     | "$" inlineMath('math') "$"
+    paragraphPart =
+     | "**" paragraphCore "**"
+     | "*" paragraphCore "*"
+     | "[" paragraphCore "]" "@" ID
+     | "$" inlineMath "$"
      | ID
      | DEL;
   */
   private parseParagraph(): void {
     // skip empty paragraphs
-    if (this.line.trim().length == 0) return;
+    if (this.paragraph.trim().length == 0) return;
     // create lexer
     const lexer = new Lexer();
-    lexer.pushSource('', this.line);
+    lexer.enableEmitNewlines(true);
+    lexer.pushSource('', this.paragraph);
     lexer.setTerminals(['**']);
-    let isBold = false;
-    let isItalic = false;
-    let isMath = false;
-    while (lexer.isNotEND()) {
-      if (lexer.isTER('**')) {
-        this.next();
-        isBold = !isBold;
-      } else if (lexer.isTER('*')) {
-        this.next();
-        isItalic = !isItalic;
-      } else if (lexer.isTER('$')) {
-        this.next();
-        isMath = !isMath;
-      } else {
-        this.next();
-      }
-    }
-    // end open scopes
-    if (isBold) {
-      // TODO
-    }
-    if (isItalic) {
-      //TODO
-    }
-    if (isMath) {
-      //TODO
-    }
+    const items = this.parseParagraph_core(lexer);
     const bp = 1337;
+  }
+
+  private parseParagraph_core(lexer: Lexer): any {
+    const items: any[] = [];
+    while (lexer.isNotEND()) {
+      items.push(this.parseParagraph_part(lexer));
+    }
+    return items;
+  }
+
+  private parseParagraph_part(lexer: Lexer): any {
+    if (lexer.isTER('**')) {
+      lexer.next();
+      const items: any[] = [];
+      while (lexer.isNotTER('**')) {
+        items.push(this.parseParagraph_part(lexer));
+      }
+      if (lexer.isTER('**')) {
+        lexer.next();
+      }
+      return {
+        type: 'bold',
+        items: items,
+      };
+    } else {
+      const tk = lexer.getToken().token;
+      lexer.next();
+      return {
+        type: 'text',
+        value: tk,
+      };
+    }
   }
 
   private error(message: string): void {
