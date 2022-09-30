@@ -294,6 +294,7 @@ export class Parser {
         type: 'linefeed',
       };
     } else if (lexer.isTER('[')) {
+      // text properties: e.g. "[text in red color]@red"
       lexer.next();
       const items: any[] = [];
       while (lexer.isNotTER(']')) {
