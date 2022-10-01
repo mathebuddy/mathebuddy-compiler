@@ -12,10 +12,20 @@ An itemization:
 
 * first item
 * second item
+    * first subitem
+    * second subitem
 
 {
   "type": "itemize",
-  "items": [ ]
+  "items": [
+    {
+      "type": "text",
+      "value": "first item"
+    },
+    {
+
+    }
+  ]
 }
 
 
