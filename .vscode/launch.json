@@ -21,7 +21,7 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["--nolazy", "-r", "ts-node/register/transpile-only"],
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/test/index_TEST.ts",
+      "program": "${workspaceFolder}/test/test.ts",
       "args": [""],
       "sourceMaps": true,
       "preLaunchTask": "tsc: build - tsconfig.json",
