@@ -62,12 +62,10 @@ Calculate $ x + y = #z $.
             "value": "="
           },
         ]
-
-        "value": "x+y="
       },
       {
         "type": "integer-input",
-        "variable": "z",
+        "value": "z",
         "width": 10
       },
       {
