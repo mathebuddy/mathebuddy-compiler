@@ -10,10 +10,10 @@ Refer to @mySection.
 
 An itemization:
 
-* first item
-* second item
-    * first subitem
-    * second subitem
+- first item
+- second item
+    - first subitem
+    - second subitem
 
 {
   "type": "itemize",
@@ -23,7 +23,17 @@ An itemization:
       "value": "first item"
     },
     {
-
+      "type": "itemize",
+      "items": [
+        {
+          "type": "text",
+          "value": "first subitem"
+        },
+        {
+          "type": "text",
+          "value": "second subitem"
+        }
+      ]
     }
   ]
 }
