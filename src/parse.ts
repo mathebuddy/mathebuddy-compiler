@@ -351,10 +351,22 @@ export class Parser {
       // input element(s)
       lexer.next();
       let id = '';
-      if (lexer.isID()) id = lexer.ID();
-      // TODO: check if variable exists + get variable type
-      part = new ParagraphItem(ParagraphItemType.IntegerInput);
-      part.value = id;
+      let error = false;
+      if (lexer.isID()) {
+        id = lexer.ID();
+        if (ex != null) {
+          //
+        } else {
+          error = true;
+        }
+
+        part = new ParagraphItem(ParagraphItemType.IntegerInput);
+        part.value = id;
+      }
+      if (error) {
+        part = new ParagraphItem(ParagraphItemType.Error);
+        part.value = 'unknown variable for input field: "' + id + '"';
+      }
     } else if (lexer.isTER('\n')) {
       // line feed
       lexer.next();
