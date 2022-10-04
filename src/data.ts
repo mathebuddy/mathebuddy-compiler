@@ -75,6 +75,7 @@ export enum ParagraphItemType {
   Enumerate = 'enumerate',
   Reference = 'reference',
   InlineMath = 'inline-math',
+  IntegerInput = 'integer-input',
 }
 
 export class ParagraphItem extends DocumentItem {
@@ -119,6 +120,12 @@ export class ParagraphItem extends DocumentItem {
       case ParagraphItemType.Unknown:
         return {
           type: this.type,
+        };
+      case ParagraphItemType.IntegerInput:
+        return {
+          type: this.type,
+          value: this.value,
+          width: 10, // TODO
         };
       default:
         console.log('UNIMPLEMENTED toJSON(..) for "' + this.type + '"');
