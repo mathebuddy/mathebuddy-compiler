@@ -12,6 +12,15 @@ let z = x + y;
 Calculate $ x + y = $ #z.
 ---
 
+---
+EXERCISE My Exercise 2 @myExerciseLabel
+@code
+let x : y = rand<2,2>(1, 5);
+let z = x * y;
+@text
+Calculate $ x * y = $ #z.
+---
+
 
 ---
 HIDDEN
