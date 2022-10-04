@@ -352,8 +352,9 @@ export class Parser {
       lexer.next();
       let id = '';
       if (lexer.isID()) id = lexer.ID();
-
-      const bp = 1337;
+      // TODO: check if variable exists + get variable type
+      part = new ParagraphItem(ParagraphItemType.IntegerInput);
+      part.value = id;
     } else if (lexer.isTER('\n')) {
       // line feed
       lexer.next();
