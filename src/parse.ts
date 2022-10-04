@@ -6,7 +6,13 @@
  * License: GPL-3.0-or-later
  */
 
-import { Course, DocumentItem, Exercise } from './data';
+import {
+  Course,
+  DocumentItem,
+  Exercise,
+  ParagraphItem,
+  ParagraphItemType,
+} from './data';
 import { CourseDocument } from './data';
 import { Lexer } from '@multila/multila-lexer';
 import * as SMPL from '@mathebuddy/mathebuddy-smpl';
@@ -149,7 +155,7 @@ export class Parser {
   }
 
   //G documentTitle = { CHAR } "@" { ID } NEWLINE "#####.." { "#" } NEWLINE;
-  private parseDocumentTitle(): void {
+  private parseDocumentTitle(): any {
     const tokens = this.line.split('@');
     this.document.title = tokens[0].trim();
     if (tokens.length > 1) {
@@ -157,10 +163,14 @@ export class Parser {
     }
     this.next(); // skip document title
     this.next(); // skip '#####..'
+    return {
+      type: 'title',
+      value: this.document.title,
+    };
   }
 
   //G sectionTitle = { CHAR } "@" { ID } NEWLINE "=====.." { "#" } NEWLINE;
-  private parseSectionTitle(): void {
+  private parseSectionTitle(): any {
     const tokens = this.line.split('@');
     const secTitle = tokens[0].trim();
     if (tokens.length > 1) {
@@ -168,6 +178,10 @@ export class Parser {
     }
     this.next(); // skip section title
     this.next(); // skip '=====..'
+    return {
+      type: 'section',
+      value: secTitle,
+    };
   }
 
   //G subSectionTitle = { CHAR } "@" { ID } NEWLINE "-----.." { "#" } NEWLINE;
@@ -227,6 +241,8 @@ export class Parser {
      | "*" paragraphCore "*"
      | "[" paragraphCore "]" "@" ID
      | "$" inlineMath "$"
+     | <START>"-" paragraphCore "\n"
+     | <START>"-)" paragraphCore "\n"
      | ID
      | DEL;
   */
@@ -237,44 +253,74 @@ export class Parser {
     const lexer = new Lexer();
     lexer.enableEmitNewlines(true);
     lexer.pushSource('', this.paragraph);
-    lexer.setTerminals(['**']);
-    const items = this.parseParagraph_core(lexer);
-    const bp = 1337;
-  }
-
-  private parseParagraph_core(lexer: Lexer): any {
-    const items: any[] = [];
+    lexer.setTerminals(['**', '-)', '#.']);
+    const paragraph = new ParagraphItem(ParagraphItemType.Paragraph);
     while (lexer.isNotEND()) {
-      items.push(this.parseParagraph_part(lexer));
+      paragraph.subItems.push(this.parseParagraph_part(lexer));
     }
-    return items;
+    paragraph.simplify();
+    //console.log(JSON.stringify(paragraph.toJSON(), null, 2));
+    this.document.items.push(paragraph);
   }
 
   private parseParagraph_part(lexer: Lexer): any {
-    if (lexer.isTER('**')) {
+    //let part: any = '';
+    let part: ParagraphItem = null;
+    if (lexer.getToken().col == 1 && lexer.isTER('-')) {
+      // itemize
+      part = new ParagraphItem(ParagraphItemType.Itemize);
+      while (lexer.getToken().col == 1 && lexer.isTER('-')) {
+        lexer.next();
+        const item = new ParagraphItem(ParagraphItemType.Paragraph);
+        part.subItems.push(item);
+        while (lexer.isNotNEWLINE()) {
+          item.subItems.push(this.parseParagraph_part(lexer));
+        }
+        lexer.NEWLINE();
+      }
+    } else if (lexer.getToken().col == 1 && lexer.isTER('#.')) {
+      // enumerate
+      part = new ParagraphItem(ParagraphItemType.Enumerate);
+      while (lexer.getToken().col == 1 && lexer.isTER('#.')) {
+        lexer.next();
+        const item = new ParagraphItem(ParagraphItemType.Paragraph);
+        part.subItems.push(item);
+        while (lexer.isNotNEWLINE()) {
+          item.subItems.push(this.parseParagraph_part(lexer));
+        }
+        lexer.NEWLINE();
+      }
+    } else if (lexer.isTER('**')) {
       // bold text
       lexer.next();
-      const items: any[] = [];
+      const items: ParagraphItem[] = [];
       while (lexer.isNotTER('**')) {
         items.push(this.parseParagraph_part(lexer));
       }
       if (lexer.isTER('**')) lexer.next();
-      return {
-        type: 'bold',
-        items: items,
-      };
+      part = new ParagraphItem(ParagraphItemType.Bold);
+      part.subItems = items;
     } else if (lexer.isTER('*')) {
       // italic text
       lexer.next();
-      const items: any[] = [];
+      const items: ParagraphItem[] = [];
       while (lexer.isNotTER('*')) {
         items.push(this.parseParagraph_part(lexer));
       }
       if (lexer.isTER('*')) lexer.next();
-      return {
-        type: 'italic',
-        items: items,
-      };
+      part = new ParagraphItem(ParagraphItemType.Italic);
+      part.subItems = items;
+    } else if (lexer.isTER('$')) {
+      // inline equation
+      lexer.next();
+      let equation = '';
+      while (lexer.isNotTER('$')) {
+        equation += lexer.getToken().token;
+        lexer.next();
+      }
+      if (lexer.isTER('$')) lexer.next();
+      part = new ParagraphItem(ParagraphItemType.InlineMath);
+      part.value = equation;
     } else if (lexer.isTER('@')) {
       // reference
       lexer.next();
@@ -283,51 +329,45 @@ export class Parser {
         link = lexer.getToken().token;
         lexer.next();
       }
-      return {
-        type: 'reference',
-        link: link,
-      };
+      part = new ParagraphItem(ParagraphItemType.Reference);
+      part.value = link;
     } else if (lexer.isTER('\n')) {
       // line feed
       lexer.next();
-      return {
-        type: 'linefeed',
-      };
+      part = new ParagraphItem(ParagraphItemType.Linefeed);
     } else if (lexer.isTER('[')) {
       // text properties: e.g. "[text in red color]@red"
       lexer.next();
-      const items: any[] = [];
+      const items: ParagraphItem[] = [];
       while (lexer.isNotTER(']')) {
         items.push(this.parseParagraph_part(lexer));
       }
       if (lexer.isTER(']')) lexer.next();
       if (lexer.isTER('@')) lexer.next();
-      let type = 'unknown';
+      let type = ParagraphItemType.Unknown;
+      let color = '';
       if (lexer.isID()) {
         const id = lexer.ID();
         lexer.next();
         switch (id) {
           case 'red':
-            type = 'color-red';
-            break;
           case 'blue':
-            type = 'color-blue';
+            type = ParagraphItemType.Color;
+            color = id;
             break;
         }
       }
-      return {
-        type: type,
-        items: items,
-      };
+      part = new ParagraphItem(type);
+      part.value = color;
+      part.subItems = items;
     } else {
       // text tokens (... or yet unimplemented paragraph items)
       const tk = lexer.getToken().token;
       lexer.next();
-      return {
-        type: 'text',
-        value: tk,
-      };
+      part = new ParagraphItem(ParagraphItemType.Text);
+      part.value = tk;
     }
+    return part;
   }
 
   private error(message: string): void {
