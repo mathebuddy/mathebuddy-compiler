@@ -1,0 +1,79 @@
+>>>>>>>> input >>>>>>>>
+
+EXERCISE My Exercise @myExerciseLabel
+@code
+let x : y = rand(1, 5);
+let z = x + y;
+@text
+Calculate $ x + y = #z $.
+
+>>>>>>>> output >>>>>>>>
+
+{
+  "type": "exercise",
+  "title": "My Exercise",
+  "variables": {
+    "x": {
+      "type": "INT"
+    },
+    "y": {
+      "type": "INT"
+    },
+    "z": {
+      "type": "INT"
+    }
+  },
+  "instances": [
+    {
+      "x": 3,
+      "y": 2,
+      "z": 5
+    },
+    {
+      "x": 2,
+      "y": 4,
+      "z": 6
+    }
+  ],
+  "text": {
+    "type": "paragraph",
+    "items": [
+      {
+        "type": "text",
+        "value": "Calculate"
+      },
+      {
+        "type": "inline-math",
+        "items": [
+          {
+            "type": "variable",
+            "value": "x"
+          },
+          {
+            "type": "text",
+            "value": "+"
+          },
+          {
+            "type": "variable",
+            "value": "y"
+          },
+          {
+            "type": "text",
+            "value": "="
+          },
+        ]
+
+        "value": "x+y="
+      },
+      {
+        "type": "integer-input",
+        "variable": "z",
+        "width": 10
+      },
+      {
+        "type": "text",
+        "value": "."
+      }
+    ]
+  }
+}
