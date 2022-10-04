@@ -8,6 +8,7 @@
 
 // TODO: use npm-package in future!
 import * as SMPL from '@mathebuddy/mathebuddy-smpl/src';
+import { Matrix } from '@mathebuddy/mathebuddy-smpl/src/matrix';
 import { BaseType, SymTabEntry } from '@mathebuddy/mathebuddy-smpl/src/symbol';
 
 export type JSONValue =
@@ -161,7 +162,11 @@ export class ExerciseInstance {
     for (const v of this.variables) {
       switch (v.type.base) {
         case BaseType.INT:
-          res[v.id] = v.value as number;
+          res[v.id] = (v.value as number).toString();
+          break;
+        case BaseType.MATRIX:
+          res[v.id] = (v.value as Matrix).toString();
+          break;
         // TODO: other types
       }
     }
