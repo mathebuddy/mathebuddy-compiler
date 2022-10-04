@@ -19,6 +19,7 @@ import { Lexer } from '@multila/multila-lexer';
 
 // TODO: use npm-package in future!
 import * as SMPL from '@mathebuddy/mathebuddy-smpl/src';
+import { LexerTokenType } from '@multila/multila-lexer/lib/token';
 
 // TODO: move to file block.ts
 class Block {
@@ -67,7 +68,7 @@ class Block {
         this.error(e.toString());
       }
 
-      exercise.text = this.parser.parseParagraph(exercise.text_raw);
+      exercise.text = this.parser.parseParagraph(exercise.text_raw, exercise);
 
       return exercise;
     } /*TODO: else {
@@ -245,12 +246,13 @@ export class Parser {
      | "*" paragraphCore "*"
      | "[" paragraphCore "]" "@" ID
      | "$" inlineMath "$"
+     | "#" ID
      | <START>"-" paragraphCore "\n"
      | <START>"-)" paragraphCore "\n"
      | ID
      | DEL;
   */
-  public parseParagraph(raw: string): ParagraphItem {
+  public parseParagraph(raw: string, ex: Exercise = null): ParagraphItem {
     // skip empty paragraphs
     if (this.paragraph.trim().length == 0) return;
     // create lexer
@@ -260,7 +262,7 @@ export class Parser {
     lexer.setTerminals(['**', '-)', '#.']);
     const paragraph = new ParagraphItem(ParagraphItemType.Paragraph);
     while (lexer.isNotEND()) {
-      paragraph.subItems.push(this.parseParagraph_part(lexer));
+      paragraph.subItems.push(this.parseParagraph_part(lexer, ex));
     }
     paragraph.simplify();
     //console.log(JSON.stringify(paragraph.toJSON(), null, 2));
@@ -268,7 +270,7 @@ export class Parser {
     return paragraph;
   }
 
-  private parseParagraph_part(lexer: Lexer): any {
+  private parseParagraph_part(lexer: Lexer, ex: Exercise): ParagraphItem {
     //let part: any = '';
     let part: ParagraphItem = null;
     if (lexer.getToken().col == 1 && lexer.isTER('-')) {
@@ -279,7 +281,7 @@ export class Parser {
         const item = new ParagraphItem(ParagraphItemType.Paragraph);
         part.subItems.push(item);
         while (lexer.isNotNEWLINE()) {
-          item.subItems.push(this.parseParagraph_part(lexer));
+          item.subItems.push(this.parseParagraph_part(lexer, ex));
         }
         lexer.NEWLINE();
       }
@@ -291,7 +293,7 @@ export class Parser {
         const item = new ParagraphItem(ParagraphItemType.Paragraph);
         part.subItems.push(item);
         while (lexer.isNotNEWLINE()) {
-          item.subItems.push(this.parseParagraph_part(lexer));
+          item.subItems.push(this.parseParagraph_part(lexer, ex));
         }
         lexer.NEWLINE();
       }
@@ -300,7 +302,7 @@ export class Parser {
       lexer.next();
       const items: ParagraphItem[] = [];
       while (lexer.isNotTER('**')) {
-        items.push(this.parseParagraph_part(lexer));
+        items.push(this.parseParagraph_part(lexer, ex));
       }
       if (lexer.isTER('**')) lexer.next();
       part = new ParagraphItem(ParagraphItemType.Bold);
@@ -310,7 +312,7 @@ export class Parser {
       lexer.next();
       const items: ParagraphItem[] = [];
       while (lexer.isNotTER('*')) {
-        items.push(this.parseParagraph_part(lexer));
+        items.push(this.parseParagraph_part(lexer, ex));
       }
       if (lexer.isTER('*')) lexer.next();
       part = new ParagraphItem(ParagraphItemType.Italic);
@@ -318,14 +320,23 @@ export class Parser {
     } else if (lexer.isTER('$')) {
       // inline equation
       lexer.next();
-      let equation = '';
+      const items: ParagraphItem[] = [];
       while (lexer.isNotTER('$')) {
-        equation += lexer.getToken().token;
+        const tk = lexer.getToken().token;
+        const isId = lexer.getToken().type === LexerTokenType.ID;
         lexer.next();
+        let item: ParagraphItem = null;
+        if (isId && ex != null && ex.getVariable(tk) != null) {
+          item = new ParagraphItem(ParagraphItemType.Variable);
+        } else {
+          item = new ParagraphItem(ParagraphItemType.Text);
+        }
+        item.value = tk;
+        items.push(item);
       }
       if (lexer.isTER('$')) lexer.next();
       part = new ParagraphItem(ParagraphItemType.InlineMath);
-      part.value = equation;
+      part.subItems = items;
     } else if (lexer.isTER('@')) {
       // reference
       lexer.next();
@@ -336,6 +347,13 @@ export class Parser {
       }
       part = new ParagraphItem(ParagraphItemType.Reference);
       part.value = link;
+    } else if (lexer.isTER('#')) {
+      // input element(s)
+      lexer.next();
+      let id = '';
+      if (lexer.isID()) id = lexer.ID();
+
+      const bp = 1337;
     } else if (lexer.isTER('\n')) {
       // line feed
       lexer.next();
@@ -345,7 +363,7 @@ export class Parser {
       lexer.next();
       const items: ParagraphItem[] = [];
       while (lexer.isNotTER(']')) {
-        items.push(this.parseParagraph_part(lexer));
+        items.push(this.parseParagraph_part(lexer, ex));
       }
       if (lexer.isTER(']')) lexer.next();
       if (lexer.isTER('@')) lexer.next();
