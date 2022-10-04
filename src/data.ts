@@ -59,12 +59,126 @@ export abstract class DocumentItem {
   }
 }
 
+export enum ParagraphItemType {
+  Unknown = 'unknown',
+  Paragraph = 'paragraph',
+  Bold = 'bold',
+  Italic = 'italic',
+  Text = 'text',
+  Linefeed = 'linefeed',
+  Color = 'color',
+  Equation = 'equation',
+  Itemize = 'itemize',
+  Enumerate = 'enumerate',
+  Reference = 'reference',
+  InlineMath = 'inline-math',
+}
+
+export class ParagraphItem extends DocumentItem {
+  type: ParagraphItemType;
+  subItems: ParagraphItem[] = [];
+  value = '';
+  constructor(type: ParagraphItemType) {
+    super();
+    this.type = type;
+  }
+  toJSON(): JSONValue {
+    const items: JSONValue = [];
+    for (const item of this.subItems) {
+      items.push(item.toJSON());
+    }
+    switch (this.type) {
+      case ParagraphItemType.Paragraph:
+      case ParagraphItemType.Bold:
+      case ParagraphItemType.Italic:
+      case ParagraphItemType.Itemize:
+      case ParagraphItemType.Enumerate:
+        return {
+          type: this.type,
+          items: items,
+        };
+      case ParagraphItemType.Color:
+        return {
+          type: this.type,
+          value: this.value,
+          items: items,
+        };
+      case ParagraphItemType.Text:
+      case ParagraphItemType.Equation:
+      case ParagraphItemType.InlineMath:
+      case ParagraphItemType.Reference:
+        return {
+          type: this.type,
+          value: this.value,
+        };
+      case ParagraphItemType.Linefeed:
+      case ParagraphItemType.Unknown:
+        return {
+          type: this.type,
+        };
+      default:
+        console.log('UNIMPLEMENTED toJSON(..) for "' + this.type + '"');
+        return {};
+    }
+  }
+  /**
+   * this methods concatenates text items
+   */
+  simplify(): void {
+    for (let i = 0; i < this.subItems.length; i++) {
+      if (
+        i > 0 &&
+        this.subItems[i - 1].type === ParagraphItemType.Text &&
+        this.subItems[i].type === ParagraphItemType.Text
+      ) {
+        let text = this.subItems[i].value;
+        if ('.,:'.includes(text) == false) text = ' ' + text;
+        this.subItems[i - 1].value += text;
+        this.subItems.splice(i, 1);
+        i--;
+      } else {
+        this.subItems[i].simplify();
+      }
+    }
+  }
+}
+
+/*export abstract class ParagraphItem {
+  toJSON(): JSONValue {
+    return {};
+  }
+}
+
+export class Paragraph {
+  items: ParagraphItem[] = [];
+  toJSON(): JSONValue {
+    const items: JSONValue = [];
+    for (const item of this.items) {
+      items.push(item.toJSON());
+    }
+    return {
+      type: 'paragraph',
+      items: items,
+    };
+  }
+}
+
+export class Text extends ParagraphItem {
+  value = '';
+  toJSON(): JSONValue {
+    return {
+      type: 'text',
+      value: this.value,
+    };
+  }
+}*/
+
 export class Exercise extends DocumentItem {
   title = '';
   code_raw = '';
   variables: Variable[] = [];
   text_raw = '';
-  text: Text = new Text();
+  text: ParagraphItem = null;
 
   toJSON(): JSONValue {
     const vars: JSONValue = [];
@@ -75,7 +189,7 @@ export class Exercise extends DocumentItem {
       type: 'exercise',
       title: this.title,
       variables: vars,
-      text: this.text.toJSON(),
+      //TODO text: this.text.toJSON(),
     };
   }
 }
@@ -158,37 +272,4 @@ export enum VariableType {
   Real = 'real',
   Bool = 'bool',
   Matrix = 'matrix',
-}
-
-export class Text extends DocumentItem {
-  items: TextItem[] = [];
-
-  toJSON(): JSONValue {
-    return {
-      TODO: 'TODO_Text2JSON',
-    };
-  }
-}
-
-export abstract class TextItem {}
-
-export class TextMath extends TextItem {
-  value = '';
-}
-
-export class TextString extends TextItem {
-  value = '';
-}
-
-export class TextMultiChoice extends TextItem {
-  items: TextMultiChoiceItem[] = [];
-}
-
-export class TextMultiChoiceItem extends TextItem {
-  variable: Variable;
-  text: Text;
-}
-
-export class TextItemize extends TextItem {
-  items: TextItem[] = [];
 }
