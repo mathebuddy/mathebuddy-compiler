@@ -10,13 +10,17 @@ import {
   Course,
   DocumentItem,
   Exercise,
+  ExerciseInstance,
   ParagraphItem,
   ParagraphItemType,
 } from './data';
 import { CourseDocument } from './data';
 import { Lexer } from '@multila/multila-lexer';
-import * as SMPL from '@mathebuddy/mathebuddy-smpl';
 
+// TODO: use npm-package in future!
+import * as SMPL from '@mathebuddy/mathebuddy-smpl/src';
+
+// TODO: move to file block.ts
 class Block {
   type = '';
   title = '';
@@ -49,27 +53,22 @@ class Block {
 
       // TODO: catch errors
       try {
-        const variables = SMPL.interpret(exercise.code_raw);
-        for (const local of variables) {
-          console.log(local.id + ' = ' + local.value.toString());
+        for (let i = 0; i < 3; i++) {
+          // TODO: configure number of instances!
+          // TODO: repeat if same instance is already drawn (must check for endless loops in case that search space is restricted!)
+          const instance = new ExerciseInstance();
+          instance.variables = SMPL.interpret(exercise.code_raw);
+          exercise.instances.push(instance);
         }
+        //for (const local of variables) {
+        //  console.log(local.id + ' = ' + local.value.toString());
+        // }
       } catch (e) {
         this.error(e.toString());
       }
 
-      /*const sc = new SellCode();
-      try {
-        const generatedCode = sc.parse(exercise.code_raw);
-        const int = new SellInterpreter();
+      exercise.text = this.parser.parseParagraph(exercise.text_raw);
 
-        // interpret multiple times to get various exercises
-        int.interpret(generatedCode, sc.getLocalSymbols());
-        for (const local of sc.getLocalSymbols()) {
-          console.log(local.id + ' = ' + local.value.toString());
-        }
-      } catch (e) {
-        this.error(e.toString());
-      }*/
       return exercise;
     } /*TODO: else {
       this.error('unknown block type "' + this.type + '"');
@@ -124,24 +123,29 @@ export class Parser {
       if (this.line.length == 0) {
         this.next();
       } else if (this.line2.startsWith('#####')) {
-        this.parseParagraph();
+        this.pushParagraph();
         this.parseDocumentTitle();
       } else if (this.line2.startsWith('=====')) {
-        this.parseParagraph();
+        this.pushParagraph();
         this.parseSectionTitle();
       } else if (this.line2.startsWith('-----')) {
-        this.parseParagraph();
+        this.pushParagraph();
         this.parseSubSectionTitle();
       } else if (this.line === '---') {
-        this.parseParagraph();
+        this.pushParagraph();
         this.parseBlock();
       } else {
         this.paragraph += this.line + '\n';
         this.next();
       }
     }
-    this.parseParagraph();
+    this.pushParagraph();
     const bp = 1337;
+  }
+
+  private pushParagraph(): void {
+    if (this.paragraph.trim().length > 0)
+      this.document.items.push(this.parseParagraph(this.paragraph));
   }
 
   private next(): void {
@@ -155,7 +159,7 @@ export class Parser {
   }
 
   //G documentTitle = { CHAR } "@" { ID } NEWLINE "#####.." { "#" } NEWLINE;
-  private parseDocumentTitle(): any {
+  private parseDocumentTitle(): void {
     const tokens = this.line.split('@');
     this.document.title = tokens[0].trim();
     if (tokens.length > 1) {
@@ -163,10 +167,10 @@ export class Parser {
     }
     this.next(); // skip document title
     this.next(); // skip '#####..'
-    return {
+    /*return {
       type: 'title',
       value: this.document.title,
-    };
+    };*/
   }
 
   //G sectionTitle = { CHAR } "@" { ID } NEWLINE "=====.." { "#" } NEWLINE;
@@ -246,13 +250,13 @@ export class Parser {
      | ID
      | DEL;
   */
-  private parseParagraph(): void {
+  public parseParagraph(raw: string): ParagraphItem {
     // skip empty paragraphs
     if (this.paragraph.trim().length == 0) return;
     // create lexer
     const lexer = new Lexer();
     lexer.enableEmitNewlines(true);
-    lexer.pushSource('', this.paragraph);
+    lexer.pushSource('', raw);
     lexer.setTerminals(['**', '-)', '#.']);
     const paragraph = new ParagraphItem(ParagraphItemType.Paragraph);
     while (lexer.isNotEND()) {
@@ -260,7 +264,8 @@ export class Parser {
     }
     paragraph.simplify();
     //console.log(JSON.stringify(paragraph.toJSON(), null, 2));
-    this.document.items.push(paragraph);
+    //this.document.items.push(paragraph);
+    return paragraph;
   }
 
   private parseParagraph_part(lexer: Lexer): any {
