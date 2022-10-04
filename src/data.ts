@@ -67,6 +67,7 @@ export enum ParagraphItemType {
   Bold = 'bold',
   Italic = 'italic',
   Text = 'text',
+  Variable = 'variable',
   Linefeed = 'linefeed',
   Color = 'color',
   Equation = 'equation',
@@ -95,6 +96,7 @@ export class ParagraphItem extends DocumentItem {
       case ParagraphItemType.Italic:
       case ParagraphItemType.Itemize:
       case ParagraphItemType.Enumerate:
+      case ParagraphItemType.InlineMath:
         return {
           type: this.type,
           items: items,
@@ -106,8 +108,8 @@ export class ParagraphItem extends DocumentItem {
           items: items,
         };
       case ParagraphItemType.Text:
+      case ParagraphItemType.Variable:
       case ParagraphItemType.Equation:
-      case ParagraphItemType.InlineMath:
       case ParagraphItemType.Reference:
         return {
           type: this.type,
@@ -167,6 +169,15 @@ export class Exercise extends DocumentItem {
   text_raw = '';
   instances: ExerciseInstance[] = [];
   text: ParagraphItem = null;
+
+  getVariable(id: string): SymTabEntry {
+    if (this.instances.length == 0) return null;
+    const inst = this.instances[0];
+    for (const v of inst.variables) {
+      if (v.id === id) return v;
+    }
+    return null;
+  }
 
   toJSON(): JSONValue {
     const vars: JSONValue = {};
