@@ -6,7 +6,9 @@
  * License: GPL-3.0-or-later
  */
 
-//import * as assert from 'assert';
+// TODO: use npm-package in future!
+import * as SMPL from '@mathebuddy/mathebuddy-smpl/src';
+import { BaseType, SymTabEntry } from '@mathebuddy/mathebuddy-smpl/src/symbol';
 
 export type JSONValue =
   | string
@@ -143,58 +145,55 @@ export class ParagraphItem extends DocumentItem {
   }
 }
 
-/*export abstract class ParagraphItem {
+export class ExerciseInstance {
+  variables: SymTabEntry[] = [];
   toJSON(): JSONValue {
-    return {};
-  }
-}
-
-export class Paragraph {
-  items: ParagraphItem[] = [];
-  toJSON(): JSONValue {
-    const items: JSONValue = [];
-    for (const item of this.items) {
-      items.push(item.toJSON());
+    const res: JSONValue = {};
+    for (const v of this.variables) {
+      switch (v.type.base) {
+        case BaseType.INT:
+          res[v.id] = v.value as number;
+        // TODO: other types
+      }
     }
-    return {
-      type: 'paragraph',
-      items: items,
-    };
+    return res;
   }
 }
-
-export class Text extends ParagraphItem {
-  value = '';
-  toJSON(): JSONValue {
-    return {
-      type: 'text',
-      value: this.value,
-    };
-  }
-}*/
 
 export class Exercise extends DocumentItem {
   title = '';
+  label = '';
   code_raw = '';
-  variables: Variable[] = [];
   text_raw = '';
+  instances: ExerciseInstance[] = [];
   text: ParagraphItem = null;
 
   toJSON(): JSONValue {
-    const vars: JSONValue = [];
-    for (const v of this.variables) {
-      vars.push(v.toJSON());
+    const vars: JSONValue = {};
+    if (this.instances.length > 0) {
+      const instance = this.instances[0];
+      for (const v of instance.variables) {
+        vars[v.id] = {
+          type: v.type.base,
+        };
+      }
+    }
+    const inst: JSONValue = [];
+    for (const i of this.instances) {
+      inst.push(i.toJSON());
     }
     return {
       type: 'exercise',
       title: this.title,
+      label: this.label,
       variables: vars,
-      //TODO text: this.text.toJSON(),
+      instances: inst,
+      text: this.text.toJSON(),
     };
   }
 }
 
-export class Matrix {
+/*export class Matrix {
   rows = 1;
   cols = 1;
   values: number[] = [];
@@ -230,9 +229,9 @@ export class Matrix {
       values: this.values,
     };
   }
-}
+}*/
 
-export class Variable {
+/*export class Variable {
   name = '';
   type: VariableType;
 
@@ -273,3 +272,4 @@ export enum VariableType {
   Bool = 'bool',
   Matrix = 'matrix',
 }
+*/
