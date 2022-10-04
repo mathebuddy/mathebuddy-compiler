@@ -2,6 +2,8 @@ package-lock.json
 node_modules/
 js-dist/
 lib/
+*_COMPILED.json
+*_COMPILED_COMPRESSED.hex
 
 # ===== VS Code Extension =====
 
