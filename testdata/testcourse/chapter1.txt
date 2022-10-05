@@ -4,6 +4,13 @@ Introduction @intro
 Blub bla bla.
 
 ---
+EQUATION @myLabel
+a^2 + b^2 = c^2
+---
+
+Test exercises:
+
+---
 EXERCISE My Exercise @myExerciseLabel
 @code
 let x : y = rand(1, 5);
@@ -67,11 +74,6 @@ Some bold text in [red]@red+bold color.
 Some bold text in [[red]@red]@bold color.
 Some bold text in **[red]@red** color.
 
-
----
-EQUATION @myLabel
-a^2 + b^2 = c^2
----
 
 Refer to @myLabel.    %displayed as "Refer to Eq. (1)"
 
