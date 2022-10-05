@@ -7,7 +7,6 @@
  */
 
 // TODO: use npm-package in future!
-import * as SMPL from '@mathebuddy/mathebuddy-smpl/src';
 import { Matrix } from '@mathebuddy/mathebuddy-smpl/src/matrix';
 import { BaseType, SymTabEntry } from '@mathebuddy/mathebuddy-smpl/src/symbol';
 
@@ -64,6 +63,7 @@ export abstract class DocumentItem {
 
 export enum ParagraphItemType {
   Unknown = 'unknown',
+  Error = 'error',
   Paragraph = 'paragraph',
   Bold = 'bold',
   Italic = 'italic',
@@ -71,12 +71,12 @@ export enum ParagraphItemType {
   Variable = 'variable',
   Linefeed = 'linefeed',
   Color = 'color',
-  Equation = 'equation',
   Itemize = 'itemize',
   Enumerate = 'enumerate',
   Reference = 'reference',
   InlineMath = 'inline-math',
   IntegerInput = 'integer-input',
+  MatrixInput = 'matrix-input',
 }
 
 export class ParagraphItem extends DocumentItem {
@@ -109,9 +109,9 @@ export class ParagraphItem extends DocumentItem {
           value: this.value,
           items: items,
         };
+      case ParagraphItemType.Error:
       case ParagraphItemType.Text:
       case ParagraphItemType.Variable:
-      case ParagraphItemType.Equation:
       case ParagraphItemType.Reference:
         return {
           type: this.type,
@@ -123,6 +123,7 @@ export class ParagraphItem extends DocumentItem {
           type: this.type,
         };
       case ParagraphItemType.IntegerInput:
+      case ParagraphItemType.MatrixInput:
         return {
           type: this.type,
           value: this.value,
@@ -174,6 +175,26 @@ export class ExerciseInstance {
   }
 }
 
+export class Equation extends DocumentItem {
+  label = '';
+  text = '';
+  error = '';
+
+  toJSON(): JSONValue {
+    if (this.error.length > 0)
+      return {
+        type: 'equation',
+        error: this.error,
+      };
+    else
+      return {
+        type: 'equation',
+        label: this.label,
+        text: this.text,
+      };
+  }
+}
+
 export class Exercise extends DocumentItem {
   title = '';
   label = '';
@@ -181,6 +202,7 @@ export class Exercise extends DocumentItem {
   text_raw = '';
   instances: ExerciseInstance[] = [];
   text: ParagraphItem = null;
+  error = '';
 
   getVariable(id: string): SymTabEntry {
     if (this.instances.length == 0) return null;
@@ -192,27 +214,39 @@ export class Exercise extends DocumentItem {
   }
 
   toJSON(): JSONValue {
-    const vars: JSONValue = {};
-    if (this.instances.length > 0) {
-      const instance = this.instances[0];
-      for (const v of instance.variables) {
-        vars[v.id] = {
-          type: v.type.base,
-        };
+    if (this.error.length > 0) {
+      return {
+        type: 'exercise',
+        title: this.title,
+        label: this.label,
+        error: this.error,
+      };
+    } else {
+      const vars: JSONValue = {};
+      if (this.instances.length > 0) {
+        const instance = this.instances[0];
+        for (const v of instance.variables) {
+          vars[v.id] = {
+            type: v.type.base,
+          };
+        }
       }
+      const inst: JSONValue = [];
+      for (const i of this.instances) {
+        inst.push(i.toJSON());
+      }
+      if (this.text == null) {
+        const bp = 1337;
+      }
+      return {
+        type: 'exercise',
+        title: this.title,
+        label: this.label,
+        variables: vars,
+        instances: inst,
+        text: this.text.toJSON(),
+      };
     }
-    const inst: JSONValue = [];
-    for (const i of this.instances) {
-      inst.push(i.toJSON());
-    }
-    return {
-      type: 'exercise',
-      title: this.title,
-      label: this.label,
-      variables: vars,
-      instances: inst,
-      text: this.text.toJSON(),
-    };
   }
 }
 
