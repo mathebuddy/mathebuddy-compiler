@@ -6,88 +6,15 @@
  * License: GPL-3.0-or-later
  */
 
-import {
-  Course,
-  DocumentItem,
-  Exercise,
-  ExerciseInstance,
-  ParagraphItem,
-  ParagraphItemType,
-} from './data';
+import { Course, Exercise, ParagraphItem, ParagraphItemType } from './data';
 import { CourseDocument } from './data';
 import { Lexer } from '@multila/multila-lexer';
 
-// TODO: use npm-package in future!
-import * as SMPL from '@mathebuddy/mathebuddy-smpl/src';
 import { LexerTokenType } from '@multila/multila-lexer/lib/token';
+import { Block, BlockPart } from './parseBlock';
 
-// TODO: move to file block.ts
-class Block {
-  type = '';
-  title = '';
-  label = '';
-  parts: BlockPart[] = [];
-  srcLine = 0;
-
-  private parser: Parser = null;
-
-  constructor(parser: Parser) {
-    this.parser = parser;
-  }
-
-  process(): DocumentItem {
-    //console.log('BLOCK TYPE: ' + this.type);
-    //console.log('BLOCK TITLE: ' + this.title);
-    //console.log('BLOCK LABEL: ' + this.label);
-    //console.log('');
-    if (this.type === 'EXERCISE') {
-      const exercise = new Exercise();
-      exercise.title = this.title;
-      for (const part of this.parts) {
-        if (part.name === 'code') {
-          exercise.code_raw = part.lines.join('\n');
-        } else if (part.name === 'text') {
-          exercise.text_raw = part.lines.join('\n');
-        }
-        // TODO: else: warning/error
-      }
-
-      // TODO: catch errors
-      try {
-        for (let i = 0; i < 3; i++) {
-          // TODO: configure number of instances!
-          // TODO: repeat if same instance is already drawn (must check for endless loops in case that search space is restricted!)
-          const instance = new ExerciseInstance();
-          instance.variables = SMPL.interpret(exercise.code_raw);
-          exercise.instances.push(instance);
-        }
-        //for (const local of variables) {
-        //  console.log(local.id + ' = ' + local.value.toString());
-        // }
-      } catch (e) {
-        this.error(e.toString());
-      }
-
-      exercise.text = this.parser.parseParagraph(exercise.text_raw, exercise);
-
-      return exercise;
-    } /*TODO: else {
-      this.error('unknown block type "' + this.type + '"');
-      // -> TODO: just a warning and do not process just this block??
-    }*/
-    return null;
-  }
-
-  private error(message: string): void {
-    console.error('ERROR:' + (this.srcLine + 1) + ': ' + message);
-    process.exit(-1);
-  }
-}
-
-class BlockPart {
-  name = '';
-  lines: string[] = [];
-}
+// TODO: use npm-package in future!
+import { BaseType } from '@mathebuddy/mathebuddy-smpl/src/symbol';
 
 export class Parser {
   private course: Course = null;
@@ -145,8 +72,10 @@ export class Parser {
   }
 
   private pushParagraph(): void {
-    if (this.paragraph.trim().length > 0)
+    if (this.paragraph.trim().length > 0) {
       this.document.items.push(this.parseParagraph(this.paragraph));
+      this.paragraph = '';
+    }
   }
 
   private next(): void {
@@ -254,7 +183,8 @@ export class Parser {
   */
   public parseParagraph(raw: string, ex: Exercise = null): ParagraphItem {
     // skip empty paragraphs
-    if (this.paragraph.trim().length == 0) return;
+    if (raw.trim().length == 0)
+      return new ParagraphItem(ParagraphItemType.Text);
     // create lexer
     const lexer = new Lexer();
     lexer.enableEmitNewlines(true);
@@ -351,19 +281,30 @@ export class Parser {
       // input element(s)
       lexer.next();
       let id = '';
-      let error = false;
+      let error = '';
       if (lexer.isID()) {
         id = lexer.ID();
-        if (ex != null) {
-          //
+        const v = ex.getVariable(id);
+        if (v != null) {
+          switch (v.type.base) {
+            case BaseType.INT:
+              part = new ParagraphItem(ParagraphItemType.IntegerInput);
+              part.value = id;
+              break;
+            case BaseType.MATRIX:
+              part = new ParagraphItem(ParagraphItemType.MatrixInput);
+              part.value = id;
+              break;
+            default:
+              error = 'UNIMPLEMENTED input type ' + v.type.base;
+          }
         } else {
-          error = true;
+          error = 'there is no variable "' + id + '"';
         }
-
-        part = new ParagraphItem(ParagraphItemType.IntegerInput);
-        part.value = id;
+      } else {
+        error = 'no variable for input field given';
       }
-      if (error) {
+      if (error.length > 0) {
         part = new ParagraphItem(ParagraphItemType.Error);
         part.value = 'unknown variable for input field: "' + id + '"';
       }
