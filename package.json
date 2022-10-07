@@ -1,5 +1,5 @@
 {
-  "name": "mathebuddy-compiler",
+  "name": "@mathebuddy/mathebuddy-compiler",
   "version": "0.0.1",
   "description": "Compiler for the mathe:buddy App",
   "main": "build.js",
