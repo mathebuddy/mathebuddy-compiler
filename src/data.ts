@@ -65,10 +65,12 @@ export enum ParagraphItemType {
   Unknown = 'unknown',
   Error = 'error',
   Paragraph = 'paragraph',
+  Span = 'span',
   Bold = 'bold',
   Italic = 'italic',
   Text = 'text',
   Variable = 'variable',
+  MatrixVariable = 'matrix-variable',
   Linefeed = 'linefeed',
   Color = 'color',
   Itemize = 'itemize',
@@ -94,6 +96,7 @@ export class ParagraphItem extends DocumentItem {
     }
     switch (this.type) {
       case ParagraphItemType.Paragraph:
+      case ParagraphItemType.Span:
       case ParagraphItemType.Bold:
       case ParagraphItemType.Italic:
       case ParagraphItemType.Itemize:
@@ -112,6 +115,7 @@ export class ParagraphItem extends DocumentItem {
       case ParagraphItemType.Error:
       case ParagraphItemType.Text:
       case ParagraphItemType.Variable:
+      case ParagraphItemType.MatrixVariable:
       case ParagraphItemType.Reference:
         return {
           type: this.type,
@@ -147,6 +151,11 @@ export class ParagraphItem extends DocumentItem {
         let text = this.subItems[i].value;
         if ('.,:'.includes(text) == false) text = ' ' + text;
         this.subItems[i - 1].value += text;
+        // TODO: next line is an ugly hack for TeX..
+        this.subItems[i - 1].value = this.subItems[i - 1].value.replace(
+          /\\ /g,
+          '\\',
+        );
         this.subItems.splice(i, 1);
         i--;
       } else {
@@ -175,7 +184,29 @@ export class ExerciseInstance {
   }
 }
 
-export class Equation extends DocumentItem {
+export enum TextLikeType {
+  Hidden = 'hidden',
+  Definition = 'definition',
+  Equation = 'equation',
+}
+
+export class TextLike extends DocumentItem {
+  type: TextLikeType;
+  value = ''; // text
+  error = '';
+  label = '';
+
+  toJSON(): JSONValue {
+    return {
+      type: this.type,
+      error: this.error,
+      value: this.value,
+      label: this.label,
+    };
+  }
+}
+
+/*export class Equation extends DocumentItem {
   label = '';
   text = '';
   error = '';
@@ -193,7 +224,7 @@ export class Equation extends DocumentItem {
         text: this.text,
       };
   }
-}
+}*/
 
 export class Exercise extends DocumentItem {
   title = '';
@@ -216,7 +247,7 @@ export class Exercise extends DocumentItem {
   toJSON(): JSONValue {
     if (this.error.length > 0) {
       return {
-        type: 'exercise',
+        type: 'invalid-exercise',
         title: this.title,
         label: this.label,
         error: this.error,
