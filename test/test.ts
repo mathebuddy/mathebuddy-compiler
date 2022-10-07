@@ -7,7 +7,7 @@
  */
 
 import * as fs from 'fs';
-import { Parser } from '../src';
+import { Compiler } from '../src';
 import * as lz_string from 'lz-string';
 
 console.log('mathe:buddy Compiler (c) 2022 by TH Koeln');
@@ -15,17 +15,21 @@ console.log('mathe:buddy Compiler (c) 2022 by TH Koeln');
 const inputPath = 'testdata/testcourse/chapter1.txt'; // TODO: get from args
 const src = fs.readFileSync(inputPath, 'utf-8');
 
-const parser = new Parser();
-parser.run(src);
+const compiler = new Compiler();
+compiler.run(src);
 
-const output = JSON.stringify(parser.getCourse().toJSON(), null, 2);
+const output = JSON.stringify(compiler.getCourse().toJSON(), null, 2);
 console.log(output);
 
 const outputPath = inputPath + '_COMPILED.json';
 fs.writeFileSync(outputPath, output);
 
-const output_compressed = JSON.stringify(parser.getCourse().toJSON());
-const output_compressed_lz = lz_string.compress(output_compressed);
+const output_compressed = JSON.stringify(compiler.getCourse().toJSON());
+const output_compressed_lz = lz_string.compressToBase64(output_compressed);
 
 const outputPath_COMPRESSED = inputPath + '_COMPILED_COMPRESSED.hex';
-fs.writeFileSync(outputPath_COMPRESSED, output_compressed_lz);
+fs.writeFileSync(outputPath_COMPRESSED, output_compressed_lz, 'base64');
+
+const outputPath_COMPRESSED_2 =
+  '../mathebuddy-simulator/testdata/chapter1.txt' + '_COMPILED_COMPRESSED.hex';
+fs.writeFileSync(outputPath_COMPRESSED_2, output_compressed_lz, 'base64');
