@@ -8,23 +8,31 @@
 
 import * as fs from 'fs';
 import { Compiler } from '../src';
-//import * as lz_string from 'lz-string';
+import * as lz_string from 'lz-string';
 
 console.log('mathe:buddy Compiler (c) 2022 by TH Koeln');
 
+// for all demo files
 const inputPath = '../mathebuddy-public-courses/demo-basic/';
-
 const files = fs.readdirSync(inputPath);
 for (const file of files) {
   const path = inputPath + file;
   if (path.endsWith('.mbl') == false) continue;
+  // read MBL file
   const src = fs.readFileSync(path, 'utf-8');
+  // compile file
   const compiler = new Compiler();
   compiler.run(src);
+  // write output as JSON
   const output = JSON.stringify(compiler.getCourse().toJSON(), null, 2);
   const outputPath =
     inputPath + file.substring(0, file.length - 4) + '_COMPILED.json';
   fs.writeFileSync(outputPath, output);
+  // write output as compressed HEX file
+  const outputCompressed = lz_string.compressToBase64(output);
+  const outputPathCompressed =
+    inputPath + file.substring(0, file.length - 4) + '_COMPILED.hex';
+  fs.writeFileSync(outputPathCompressed, outputCompressed, 'base64');
 }
 
 const bp = 1337;
