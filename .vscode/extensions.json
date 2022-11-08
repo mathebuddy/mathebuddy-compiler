@@ -4,6 +4,7 @@
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
         "alexshen.classdiagram-ts",
-        "bierner.markdown-mermaid"
+        "bierner.markdown-mermaid",
+        "streetsidesoftware.code-spell-checker"
     ]
 }
