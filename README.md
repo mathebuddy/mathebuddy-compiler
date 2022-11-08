@@ -7,28 +7,30 @@ This repository is part of the `mathe:buddy` project:
 
 # Overview
 
-TODO
+This readme describes the *mathe:buddy Language (MBL)* that is used to describes courses for the app.
 
-```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-```
+# Usage
 
+We provide a simulator that translates and renders `*.mbl` files. Visit [https://github.com/mathebuddy/mathebuddy-simulator](https://github.com/mathebuddy/mathebuddy-simulator) an refer to the README file.
 
-Visit [https://github.com/mathebuddy/mathebuddy-public-courses](https://github.com/mathebuddy/mathebuddy-public-courses) for examples.
-
-- We provide a simulator that translates and renders `*.mbl` files. Visit [https://github.com/mathebuddy/mathebuddy-simulator](https://github.com/mathebuddy/mathebuddy-simulator) an refer to the README file.
-
-**Note: We will later on provide an interactive website including a playground. If you are not a developer, we suggest to wait for the release of that website.**
+**Note: We are currently implementing an interactive website including a playground. If you are not a developer, we suggest to wait for the release of the website.**
 
 # mathe:buddy Language (MBL) Reference
 
 The following sections describe the syntax of the *mathe:buddy langauge (MBL)*.
 
-**Note: The exact rendering depends on the runtime environment. We restricted the degree of freedom per design to force uniformly presented courses. E.g. instead of defining concreate colors, we use keywords `color1`, `color2`, ...**
+Visit [https://github.com/mathebuddy/mathebuddy-public-courses](https://github.com/mathebuddy/mathebuddy-public-courses) for more examples.
+
+## Hello, world!
+
+The following file (`hello.mbl`) defines a trivial course page:
+
+```
+My first course
+###############
+
+Welcome to mathe:buddy!
+```
 
 ## Typography
 
@@ -115,6 +117,8 @@ The following sections describe the syntax of the *mathe:buddy langauge (MBL)*.
   NEWPAGE
   ---
   ```
+
+The exact rendering depends on the runtime environment. We restricted the degree of freedom per design to force uniformly presented courses. E.g. instead of defining concreate colors, we use keywords `color1`, `color2`, ...
 
 ## Equations
 
