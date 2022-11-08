@@ -3,6 +3,7 @@
         "editorconfig.editorconfig",
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
-        "AlexShen.classdiagram-ts"
+        "alexshen.classdiagram-ts",
+        "bierner.markdown-mermaid"
     ]
 }
