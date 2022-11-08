@@ -231,7 +231,7 @@ TODO: Code part uses the **Simple Math Programing Language (SMPL)**. The documen
 
   ```
   ---
-  EXERCISE My exercise @myLabel
+  EXERCISE My exercise @ex:myLabel
   @code
   let x/y = rand(1, 5);
   let z = x + y;
@@ -240,15 +240,144 @@ TODO: Code part uses the **Simple Math Programing Language (SMPL)**. The documen
   ---
   ```
 
+- `Term Exercises`
+
+  ```
+  ---
+  EXERCISE Title @ex:myLabel
+  @options
+  term-tokens-1.5
+  @code
+  F(x) = 1/3*x^3 + 7*x
+  @text
+  Solve $\int (x^2+7) \dx$ = #F
+  ---
+  ```
+
+  Without any option, the student is required to enter `1/3*x^3 + 7*x` (or an algebraic equivalent solution).
+
+  Option `term-tokens-X` lists a set of buttons, each representing a part of the solution term. In the example, buttons `[1/3]`, `[*]`, `[x^3]`, `[+]`, `[7]`, `[x]` are shown in random order. The student has to click on the buttons to construct the solution. Attribute `X` represents the overhead factor, i.e. the number of additional buttons with (most likely) useless options. The example sets `X` to `1,5`. In this case 9 instead of 6 buttons are shown (e.g. `[1/5]`, `[/]`, `[x^4]`).
+
 - `Static Multiple Choice Exercise`
 
-- `Dynamix Multiple Choice Exercise`
+  ```
+  ---
+  EXERCISE My Multiple Choice Exercise @ex:myMultiChoice
+  @text
+  [x] This answer is correct.
+  [ ] This answer is incorrect.
+  [x] This answer is correct.
+  ---
+  ```
+
+  Each correct answer is marked by `x`.
+
+- `Dynamic Multiple Choice Exercise`
+
+  ```
+  ---
+  EXERCISE My dynamic Multiple Choice Exercise @ex:myMultiChoice
+  @code
+  let x/y/z/w = rand(10,20);    % no pair of x, y, z, w is equal
+  let b = z>w;
+  @text
+  [$x>w$] $x > w$
+  [$y>w$] $y > w$
+  [$b$]   $z > w$
+  [ ]     $1 < 0$
+  ---
+  ```
+
+  Correctness of an answer is determined by a boolean condition or variable.
+  You are allowed to mix static static and dynamix anwsers.
+
+- `Single Choice Exercise`
+
+  ```
+  ---
+  EXERCISE My Multiple Choice Exercise @ex:myMultiChoice
+  @text
+  (x) This answer is correct.
+  ( ) This answer is incorrect.
+  ( ) This answer is incorrect.
+  ---
+  ```
+
+  Single choice exercises are defined in the same way as multiple choice exerices, but use round parentheses.
 
 - `Gap Exercise`
 
+  ```
+  ---
+  EXERCISE My Gap Exercise @ex:myLabel
+  @options
+  show-length
+  restricted-keyboard
+  @text
+  Garfield is a #"cat". Rain is #"wet".
+  ---
+  ```
+
+  The option `show-length` hints the number of characters of the solution word.
+
+  The option `restricted-keyboard` displays a context-sensitive keyboard. E.g. for the first answer `cat` from the example, the student only sees keys `[A]`, `[C]` and `[T]`.
+
+TODO: numeric answers with given patterns
+
 - `Arrangement Exercise`
 
-TODO: timed exercises, ...
+  ```
+  ---
+  EXERCISE Title @ex:label
+  @options
+  accept-immediately
+  @code
+  let n = rand(5,10);         % length
+  let f = zeros<1,n>();       % row vector for the sequence
+  f[1] = 1;                   % f[0]=0, f[1]=1
+  for (let i=2; i<n; i++) {   % calc sequence iteratively
+    f[i] = f[i-2] + f[i-1];
+  }
+  @text
+  Arrange the following numbers to get the first numbers of the Fibonacci sequence: #:order(s,f)
+  ---
+  ```
+
+  The answer field `#f` would ask the student to type in the elements of the row vector: `[0, 1, 1, 2, 3, 5, ...]`.
+
+  Writing `#:order(v)` lists a shuffeled form of vector `v` and requires the student to reorder the vector to finally get vector `v`.
+
+  The option `accept-immediately` accepts the answer immediately when it is correct. If the option is missing, then the student needs to submit the solution explicitly.
+
+- `Timed Exercise`
+
+  ```
+  ---
+  EXERCISE Title @ex:label
+  @options
+  timed-3
+  accelerate
+  multi-choice-4
+  stop-on-error-1
+  @code
+  let x:y = rand(20,50);
+  let z = x + y;
+  @text
+  Calculate $x+y=$ #z
+  ---
+  ```
+
+  A timed exerice repeatedly shows exercises. Quick and correct responses results in a large high score.
+
+  Option `timed-X` enables timing. The student has `X` seconds to give an answer.
+
+  Option `accelerate` decreases time per question.
+
+  Option `multi-choice-X` lists `X` options per question.
+
+  Option `stop-on-error-X` stops asking after `X` incorrect answers.
+
+
 
 TODO: Tafel!
 
@@ -261,3 +390,13 @@ TODO: Tafel!
 ### Dependencies
 
 Each course page is
+
+
+
+# TODO
+
+- add preview images in this document
+- add links to web-simulator
+- chatbot code
+- scoring, repetition, ...
+
