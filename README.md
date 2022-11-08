@@ -154,15 +154,21 @@ This section describes the text structuring and text formatting features.
 
 ## Equations
 
+We distinguish two parts of equations: *inline equations* are embededd into a text of a paragraph. *Full equations* are rendered in a separate line. The latter are numbered by default.
+
+Equations are encoded in $\TeX$ notation.
+
 - `Inline Equations`
+
+  An inline equation is embedded into a pari of dollar signs. Example:
 
   ```
   Einstein's famous formula is $E=mc^2$. It defines the energy $E$ of ...
   ```
 
-  Equations are written in $\TeX$ notation. Inline equations are embedded into a pair of dollar signs.
-
 - `Full Equations` (equations in display math mode)
+
+  Full equations are embedded into a block with keyword `EQUATION`. Example:
 
   ```
   ---
@@ -171,7 +177,10 @@ This section describes the text structuring and text formatting features.
   ---
   ```
 
-  If you like to the the numbering on the right, write:
+  The label is optional.
+
+  A numbering is displayed right to the equation per default.
+  Keyword `EQUATION*` hides the numbering. Example:
 
   ```
   ---
@@ -180,31 +189,37 @@ This section describes the text structuring and text formatting features.
   ---
   ```
 
-  Equations can be references with `@`. For example, `@eq:myLabel` is displayed $Eq~(1)$.
+  Equations can be labeled with `@`.
+  For example, `@eq:myLabel` is displayed $Eq~(1)$ (depends on the runtime environment).
 
 - Abbreviations
 
-  Equations may be written in plain TeX code. We introduce some (optional) abbreviations for simpler notation.
+  Equations are written in plain $\TeX$ code.
+  In some cases, the notation is rather long.
+  We introduce some (optional) abbreviations for a shorter notation.
+  The following table lists implemented abbreviations:
 
   | type     | plain tex | short notation |
   |----------|-----------|----------------|
   | matrix   | \begin{pmatrix} A & B \\\\ C & D \\\\ \end{pmatrix} | \MAT(A, B; C, D) |
 
-  TODO: extend list
+  (TODO: extend table)
 
 ## Figures
 
-We only support plotting functions in MBL. All other figures must be generated with external tools (for example [Inkscape](https://inkscape.org)).
+MBL only supports to plot functions. All other figures must be generated with external tools (for example [Inkscape](https://inkscape.org)).
 
 - `Plots`
 
+  Plots
+
   ```
   ---
-  PLOT2D My plot title @fig:myplot
+  PLOT2D My plot title @fig:myPlot
   xaxis "x" from -3 to 3
   yaxis "y" from -3 to 3
   color1
-  plot x^2
+  plot f(x)=x^2
   color0
   coord -1 1 label left
   coord 2 4 label right
@@ -215,8 +230,8 @@ We only support plotting functions in MBL. All other figures must be generated w
 
   ```
   ---
-  FIGURE My figure title @fig:myfigure
-  images/myimage.png
+  FIGURE My figure title @fig:myFigure
+  images/myImage.png
   ---
   ```
 
