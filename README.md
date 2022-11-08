@@ -23,10 +23,10 @@ Visit [https://github.com/mathebuddy/mathebuddy-public-courses](https://github.c
 
 ## Hello, world!
 
-The following file (`hello.mbl`) defines a trivial course page:
+The following lines define a trivial Level page:
 
 ```
-My first course
+My first level
 ###############
 
 Welcome to mathe:buddy!
@@ -34,35 +34,44 @@ Welcome to mathe:buddy!
 
 ## Typography
 
-- `Course Title`
+This section describes the text structuring and text formatting features.
+
+- `Level Title`
+
+  A level title is the main heading of a level file. Example:
 
   ```
   My Course Title @myLabel
   ###############
   ```
 
-  - at least 5 hashtags (`#`) are required.
-  - labels are optional
+  Five or more hashtags (`#`) are required. Labels are optional.
 
 - `Sections`
 
+  A level can be separated into secions (headlines). Example:
+
   ```
-  My Section
+  My Section @sec:myLabel
   ==========
   ```
 
-  At least 5 equal signes (`=`) are required.
+  Five or more equal signs (`=`) are required. Labels are optional. We suggest to user prefix `sec:` for section labels, but this is optional.
 
 - `Subsections`
 
+  A section can be subdivided into subsections. Example:
+
   ```
-  My Subsection
+  My Subsection @subsec:myLabel
   -------------
   ```
 
-  At least 5 dashes (`-`) are required.
+  Five or more dashes (`-`) are required. Labels are optional. We suggest to user prefix `subsec:` for subsection labels, but this is optional.
 
 - `Paragraphs`
+
+  A paragraph consists of one or multiple lines of continuous text. Example:
 
   ```
   This is text within a paragraph.
@@ -72,6 +81,8 @@ Welcome to mathe:buddy!
   ```
 
 - `Definitions and Theorems`
+
+  Definitions and Theroems are embedded into a *block* that syntactically starts and ends with each a line of three dashes (`---`). Examples:
 
   ```
   ---
@@ -89,6 +100,8 @@ Welcome to mathe:buddy!
 
 - `Bold, Italic and Colored Text`
 
+  Basic text format options are bold text, italic text and colored text. Examples:
+
   ```
   Some **bold** text. Some *italic* text.
   The word [sky]@color1 is written.
@@ -96,15 +109,33 @@ Welcome to mathe:buddy!
   You can also write [bold text]@bold and [italic text]@italic similar to color notation.
   ```
 
-  `color0` is black.
+  Colors are only defined implicitly. The exact rendering depends on the runtime environment. We restricted the degree of freedom per design to force uniformly presented courses. `color0` is always black.
 
 - `Links and References`
+
+  Each section, subsection, equation, exercise, ... can be labeled at time of declaration. A label has the form `@myLabel`. Refer to the examples above.
+
+  A link to such a label can be places in paragraph text by writing `@myLabel` again.
+
+  Example:
 
   ```
   Refer to section @sec:intro.
   ```
 
+  We suggest to use the folloging prefixes, but this is optional:
+
+  | prefix | used for |
+  |--------|----------|
+  | `sec:` | sections |
+  | `subsec:` | subsections |
+  | `ex:` | exercises |
+  | `fig:` | figures |
+  | `eq:` | equation |
+
 - `Comments`
+
+  Comments are notes, intended for course developers. Comments are ignored by the compiler. You can use comments to temporarily hide unfinished stuff. Example:
 
   ```
   This text is displayed in the output. % only a course developer can read this.
@@ -112,13 +143,14 @@ Welcome to mathe:buddy!
 
 - `Page Breaks`
 
+  A level can be scrolled vertically by the student. Doom-scrolling should be avoided (not only) for didactical reasons. Page breaks can be inserted by a block containing the keyword `NEWPAGE`. Example:
+
   ```
   ---
   NEWPAGE
   ---
   ```
 
-The exact rendering depends on the runtime environment. We restricted the degree of freedom per design to force uniformly presented courses. E.g. instead of defining concreate colors, we use keywords `color1`, `color2`, ...
 
 ## Equations
 
