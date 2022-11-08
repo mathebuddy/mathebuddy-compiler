@@ -58,6 +58,8 @@ The following sections describe the syntax of the *mathe:buddy langauge (MBL)*.
   -------------
   ```
 
+  At least 5 dashes (`-`) are required.
+
 - `Paragraphs`
 
   ```
@@ -379,24 +381,83 @@ TODO: numeric answers with given patterns
 
 
 
-TODO: Tafel!
-
 ## Course Structure
 
+We use the following terms:
+- `Course`: an entire course, e.g. "higher math 1"
+- `Chapter`: a logical chapter of a course, e.g. "complex numbers"
+- `Unit`: a learning unit of a chapter, e.g. "basiscs of complex numbers", "complex functions, sequences and series"
+- `Level`: a basic part of a unit, e.g. "normal form", "polar form", "absolute value"
 
+A course consists of multiple `*.mbl` files.
+The file hierary is `/COURSE/CHAPTER/LEVEL_FILE.mbl`.
+This, each file represents a level of the course.
+Units are defined in index files (see below).
 
-- course overview: blocks, ...
+Example folder for course a course `hm1`:
+```
+hm1/cmplx/start.mbl
+hm1/cmplx/intro.mbl
+hm1/cmplx/normal.mbl
+hm1/cmplx/conj.mbl
+hm1/cmplx/conj-props.mbl
+hm1/cmplx/abs.mbl
+hm1/cmplx/polar.mbl
+...
+hm1/diff/index.mbl
+hm1/diff/...
+...
+```
 
-### Dependencies
+Each chapter directory is organized by an index file, named `index.mbl`.
+The format of index files is described in the next section.
 
-Each course page is
+## Index Files
 
+An index file defines meta data for a chapter. It also lists all files and its dependencies.
 
+> hm1/cmplx/index.mbl
+```
+% a comment line
+
+!TITLE
+Complex Numbers
+
+!AUTHOR
+TH Koeln
+
+!UNIT1
+(0,2) start.mbl -> normal.mbl, gauss.mbl
+(0,1) gauss.mbl
+(1,3) normal.mbl -> conj.mbl
+(2,3) conj.mbl -> conj-props.mbl, abs.mbl
+(2,4) conj-props.mbl
+(3,3) abs.mbl -> polar.mbl
+(4,2) polar.mbl
+
+!UNIT2
+...
+```
+
+Each chapter consists of a set of units.
+
+Each unit consists of a set of levels.
+A unit can be represented by a (directed) graph $G=(V,E)$ with $V$ the levels and $E$ the dependencies between levels.
+
+Each level is described by an `*.mbl` file.
+A level is only playable, if all presuming levels have been passed successfully.
+At least one level must have no presuming level.
+
+Levels are listed below the `!UNITX` entry (`X` is the unit number).
+
+Format line for a level: `(X,Y) FILE -> SUCCESSOR_FILE1, SUCCESSOR_FILE2, ...`.
+
+Coordinates `(X,Y)` describe the position of node $v \in V(G)$, where `(0,0)` is interpreted as *top-left*.
 
 # TODO
 
 - add preview images in this document
-- add links to web-simulator
+- add links to web-simulator (not public)
 - chatbot code
 - scoring, repetition, ...
 
