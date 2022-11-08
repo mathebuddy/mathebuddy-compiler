@@ -17,7 +17,7 @@ We provide a simulator that translates and renders `*.mbl` files. Visit [https:/
 
 # mathe:buddy Language (MBL) Reference
 
-The following sections describe the syntax of the *mathe:buddy langauge (MBL)*.
+The following sections describe the syntax of the *mathe:buddy language (MBL)*.
 
 Visit [https://github.com/mathebuddy/mathebuddy-public-courses](https://github.com/mathebuddy/mathebuddy-public-courses) for more examples.
 
@@ -49,7 +49,7 @@ This section describes the text structuring and text formatting features.
 
 - `Sections`
 
-  A level can be separated into secions (headlines). Example:
+  A level can be separated into sections (headlines). Example:
 
   ```
   My Section @sec:myLabel
@@ -82,7 +82,7 @@ This section describes the text structuring and text formatting features.
 
 - `Definitions and Theorems`
 
-  Definitions and Theroems are embedded into a *block* that syntactically starts and ends with each a line of three dashes (`---`). Examples:
+  Definitions and Theorems are embedded into a *block* that syntactically starts and ends with each a line of three dashes (`---`). Examples:
 
   ```
   ---
@@ -123,7 +123,7 @@ This section describes the text structuring and text formatting features.
   Refer to section @sec:intro.
   ```
 
-  We suggest to use the folloging prefixes, but this is optional:
+  We suggest to use the following prefixes, but this is optional:
 
   | prefix | used for |
   |--------|----------|
@@ -132,6 +132,7 @@ This section describes the text structuring and text formatting features.
   | `ex:` | exercises |
   | `fig:` | figures |
   | `eq:` | equation |
+  | `tab:` | table |
 
 - `Comments`
 
@@ -154,13 +155,13 @@ This section describes the text structuring and text formatting features.
 
 ## Equations
 
-We distinguish two parts of equations: *inline equations* are embededd into a text of a paragraph. *Full equations* are rendered in a separate line. The latter are numbered by default.
+We distinguish two parts of equations: *inline equations* are embedded into a text of a paragraph. *Full equations* are rendered in a separate line. The latter are numbered by default.
 
 Equations are encoded in $\TeX$ notation.
 
 - `Inline Equations`
 
-  An inline equation is embedded into a pari of dollar signs. Example:
+  An inline equation is embedded into a pair of dollar signs. Example:
 
   ```
   Einstein's famous formula is $E=mc^2$. It defines the energy $E$ of ...
@@ -211,7 +212,7 @@ MBL only supports to plot functions. All other figures must be generated with ex
 
 - `Plots`
 
-  Plots
+  Plots of functions are described in a *block* with keyword `PLOT2D`. Example:
 
   ```
   ---
@@ -219,36 +220,50 @@ MBL only supports to plot functions. All other figures must be generated with ex
   xaxis "x" from -3 to 3
   yaxis "y" from -3 to 3
   color1
-  plot f(x)=x^2
+  plot f(x) = x^2
+  color2
+  plot g(x) = 2*x
   color0
-  coord -1 1 label left
-  coord 2 4 label right
+  coord -1 1
+  coord 2 4
   ---
   ```
 
-- `Images`
+  Keywords `xaxis`, `yaxis`, `colorX`, `plot` are self-explanatory.
+
+  Keyword `coord X Y` renders a small circle at position $(X,Y)$.
+
+- `Figures`
+
+  A figure displays an image file. It is highly recommended to use `*.svg` as file format (scalable vector graphics). Example:
 
   ```
   ---
   FIGURE My figure title @fig:myFigure
-  images/myImage.png
+  images/myImage.svg
   ---
   ```
 
-## Itemizatons and Enumerations
+## Itemizations and Enumerations
+
+*Note: Hierarchical itemizations are not supported for didactical reasons.*
 
 - `Itemize`
+
+  An itemization lists a set of bullet points. Example:
 
   ```
   My itemization:
   - first item
-  - seoncd item
+  - second item
   - third item
   ```
 
   A line that starts with a dash (`-`) is rendered as bullet point.
 
 - `Enumeration (numbers)`
+
+  Enumerations list a sequence of numbered items. Example:
 
   ```
   My enumeration:
@@ -257,9 +272,11 @@ MBL only supports to plot functions. All other figures must be generated with ex
   # third item
   ```
 
-  A line that starts with a dash (`#`) is rendered with numbering, starting from 1, increased by step 1.
+  A line that starts with a dash (`#`) is rendered with numbering (1, 2, ...)
 
 - `Enumeration (letters)`
+
+  Alphabetical enumerations list a sequence of items. Example:
 
   ```
   My enumeration:
@@ -268,19 +285,37 @@ MBL only supports to plot functions. All other figures must be generated with ex
   -) third item
   ```
 
-  A line that starts with a dash (`-`) is rendered with preceding letters `a)`, ` b)`, ...
-
-
-TODO: start with >1
-TODO: nested lists (is that needed in an app???)
+  A line that starts with a dash and closing parenthesis (`-)`) is rendered with preceding letters `a)`, ` b)`, ...
 
 ## Tables
 
+A table is described by a block with keyword `TABLE`.
+It simply lists row by word.
+The first row is considered as headline.
+Columns are separated by `&`.
+
+Example:
+
+```
+---
+TABLE title @tab:label
+$x$ & $f(x)$
+1 & 1
+2 & 4
+3 & 9
+... & ...
+---
+```
+
 ## Exercises
 
-TODO: Code part uses the **Simple Math Programing Language (SMPL)**. The documentation can be found [here](https://github.com/mathebuddy/mathebuddy-smpl) in the REAME file.
+Exercises provide questions to students.
+
+> Note: The part `code` in an exercise uses the **Simple Math Programing Language (SMPL)**. The documentation can be found [here](https://github.com/mathebuddy/mathebuddy-smpl) (scroll down in the link).
 
 - `Numeric Exercise`
+
+  A numeric exercise TODO
 
   ```
   ---
@@ -342,7 +377,7 @@ TODO: Code part uses the **Simple Math Programing Language (SMPL)**. The documen
   ```
 
   Correctness of an answer is determined by a boolean condition or variable.
-  You are allowed to mix static static and dynamix anwsers.
+  You are allowed to mix static static and dynamic answers.
 
 - `Single Choice Exercise`
 
@@ -356,7 +391,7 @@ TODO: Code part uses the **Simple Math Programing Language (SMPL)**. The documen
   ---
   ```
 
-  Single choice exercises are defined in the same way as multiple choice exerices, but use round parentheses.
+  Single choice exercises are defined in the same way as multiple choice exercises, but use round parentheses.
 
 - `Gap Exercise`
 
@@ -398,7 +433,7 @@ TODO: numeric answers with given patterns
 
   The answer field `#f` would ask the student to type in the elements of the row vector: `[0, 1, 1, 2, 3, 5, ...]`.
 
-  Writing `#:order(v)` lists a shuffeled form of vector `v` and requires the student to reorder the vector to finally get vector `v`.
+  Writing `#:order(v)` lists a shuffled form of vector `v` and requires the student to reorder the vector to finally get vector `v`.
 
   The option `accept-immediately` accepts the answer immediately when it is correct. If the option is missing, then the student needs to submit the solution explicitly.
 
@@ -420,7 +455,7 @@ TODO: numeric answers with given patterns
   ---
   ```
 
-  A timed exerice repeatedly shows exercises. Quick and correct responses results in a large high score.
+  A timed exercise repeatedly shows exercises. Quick and correct responses results in a large high score.
 
   Option `timed-X` enables timing. The student has `X` seconds to give an answer.
 
@@ -437,11 +472,11 @@ TODO: numeric answers with given patterns
 We use the following terms:
 - `Course`: an entire course, e.g. "higher math 1"
 - `Chapter`: a logical chapter of a course, e.g. "complex numbers"
-- `Unit`: a learning unit of a chapter, e.g. "basiscs of complex numbers", "complex functions, sequences and series"
+- `Unit`: a learning unit of a chapter, e.g. "basics of complex numbers", "complex functions, sequences and series"
 - `Level`: a basic part of a unit, e.g. "normal form", "polar form", "absolute value"
 
 A course consists of multiple `*.mbl` files.
-The file hierary is `/COURSE/CHAPTER/LEVEL_FILE.mbl`.
+The file hierarchy is `/COURSE/CHAPTER/LEVEL_FILE.mbl`.
 This, each file represents a level of the course.
 Units are defined in index files (see below).
 
