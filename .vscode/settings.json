@@ -12,6 +12,7 @@
     "Hochschullehre",
     "Hoehere",
     "IMAG",
+    "Inkscape",
     "Koeln",
     "Köln",
     "LEARNINGOUTCOMES",
@@ -21,8 +22,11 @@
     "Mathematik",
     "multila",
     "outfile",
+    "pmatrix",
     "Schwenk",
     "SMPL",
-    "Stiftung"
+    "Stiftung",
+    "xaxis",
+    "yaxis"
   ]
 }
