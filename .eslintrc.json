@@ -19,6 +19,6 @@
         "allowedNames": ["self", "this_"]
       }
     ]
-  }
-  //"ignorePatterns": ["src/**/*.test.ts", "src/frontend/generated/*"]
+  },
+  "ignorePatterns": ["build.mjs"]
 }
