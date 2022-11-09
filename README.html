@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content />
+  <meta name="dcterms.date" content="2022-11-09" />
+  <title>MATHE:BUDDY LANGUAGE (MBL)</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <style type="text/css">html {
+line-height: 1.5;
+font-family: Georgia, serif;
+font-size: 20px;
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 1em;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p,
+h2,
+h3 {
+orphans: 3;
+widows: 3;
+}
+h2,
+h3,
+h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 1.4em;
+}
+h5,
+h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol,
+ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol,
+li > ul {
+margin-top: 0;
+}
+blockquote {
+
+margin: 0em 0 -0.75em 0;
+padding: 0;
+
+text-align: center;
+}
+code {
+font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+font-size: 85%;
+margin: 0;
+}
+pre {
+
+overflow: auto;
+padding: 10px;
+border: black;
+border-width: 1px;
+border-style: solid;
+font-size: medium;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+background-color: #1a1a1a;
+border: none;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code {
+white-space: pre-wrap;
+}
+span.smallcaps {
+font-variant: small-caps;
+}
+div.columns {
+display: flex;
+gap: min(4vw, 1.5em);
+}
+div.column {
+flex: auto;
+overflow-x: auto;
+}
+div.hanging-indent {
+margin-left: 1.5em;
+text-indent: -1.5em;
+}
+ul.task-list {
+list-style: none;
+}
+ul.task-list li input[type='checkbox'] {
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+pre > code.sourceCode {
+white-space: pre;
+position: relative;
+}
+pre > code.sourceCode > span {
+display: inline-block;
+line-height: 1.25;
+}
+pre > code.sourceCode > span:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode > span {
+color: inherit;
+text-decoration: inherit;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+pre > code.sourceCode {
+white-space: pre-wrap;
+}
+pre > code.sourceCode > span {
+text-indent: -5em;
+padding-left: 5em;
+}
+}
+pre.numberSource code {
+counter-reset: source-line 0;
+}
+pre.numberSource code > span {
+position: relative;
+left: -4em;
+counter-increment: source-line;
+}
+pre.numberSource code > span > a:first-child::before {
+content: counter(source-line);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {
+}
+@media screen {
+pre > code.sourceCode > span > a:first-child::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+} 
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+} 
+code span.at {
+color: #7d9029;
+} 
+code span.bn {
+color: #40a070;
+} 
+code span.bu {
+color: #008000;
+} 
+code span.cf {
+color: #007020;
+font-weight: bold;
+} 
+code span.ch {
+color: #4070a0;
+} 
+code span.cn {
+color: #880000;
+} 
+code span.co {
+color: #60a0b0;
+font-style: italic;
+} 
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+} 
+code span.do {
+color: #ba2121;
+font-style: italic;
+} 
+code span.dt {
+color: #902000;
+} 
+code span.dv {
+color: #40a070;
+} 
+code span.er {
+color: #ff0000;
+font-weight: bold;
+} 
+code span.ex {
+} 
+code span.fl {
+color: #40a070;
+} 
+code span.fu {
+color: #06287e;
+} 
+code span.im {
+color: #008000;
+font-weight: bold;
+} 
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+} 
+code span.kw {
+color: #007020;
+font-weight: bold;
+} 
+code span.op {
+color: #666666;
+} 
+code span.ot {
+color: #007020;
+} 
+code span.pp {
+color: #bc7a00;
+} 
+code span.sc {
+color: #4070a0;
+} 
+code span.ss {
+color: #bb6688;
+} 
+code span.st {
+color: #4070a0;
+} 
+code span.va {
+color: #19177c;
+} 
+code span.vs {
+color: #4070a0;
+} 
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+} 
+</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">MATHE:BUDDY LANGUAGE (MBL)</h1>
+<p class="author"></p>
+<p class="date">2022-11-09</p>
+</header>
+<p>The following sections describe the syntax of the <em>mathe:buddy
+language (MBL)</em>.</p>
+<p>Visit <a href="https://github.com/mathebuddy/mathebuddy-public-courses">https://github.com/mathebuddy/mathebuddy-public-courses</a>
+for more examples.</p>
+<h2 id="hello-world">Hello, world!</h2>
+<p>The following lines define a trivial level page:</p>
+<pre><code>My first level
+###############
+
+Welcome to mathe:buddy!</code></pre>
+<h2 id="typography">Typography</h2>
+<p>This section describes the text structuring and text formatting
+features.</p>
+<ul>
+<li><p><code>Level Title</code></p>
+<p>A level title is the main heading of a level file. Example:</p>
+<pre><code>My Course Title @myLabel
+###############</code></pre>
+<p>Five or more hashtags (<code>#</code>) are required. Labels are
+optional.</p></li>
+<li><p><code>Sections</code></p>
+<p>A level can be separated into sections (headlines). Example:</p>
+<pre><code>My Section @sec:myLabel
+==========</code></pre>
+<p>Five or more equal signs (<code>=</code>) are required. Labels are
+optional. We suggest to user prefix <code>sec:</code> for section
+labels, but this is optional.</p></li>
+<li><p><code>Subsections</code></p>
+<p>A section can be subdivided into subsections. Example:</p>
+<pre><code>My Subsection @subsec:myLabel
+-------------</code></pre>
+<p>Five or more dashes (<code>-</code>) are required. Labels are
+optional. We suggest to user prefix <code>subsec:</code> for subsection
+labels, but this is optional.</p></li>
+<li><p><code>Paragraphs</code></p>
+<p>A paragraph consists of one or multiple lines of continuous text.
+Example:</p>
+<pre><code>This is text within a paragraph.
+Even this text stands in a new line, it is compiled to be written directly behind the last line.
+
+An empty line starts a new paragraph.</code></pre></li>
+<li><p><code>Definitions and Theorems</code></p>
+<p>Definitions and Theorems are embedded into a <em>block</em> that
+syntactically starts and ends with each a line of three dashes
+(<code>---</code>). Examples:</p>
+<pre><code>---
+DEFINITION Positive @def:myLabel
+For any integer $n$, $n$ is **positive** if $n&gt;0$.
+---</code></pre>
+<pre><code>---
+THEOREM The Aristotelian Syllogism @thm:myLabel
+If every man is mortal and Socrates is a man, then Socrates is mortal.
+---</code></pre></li>
+<li><p><code>Bold, Italic and Colored Text</code></p>
+<p>Basic text format options are bold text, italic text and colored
+text. Examples:</p>
+<pre><code>Some **bold** text. Some *italic* text.
+The word [sky]@color1 is written.
+[Some text written in the secondary color.]@color2.
+You can also write [bold text]@bold and [italic text]@italic similar to color notation.</code></pre>
+<p>Colors are only defined implicitly. The exact rendering depends on
+the runtime environment. We restricted the degree of freedom per design
+to force uniformly presented courses. <code>color0</code> is always
+black.</p></li>
+<li><p><code>Links and References</code></p>
+<p>Each section, subsection, equation, exercise, … can be labeled at
+time of declaration. A label has the form <code>@myLabel</code>. Refer
+to the examples above.</p>
+<p>A link to such a label can be places in paragraph text by writing
+<code>@myLabel</code> again.</p>
+<p>Example:</p>
+<pre><code>Refer to section @sec:intro.</code></pre>
+<p>We suggest to use the following prefixes, but this is optional:</p>
+<table>
+<thead>
+<tr class="header">
+<th>prefix</th>
+<th>used for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>sec:</code></td>
+<td>sections</td>
+</tr>
+<tr class="even">
+<td><code>subsec:</code></td>
+<td> subsections</td>
+</tr>
+<tr class="odd">
+<td><code>ex:</code></td>
+<td>exercises</td>
+</tr>
+<tr class="even">
+<td><code>fig:</code></td>
+<td>figures</td>
+</tr>
+<tr class="odd">
+<td><code>eq:</code> </td>
+<td>equation</td>
+</tr>
+<tr class="even">
+<td><code>tab:</code></td>
+<td>table</td>
+</tr>
+</tbody>
+</table></li>
+<li><p><code>Comments</code></p>
+<p>Comments are notes, intended for course developers. Comments are
+ignored by the compiler. You can use comments to temporarily hide
+unfinished stuff. Example:</p>
+<pre><code>This text is displayed in the output. % only a course developer can read this.</code></pre></li>
+<li><p><code>Page Breaks</code></p>
+<p>A level can be scrolled vertically by the student. Doom-scrolling
+should be avoided (not only) for didactical reasons. Page breaks can be
+inserted by a block containing the keyword <code>NEWPAGE</code>.
+Example:</p>
+<pre><code>---
+NEWPAGE
+---</code></pre></li>
+</ul>
+<h2 id="equations">Equations</h2>
+<p>We distinguish two parts of equations: <em>inline equations</em> are
+embedded into a text of a paragraph. <em>Full equations</em> are
+rendered in a separate line. The latter are numbered by default.</p>
+<p>Equations are encoded in <code>TeX</code> notation.</p>
+<ul>
+<li><p><code>Inline Equations</code></p>
+<p>An inline equation is embedded into a pair of dollar signs.
+Example:</p>
+<pre><code>Einstein&#39;s famous formula is $E=mc^2$. It defines the energy $E$ of ...</code></pre></li>
+<li><p><code>Full Equations</code> (equations in display math mode)</p>
+<p>Full equations are embedded into a block with keyword
+<code>EQUATION</code>. Example:</p>
+<pre><code>---
+EQUATION @eq:myLabel
+a^2 + b^2 = c^2
+---</code></pre>
+<p>The label is optional.</p>
+<p>A numbering is displayed right to the equation per default. Keyword
+<code>EQUATION*</code> hides the numbering. Example:</p>
+<pre><code>---
+EQUATION* @eq:myLabel
+a^2 + b^2 = c^2
+---</code></pre>
+<p>Equations can be labeled with <code>@</code>. For example,
+<code>@eq:myLabel</code> is displayed <span class="math inline"><em>E</em><em>q</em> (1)</span> (depends on the
+runtime environment).</p></li>
+<li><p>Abbreviations</p>
+<p>Equations are written in plain <code>TeX</code> code. In some cases,
+the notation is rather long. We introduce some (optional) abbreviations
+for a shorter notation. The following table lists implemented
+abbreviations:</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 70%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>type</th>
+<th>plain tex</th>
+<th>short notation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>matrix</td>
+<td><code>\begin{pmatrix}</code> <br>   <code>A &amp; B\\</code> <br>
+  <code>C &amp; D\\</code> <br> <code>\end{pmatrix}</code></td>
+<td><code>\MAT(A, B; C, D)</code> <br> <br> <br></td>
+</tr>
+</tbody>
+</table>
+<p>(TODO: extend table)</p></li>
+</ul>
+<h2 id="figures">Figures</h2>
+<p>MBL only supports to plot functions. All other figures must be
+generated with external tools (for example <a href="https://inkscape.org">Inkscape</a>).</p>
+<ul>
+<li><p><code>Plots</code></p>
+<p>Plots of functions are described in a <em>block</em> with keyword
+<code>PLOT2D</code>. Example:</p>
+<pre><code>---
+PLOT2D My plot title @fig:myPlot
+xaxis &quot;x&quot; from -3 to 3
+yaxis &quot;y&quot; from -3 to 3
+color1
+plot f(x) = x^2
+color2
+plot g(x) = 2*x
+color0
+coord -1 1
+coord 2 4
+---</code></pre>
+<p>Keywords <code>xaxis</code>, <code>yaxis</code>, <code>colorX</code>,
+<code>plot</code> are self-explanatory.</p>
+<p>Keyword <code>coord X Y</code> renders a small circle at position
+<span class="math inline">(<em>X</em>,<em>Y</em>)</span>.</p></li>
+<li><p><code>Figures</code></p>
+<p>A figure displays an image file. It is highly recommended to use
+<code>*.svg</code> as file format (scalable vector graphics).
+Example:</p>
+<pre><code>---
+FIGURE My figure title @fig:myFigure
+images/myImage.svg
+---</code></pre></li>
+</ul>
+<h2 id="itemizations-and-enumerations">Itemizations and
+Enumerations</h2>
+<p><em>Note: Hierarchical itemizations are not supported for didactical
+reasons.</em></p>
+<ul>
+<li><p><code>Itemize</code></p>
+<p>An itemization lists a set of bullet points. Example:</p>
+<pre><code>My itemization:
+- first item
+- second item
+- third item</code></pre>
+<p>A line that starts with a dash (<code>-</code>) is rendered as bullet
+point.</p></li>
+<li><p><code>Enumeration (numbers)</code></p>
+<p>Enumerations list a sequence of numbered items. Example:</p>
+<pre><code>My enumeration:
+# first item
+# second item
+# third item</code></pre>
+<p>A line that starts with a dash (<code>#</code>) is rendered with
+numbering (1, 2, …)</p></li>
+<li><p><code>Enumeration (letters)</code></p>
+<p>Alphabetical enumerations list a sequence of items. Example:</p>
+<pre><code>My enumeration:
+-) first item
+-) second item
+-) third item</code></pre>
+<p>A line that starts with a dash and closing parenthesis
+(<code>-)</code>) is rendered with preceding letters <code>a)</code>,
+<code>b)</code>, …</p></li>
+</ul>
+<h2 id="tables">Tables</h2>
+<p>A table is described by a block with keyword <code>TABLE</code>. It
+simply lists row by word. The first row is considered as headline.
+Columns are separated by <code>&amp;</code>.</p>
+<p>Example:</p>
+<pre><code>---
+TABLE title @tab:label
+$x$ &amp; $f(x)$
+1 &amp; 1
+2 &amp; 4
+3 &amp; 9
+... &amp; ...
+---</code></pre>
+<h2 id="exercises">Exercises</h2>
+<p>Exercises provide questions to students.</p>
+<blockquote>
+<p>Note: The part <code>code</code> in an exercise uses the
+<strong>Simple Math Programing Language (SMPL)</strong>. The
+documentation can be found <a href="https://github.com/mathebuddy/mathebuddy-smpl">here</a> (scroll
+down in the link).</p>
+</blockquote>
+<ul>
+<li><p><code>Numeric Exercise</code></p>
+<p>A numeric exercise TODO</p>
+<pre><code>---
+EXERCISE My exercise @ex:myLabel
+@code
+let x/y = rand(1, 5);
+let z = x + y;
+@text
+Calculate $x+y=$ #z
+---</code></pre></li>
+<li><p><code>Term Exercises</code></p>
+<pre><code>---
+EXERCISE Title @ex:myLabel
+@options
+term-tokens-1.5
+@code
+F(x) = 1/3*x^3 + 7*x
+@text
+Solve $\int (x^2+7) \dx$ = #F
+---</code></pre>
+<p>Without any option, the student is required to enter
+<code>1/3*x^3 + 7*x</code> (or an algebraic equivalent solution).</p>
+<p>Option <code>term-tokens-X</code> lists a set of buttons, each
+representing a part of the solution term. In the example, buttons
+<code>[1/3]</code>, <code>[*]</code>, <code>[x^3]</code>,
+<code>[+]</code>, <code>[7]</code>, <code>[x]</code> are shown in random
+order. The student has to click on the buttons to construct the
+solution. Attribute <code>X</code> represents the overhead factor,
+i.e. the number of additional buttons with (most likely) useless
+options. The example sets <code>X</code> to <code>1,5</code>. In this
+case 9 instead of 6 buttons are shown (e.g. <code>[1/5]</code>,
+<code>[/]</code>, <code>[x^4]</code>).</p></li>
+<li><p><code>Static Multiple Choice Exercise</code></p>
+<pre><code>---
+EXERCISE My Multiple Choice Exercise @ex:myMultiChoice
+@text
+[x] This answer is correct.
+[ ] This answer is incorrect.
+[x] This answer is correct.
+---</code></pre>
+<p>Each correct answer is marked by <code>x</code>.</p></li>
+<li><p><code>Dynamic Multiple Choice Exercise</code></p>
+<pre><code>---
+EXERCISE My dynamic Multiple Choice Exercise @ex:myMultiChoice
+@code
+let x/y/z/w = rand(10,20);    % no pair of x, y, z, w is equal
+let b = z&gt;w;
+@text
+[$x&gt;w$] $x &gt; w$
+[$y&gt;w$] $y &gt; w$
+[$b$]   $z &gt; w$
+[ ]     $1 &lt; 0$
+---</code></pre>
+<p>Correctness of an answer is determined by a boolean condition or
+variable. You are allowed to mix static static and dynamic
+answers.</p></li>
+<li><p><code>Single Choice Exercise</code></p>
+<pre><code>---
+EXERCISE My Multiple Choice Exercise @ex:myMultiChoice
+@text
+(x) This answer is correct.
+( ) This answer is incorrect.
+( ) This answer is incorrect.
+---</code></pre>
+<p>Single choice exercises are defined in the same way as multiple
+choice exercises, but use round parentheses.</p></li>
+<li><p><code>Gap Exercise</code></p>
+<pre><code>---
+EXERCISE My Gap Exercise @ex:myLabel
+@options
+show-length
+restricted-keyboard
+@text
+Garfield is a #&quot;cat&quot;. Rain is #&quot;wet&quot;.
+---</code></pre>
+<p>The option <code>show-length</code> hints the number of characters of
+the solution word.</p>
+<p>The option <code>restricted-keyboard</code> displays a
+context-sensitive keyboard. E.g. for the first answer <code>cat</code>
+from the example, the student only sees keys <code>[A]</code>,
+<code>[C]</code> and <code>[T]</code>.</p></li>
+</ul>
+<p>TODO: numeric answers with given patterns</p>
+<ul>
+<li><p><code>Arrangement Exercise</code></p>
+<pre><code>---
+EXERCISE Title @ex:label
+@options
+accept-immediately
+@code
+let n = rand(5,10);         % length
+let f = zeros&lt;1,n&gt;();       % row vector for the sequence
+f[1] = 1;                   % f[0]=0, f[1]=1
+for (let i=2; i&lt;n; i++) {   % calc sequence iteratively
+  f[i] = f[i-2] + f[i-1];
+}
+@text
+Arrange the following numbers to get the first numbers of the Fibonacci sequence: #:order(s,f)
+---</code></pre>
+<p>The answer field <code>#f</code> would ask the student to type in the
+elements of the row vector: <code>[0, 1, 1, 2, 3, 5, ...]</code>.</p>
+<p>Writing <code>#:order(v)</code> lists a shuffled form of vector
+<code>v</code> and requires the student to reorder the vector to finally
+get vector <code>v</code>.</p>
+<p>The option <code>accept-immediately</code> accepts the answer
+immediately when it is correct. If the option is missing, then the
+student needs to submit the solution explicitly.</p></li>
+<li><p><code>Timed Exercise</code></p>
+<pre><code>---
+EXERCISE Title @ex:label
+@options
+timed-3
+accelerate
+multi-choice-4
+stop-on-error-1
+@code
+let x:y = rand(20,50);
+let z = x + y;
+@text
+Calculate $x+y=$ #z
+---</code></pre>
+<p>A timed exercise repeatedly shows exercises. Quick and correct
+responses results in a large high score.</p>
+<p>Option <code>timed-X</code> enables timing. The student has
+<code>X</code> seconds to give an answer.</p>
+<p>Option <code>accelerate</code> decreases time per question.</p>
+<p>Option <code>multi-choice-X</code> lists <code>X</code> options per
+question.</p>
+<p>Option <code>stop-on-error-X</code> stops asking after <code>X</code>
+incorrect answers.</p></li>
+</ul>
+<h2 id="course-structure">Course Structure</h2>
+<p>We use the following terms:</p>
+<ul>
+<li><code>Course</code>: an entire course, e.g. “higher math 1”</li>
+<li><code>Chapter</code>: a logical chapter of a course, e.g. “complex
+numbers”</li>
+<li><code>Unit</code>: a learning unit of a chapter, e.g. “basics of
+complex numbers”, “complex functions, sequences and series”</li>
+<li><code>Level</code>: a basic part of a unit, e.g. “normal form”,
+“polar form”, “absolute value”</li>
+</ul>
+<p>A course consists of multiple <code>*.mbl</code> files. The file
+hierarchy is <code>/COURSE/CHAPTER/LEVEL_FILE.mbl</code>. This, each
+file represents a level of the course. Units are defined in index files
+(see below).</p>
+<p>Example folder for course a course <code>hm1</code>:</p>
+<pre><code>hm1/cmplx/start.mbl
+hm1/cmplx/intro.mbl
+hm1/cmplx/normal.mbl
+hm1/cmplx/conj.mbl
+hm1/cmplx/conj-props.mbl
+hm1/cmplx/abs.mbl
+hm1/cmplx/polar.mbl
+...
+hm1/diff/index.mbl
+hm1/diff/...
+...</code></pre>
+<p>Each chapter directory is organized by an index file, named
+<code>index.mbl</code>. The format of index files is described in the
+next section.</p>
+<h2 id="index-files">Index Files</h2>
+<p>An index file defines meta data for a chapter. It also lists all
+files and its dependencies.</p>
+<blockquote>
+<p>hm1/cmplx/index.mbl</p>
+</blockquote>
+<pre><code>% a comment line
+
+!TITLE
+Complex Numbers
+
+!AUTHOR
+TH Koeln
+
+!UNIT1
+(0,2) start.mbl -&gt; normal.mbl, gauss.mbl
+(0,1) gauss.mbl
+(1,3) normal.mbl -&gt; conj.mbl
+(2,3) conj.mbl -&gt; conj-props.mbl, abs.mbl
+(2,4) conj-props.mbl
+(3,3) abs.mbl -&gt; polar.mbl
+(4,2) polar.mbl
+
+!UNIT2
+...</code></pre>
+<p>Each chapter consists of a set of units.</p>
+<p>Each unit consists of a set of levels. A unit can be represented by a
+(directed) graph <span class="math inline"><em>G</em> = (<em>V</em>,<em>E</em>)</span> with
+<span class="math inline"><em>V</em></span> the levels and <span class="math inline"><em>E</em></span> the dependencies between
+levels.</p>
+<p>Each level is described by an <code>*.mbl</code> file. A level is
+only playable, if all presuming levels have been passed successfully. At
+least one level must have no presuming level.</p>
+<p>Levels are listed below the <code>!UNITX</code> entry (<code>X</code>
+is the unit number).</p>
+<p>Format line for a level:
+<code>(X,Y) FILE -&gt; SUCCESSOR_FILE1, SUCCESSOR_FILE2, ...</code>.</p>
+<p>Coordinates <code>(X,Y)</code> describe the position of node <span class="math inline"><em>v</em> ∈ <em>V</em>(<em>G</em>)</span>, where
+<code>(0,0)</code> is interpreted as <em>top-left</em>.</p>
+<h1 id="todo">TODO</h1>
+<ul>
+<li>add preview images in this document</li>
+<li>add links to web-simulator (not public)</li>
+<li>chatbot code</li>
+<li>scoring, repetition, …</li>
+</ul>
+<p><em>Author: Andreas Schwenk, TH Köln</em></p>
+</body>
+</html>
