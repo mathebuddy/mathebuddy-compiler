@@ -7,7 +7,7 @@ This repository is part of the `mathe:buddy` project:
 
 # Overview
 
-This readme describes the *mathe:buddy Language (MBL)* that is used to describes courses for the app.
+This readme describes the _mathe:buddy Language (MBL)_ that is used to describes courses for the app.
 
 # Usage
 
@@ -17,13 +17,13 @@ We provide a simulator that translates and renders `*.mbl` files. Visit [https:/
 
 # mathe:buddy Language (MBL) Reference
 
-The following sections describe the syntax of the *mathe:buddy language (MBL)*.
+The following sections describe the syntax of the _mathe:buddy language (MBL)_.
 
 Visit [https://github.com/mathebuddy/mathebuddy-public-courses](https://github.com/mathebuddy/mathebuddy-public-courses) for more examples.
 
 ## Hello, world!
 
-The following lines define a trivial Level page:
+The following lines define a trivial level page:
 
 ```
 My first level
@@ -82,7 +82,7 @@ This section describes the text structuring and text formatting features.
 
 - `Definitions and Theorems`
 
-  Definitions and Theorems are embedded into a *block* that syntactically starts and ends with each a line of three dashes (`---`). Examples:
+  Definitions and Theorems are embedded into a _block_ that syntactically starts and ends with each a line of three dashes (`---`). Examples:
 
   ```
   ---
@@ -125,14 +125,14 @@ This section describes the text structuring and text formatting features.
 
   We suggest to use the following prefixes, but this is optional:
 
-  | prefix | used for |
-  |--------|----------|
-  | `sec:` | sections |
-  | `subsec:` | subsections |
-  | `ex:` | exercises |
-  | `fig:` | figures |
-  | `eq:` | equation |
-  | `tab:` | table |
+  | prefix    | used for     |
+  | --------- | ------------ |
+  | `sec:`    | sections     |
+  | `subsec:` |  subsections |
+  | `ex:`     | exercises    |
+  | `fig:`    | figures      |
+  | `eq:`     | equation     |
+  | `tab:`    | table        |
 
 - `Comments`
 
@@ -152,12 +152,11 @@ This section describes the text structuring and text formatting features.
   ---
   ```
 
-
 ## Equations
 
-We distinguish two parts of equations: *inline equations* are embedded into a text of a paragraph. *Full equations* are rendered in a separate line. The latter are numbered by default.
+We distinguish two parts of equations: _inline equations_ are embedded into a text of a paragraph. _Full equations_ are rendered in a separate line. The latter are numbered by default.
 
-Equations are encoded in $\TeX$ notation.
+Equations are encoded in `TeX` notation.
 
 - `Inline Equations`
 
@@ -195,14 +194,14 @@ Equations are encoded in $\TeX$ notation.
 
 - Abbreviations
 
-  Equations are written in plain $\TeX$ code.
+  Equations are written in plain `TeX` code.
   In some cases, the notation is rather long.
   We introduce some (optional) abbreviations for a shorter notation.
   The following table lists implemented abbreviations:
 
-  | type     | plain tex | short notation |
-  |----------|-----------|----------------|
-  | matrix   | \begin{pmatrix} A & B \\\\ C & D \\\\ \end{pmatrix} | \MAT(A, B; C, D) |
+  | type   | plain tex                                                                                    | short notation                    |
+  | ------ | -------------------------------------------------------------------------------------------- | --------------------------------- |
+  | matrix | `\begin{pmatrix}` <br> &nbsp;&nbsp;`A & B\\` <br> &nbsp;&nbsp;`C & D\\` <br> `\end{pmatrix}` | `\MAT(A, B; C, D)` <br> <br> <br> |
 
   (TODO: extend table)
 
@@ -212,7 +211,7 @@ MBL only supports to plot functions. All other figures must be generated with ex
 
 - `Plots`
 
-  Plots of functions are described in a *block* with keyword `PLOT2D`. Example:
+  Plots of functions are described in a _block_ with keyword `PLOT2D`. Example:
 
   ```
   ---
@@ -246,7 +245,7 @@ MBL only supports to plot functions. All other figures must be generated with ex
 
 ## Itemizations and Enumerations
 
-*Note: Hierarchical itemizations are not supported for didactical reasons.*
+_Note: Hierarchical itemizations are not supported for didactical reasons._
 
 - `Itemize`
 
@@ -465,11 +464,10 @@ TODO: numeric answers with given patterns
 
   Option `stop-on-error-X` stops asking after `X` incorrect answers.
 
-
-
 ## Course Structure
 
 We use the following terms:
+
 - `Course`: an entire course, e.g. "higher math 1"
 - `Chapter`: a logical chapter of a course, e.g. "complex numbers"
 - `Unit`: a learning unit of a chapter, e.g. "basics of complex numbers", "complex functions, sequences and series"
@@ -481,6 +479,7 @@ This, each file represents a level of the course.
 Units are defined in index files (see below).
 
 Example folder for course a course `hm1`:
+
 ```
 hm1/cmplx/start.mbl
 hm1/cmplx/intro.mbl
@@ -503,6 +502,7 @@ The format of index files is described in the next section.
 An index file defines meta data for a chapter. It also lists all files and its dependencies.
 
 > hm1/cmplx/index.mbl
+
 ```
 % a comment line
 
@@ -538,7 +538,7 @@ Levels are listed below the `!UNITX` entry (`X` is the unit number).
 
 Format line for a level: `(X,Y) FILE -> SUCCESSOR_FILE1, SUCCESSOR_FILE2, ...`.
 
-Coordinates `(X,Y)` describe the position of node $v \in V(G)$, where `(0,0)` is interpreted as *top-left*.
+Coordinates `(X,Y)` describe the position of node $v \in V(G)$, where `(0,0)` is interpreted as _top-left_.
 
 # TODO
 
@@ -547,3 +547,4 @@ Coordinates `(X,Y)` describe the position of node $v \in V(G)$, where `(0,0)` is
 - chatbot code
 - scoring, repetition, ...
 
+_Author: Andreas Schwenk, TH Köln_
