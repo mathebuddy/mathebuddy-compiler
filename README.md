@@ -17,6 +17,8 @@ We provide a simulator that translates and renders `*.mbl` files. Visit [https:/
 
 # mathe:buddy Language (MBL) Reference
 
+<!-- start-for-website -->
+
 The following sections describe the syntax of the _mathe:buddy language (MBL)_.
 
 Visit [https://github.com/mathebuddy/mathebuddy-public-courses](https://github.com/mathebuddy/mathebuddy-public-courses) for more examples.
