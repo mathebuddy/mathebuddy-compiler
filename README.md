@@ -549,8 +549,8 @@ The following paragraphs describe all implemented exercise types.
 - `Static Multiple Choice Exercise`
 
   Multiple choice exercises list a set of answers, which can be selected or deselected by the student with checkboxes.
-  Correct answers are defined by `[x]`.
-  Incorrect answers are defined by `[ ]`.
+  Correct answers are indicated by `[x]`.
+  Incorrect answers are indicated by `[ ]`.
   Example:
 
   ```
@@ -582,12 +582,14 @@ The following paragraphs describe all implemented exercise types.
   [$x>w$] $x > w$
   [$y>w$] $y > w$
   [$b$]   $z > w$
-  [ ]     $1 < 0$
+  [ ]     $1 < 0$    % statically false
   ---
   ```
 
-  Correctness of an answer is determined by a boolean condition or variable.
+  Correctness of an answer is determined by a boolean condition or variable, which is embedded into brackets `[ ]`.
+
   You are allowed to mix static static and dynamic answers.
+  If variable `x` is a boolean variable, then `[$x$]` is correct (incorrect) if $x$ is true (false) and `[x]` is always true.
 
 - `Single Choice Exercise`
 
