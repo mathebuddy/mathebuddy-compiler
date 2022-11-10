@@ -922,8 +922,12 @@ variable, which is embedded into brackets <code>[ ]</code>.</p>
 <p>You are allowed to mix static static and dynamic answers. If variable
 <code>x</code> is a boolean variable, then <code>[$x$]</code> is correct
 (incorrect) if <span class="math inline"><em>x</em></span> is true
-(false) and <code>[x]</code> is always true.</p></li>
+(false). The notation <code>[x]</code> indicates that the answer is
+<em>always</em> true.</p></li>
 <li><p><code>Single Choice Exercise</code></p>
+<p>In single choice exercises, exactly one answer is true. All other
+answers are wrong. Instead of check boxes, radio buttons are
+displayed.</p>
 <pre><code>---
 EXERCISE My Multiple Choice Exercise @ex:myMultiChoice
 @text
@@ -931,9 +935,15 @@ EXERCISE My Multiple Choice Exercise @ex:myMultiChoice
 ( ) This answer is incorrect.
 ( ) This answer is incorrect.
 ---</code></pre>
-<p>Single choice exercises are defined in the same way as multiple
-choice exercises, but use round parentheses.</p></li>
+<p>The definition of single choice exercises is similar to the
+definition of multiple choice exercises. We use round parentheses
+<code>( )</code>, instead of brackets <code>[ ]</code>.</p>
+<p>For dynamic single choice exercises, the exercise designer must take
+care, that no more than one option is correct. In case of more than one
+correct answers, the behavior is undefined.</p></li>
 <li><p><code>Gap Exercise</code></p>
+<p>Gap exercises provide an input field to enter a words within fluent
+paragraph text.</p>
 <pre><code>---
 EXERCISE My Gap Exercise @ex:myLabel
 @options
