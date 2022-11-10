@@ -26,7 +26,7 @@ execSync("sed -e '1,/<!-- start-for-website -->/d' README.md > __tmp.md");
 execSync(
   'pandoc -s __tmp.md --metadata title="MATHE:BUDDY LANGUAGE (MBL)" --metadata author="" --metadata date="' +
     date +
-    '"  --css README.css --self-contained -o README.html',
+    '"  --css README.css --embed-resources --standalone -o README.html',
 );
 execSync('rm __tmp.md');
 // TODO: --mathjax may be needed, but results in large file, if --self-contained option is provided...
