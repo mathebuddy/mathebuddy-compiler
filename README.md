@@ -357,7 +357,8 @@ The following paragraphs describe all implemented exercise types.
 
 - `Numeric Exercise`
 
-  A numeric exercise TODO
+  This type of exercise asks students to solve a question with one ore more numeric solutions.
+  Solutions can be scalars, vectors, matrices or sets.
 
   ```
   ---
@@ -365,10 +366,125 @@ The following paragraphs describe all implemented exercise types.
   @code
   let x/y = rand(1, 5);
   let z = x + y;
+  let A/B = rand<2,3>();
+  let C = A + B;
   @text
   Calculate $x+y=$ #z
+  Calculate $xA+B=$ #C
   ---
   ```
+
+  _Note: `let x/y = rand(1, 5);` is an abbreviation for `let x = rand(1, 5); let y = rand(1, 5);` with guarantee that $x \neq y$_
+
+  Part `@code` draws random variables and generates the sample solution.
+
+  Part `@texts` describes the question text. Typography, itemizations, equations, etc. can be included, as described above.
+  Input fields are generated for patterns `#V`, where `V` is a valid variable from part `@code`.
+  Take care, that input fields are _not_ inserted within equations.
+
+  Variables in math mode (inline equations embedded into dollar signs) are substituted by values of code variables by default.
+  In the example above, $x$ is e.g. shown as $3$ (depending on the present value for $x$). If the variable identifiers should be rendered instead, the concerned variable name must written in quotes, e.g. &nbsp;&nbsp;`$ "x" + "y" $`&nbsp;&nbsp; (spacing is optional).
+
+  <!-- TODO: number of random instances; default 10 -->
+
+  Input Types:
+
+  - `integers and real numbers`
+
+    Example:
+
+    ```
+    ---
+    EXERCISE Multiplication
+    @options
+    choices-4
+    @code
+    let x/y = rand(10,20);
+    let z = x * y;
+    @text
+    Calculate $x * y=$ #z
+    ---
+    ```
+
+    Without any options, an input field is generated for each input `#V`.
+    The student has to type in the answer on a numeric keyboard.
+
+    If option `choices-X` is given, a set of `X` possible answers is shown.
+    One of theses answers correct. All other answers are incorrect.
+    The student has to select the correct solution to gather scoring.
+
+  - `complex numbers`
+
+    ```
+    ---
+    EXERCISE Complex addition
+    @options
+    polar-form
+    @code
+    let x/y = complex(rand(10,20), rand(10,20));
+    let z = x + y;
+    @text
+    Calculate $x + y=$ #z
+    ---
+    ```
+
+    Per default, two input fields of the form &nbsp;&nbsp; `[ ] + [ ]i` &nbsp;&nbsp; are shown to enter the solution in normal form.
+
+    If the option `polar-form` is given, then the student as to enter the solution in polar form.
+
+    Option `choices-X` renders `X` buttons, where one of them shows the correct solution (refer to exercise type `integers and real numbers`).
+
+  - `sets`
+
+    ```
+    ---
+    EXERCISE Linear Equations
+    @options
+    n-args
+    @code
+    let s = set(-2, 2);
+    @text
+    Solve $x^2 - 4 = 0$.
+    $x=$ #s
+    ---
+    ```
+
+    Per default, if the set has length $n$, then $n$ input fields are shown to enter the solution from a numeric keyboard.
+
+    If option `n-args` is given, students must figure out the number of solution fields on their own.
+
+    Option `choices-X` renders `X` buttons, where one of them shows the correct solution (refer to exercise type `integers and real numbers`).
+
+  - `matrices`
+
+    ```
+    EXERCISE Matrix Operations
+    @options
+    n-rows
+    n-cols
+    @code
+    let A/B/C = rand<3,3>(0, 5);
+    let D = A*B + C;
+    @text
+    Calculate $A*B + C=$ #D
+    ```
+
+    Per default, an input matrix is shown with a text field for each element of the solution matrix.
+
+    If option `n-rows` is given, students must figure out the number of solution rows on their own.
+
+    If option `n-cols` is given, students must figure out the number of solution columns on their own.
+
+    Option `choices-X` renders `X` buttons, where one of them shows the correct solution (refer to exercise type `integers and real numbers`).
+
+  - `vectors`
+  - `terms`
+
+  TODO: set-exercise, matrix, fractions, complex, ...
+
+  TODO: scores per field, ...
+
+  TODO: matrix dimensions given or not, ...
 
 - `Term Exercises`
 
