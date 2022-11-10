@@ -890,7 +890,7 @@ be equal to <code>score-V-X</code>.</p></li>
 <li><p><code>Static Multiple Choice Exercise</code></p>
 <p>Multiple choice exercises list a set of answers, which can be
 selected or deselected by the student with checkboxes. Correct answers
-are defined by <code>[x]</code>. Incorrect answers are defined by
+are indicated by <code>[x]</code>. Incorrect answers are indicated by
 <code>[ ]</code>. Example:</p>
 <pre><code>---
 EXERCISE My Multiple Choice Exercise @ex:myMultiChoice
@@ -915,11 +915,14 @@ let b = z&gt;w;
 [$x&gt;w$] $x &gt; w$
 [$y&gt;w$] $y &gt; w$
 [$b$]   $z &gt; w$
-[ ]     $1 &lt; 0$
+[ ]     $1 &lt; 0$    % statically false
 ---</code></pre>
 <p>Correctness of an answer is determined by a boolean condition or
-variable. You are allowed to mix static static and dynamic
-answers.</p></li>
+variable, which is embedded into brackets <code>[ ]</code>.</p>
+<p>You are allowed to mix static static and dynamic answers. If variable
+<code>x</code> is a boolean variable, then <code>[$x$]</code> is correct
+(incorrect) if <span class="math inline"><em>x</em></span> is true
+(false) and <code>[x]</code> is always true.</p></li>
 <li><p><code>Single Choice Exercise</code></p>
 <pre><code>---
 EXERCISE My Multiple Choice Exercise @ex:myMultiChoice
