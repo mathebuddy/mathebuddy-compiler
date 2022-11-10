@@ -507,13 +507,18 @@ The following paragraphs describe all implemented exercise types.
     The example sets `X` to `1,5`.
     In this case 9 instead of 6 buttons are shown (e.g. `[1/5]`, `[/]`, `[x^4]`).
 
-    <!-- TODO: equivalency, forbidden terms, ... -->
+    Option `forbid-X` does not allow `X`in the solution term. For example `forbid-sin` forbids to use the sinus function.
+    List of supported values for `X` (in alphabetical order): `abs`, `acos`, `asin`, `atan`, `cos`, `exp`, `log`, `sin`, `tan`.
+    For multiple forbiddings, repeat the `forbid-X` option with different identifiers for `X`.
 
-  TODO: set-exercise, matrix, fractions, complex, ...
+    Option `require-X` forces the student to use `X` in the answer. The set of supported values is equal to the definition of `forbid-X`.
 
-  TODO: scores per field, ...
+    <!-- TODO: equivalency, ... -->
+    <!-- TODO: exercise with fraction answer -->
 
-  TODO: matrix dimensions given or not, ...
+- Scoring of answers
+
+  Per default, each input field is weighted with 1 score. And the total score per exercise is defined as sum of scores of the input fields.
 
 - `Static Multiple Choice Exercise`
 
