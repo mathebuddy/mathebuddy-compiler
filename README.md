@@ -589,9 +589,14 @@ The following paragraphs describe all implemented exercise types.
   Correctness of an answer is determined by a boolean condition or variable, which is embedded into brackets `[ ]`.
 
   You are allowed to mix static static and dynamic answers.
-  If variable `x` is a boolean variable, then `[$x$]` is correct (incorrect) if $x$ is true (false) and `[x]` is always true.
+  If variable `x` is a boolean variable, then `[$x$]` is correct (incorrect) if $x$ is true (false).
+  The notation `[x]` indicates that the answer is _always_ true.
 
 - `Single Choice Exercise`
+
+  In single choice exercises, exactly one answer is true.
+  All other answers are wrong.
+  Instead of check boxes, radio buttons are displayed.
 
   ```
   ---
@@ -603,9 +608,15 @@ The following paragraphs describe all implemented exercise types.
   ---
   ```
 
-  Single choice exercises are defined in the same way as multiple choice exercises, but use round parentheses.
+  The definition of single choice exercises is similar to the definition of multiple choice exercises.
+  We use round parentheses `( )`, instead of brackets `[ ]`.
+
+  For dynamic single choice exercises, the exercise designer must take care, that no more than one option is correct.
+  In case of more than one correct answers, the behavior is undefined.
 
 - `Gap Exercise`
+
+  Gap exercises provide an input field to enter a words within fluent paragraph text.
 
   ```
   ---
