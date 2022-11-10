@@ -58,18 +58,18 @@ This section describes the text structuring and text formatting features.
   ==========
   ```
 
-  Five or more equal signs (`=`) are required. Labels are optional. We suggest to user prefix `sec:` for section labels, but this is optional.
+  Five or more equal signs (`=`) are required. Labels are optional. We suggest to use prefix `sec:` for section labels, but this is optional.
 
 - `Subsections`
 
-  A section can be subdivided into subsections. Example:
+  A section can be subdivided into one or multiple subsections. Example:
 
   ```
   My Subsection @subsec:myLabel
   -------------
   ```
 
-  Five or more dashes (`-`) are required. Labels are optional. We suggest to user prefix `subsec:` for subsection labels, but this is optional.
+  Five or more dashes (`-`) are required. Labels are optional. We suggest to use prefix `subsec:` for subsection labels, but this is optional.
 
 - `Paragraphs`
 
@@ -88,57 +88,67 @@ This section describes the text structuring and text formatting features.
 
   ```
   ---
-  DEFINITION Positive @def:myLabel
+  DEFINITION Positive @def:positive
   For any integer $n$, $n$ is **positive** if $n>0$.
   ---
   ```
 
   ```
   ---
-  THEOREM The Aristotelian Syllogism @thm:myLabel
+  THEOREM The Aristotelian Syllogism @thm:socrates
   If every man is mortal and Socrates is a man, then Socrates is mortal.
   ---
   ```
 
 - `Bold, Italic and Colored Text`
 
-  Basic text format options are bold text, italic text and colored text. Examples:
+  Basic text formatting options are bold text, italic text and colored text. Examples:
 
   ```
   Some **bold** text. Some *italic* text.
-  The word [sky]@color1 is written.
+  The word [sky]@color1 is written not in primary color.
   [Some text written in the secondary color.]@color2.
   You can also write [bold text]@bold and [italic text]@italic similar to color notation.
   ```
 
-  Colors are only defined implicitly. The exact rendering depends on the runtime environment. We restricted the degree of freedom per design to force uniformly presented courses. `color0` is always black.
+  Colors are only defined implicitly. The exact rendering depends on the runtime environment. We restricted the degree of freedom per design to force uniformly presented courses. `color0` defines black color in all cases.
 
 - `Links and References`
 
-  Each section, subsection, equation, exercise, ... can be labeled at time of declaration. A label has the form `@myLabel`. Refer to the examples above.
+  Each section, subsection, equation, exercise, ... can be labeled at declaration. A label has the form `@PREFIX:LABEL`, with identifiers for `PREFIX` and `LABEL`.
+  Using prefixes is optional.
 
-  A link to such a label can be places in paragraph text by writing `@myLabel` again.
+  A link to a labeled object can be placed in paragraph text. One has to write `@PREFIX:LABEL` again.
+
+  The order of declaration and reference is arbitrary.
+
+  <!-- TODO: references to other levels.. -->
 
   Example:
 
   ```
-  Refer to section @sec:intro.
+  An introduction is given in @sec:intro.
+
+  Intro @sec:intro
+  =====
   ```
 
-  We suggest to use the following prefixes, but this is optional:
+  We suggest to use the following prefixes:
 
-  | prefix    | used for     |
-  | --------- | ------------ |
-  | `sec:`    | sections     |
-  | `subsec:` |  subsections |
-  | `ex:`     | exercises    |
-  | `fig:`    | figures      |
-  | `eq:`     | equation     |
-  | `tab:`    | table        |
+  | prefix    | used for    |
+  | --------- | ----------- |
+  | `sec:`    | sections    |
+  | `subsec:` | subsections |
+  | `ex:`     | exercises   |
+  | `fig:`    | figures     |
+  | `eq:`     | equation    |
+  | `tab:`    | table       |
 
 - `Comments`
 
-  Comments are notes, intended for course developers. Comments are ignored by the compiler. You can use comments to temporarily hide unfinished stuff. Example:
+  All characters after `%` are ignored by the compiler, until the current line ends.
+
+  Comments can e.g. be used to make notes to other developers, or temporarily hide unfinished stuff. Example:
 
   ```
   This text is displayed in the output. % only a course developer can read this.
@@ -146,7 +156,7 @@ This section describes the text structuring and text formatting features.
 
 - `Page Breaks`
 
-  A level can be scrolled vertically by the student. Doom-scrolling should be avoided (not only) for didactical reasons. Page breaks can be inserted by a block containing the keyword `NEWPAGE`. Example:
+  A level can be scrolled vertically by the student. Doom-scrolling should be avoided (not only) for didactical reasons. Page breaks can be inserted by a `NEWPAGE`-_block_. Example:
 
   ```
   ---
@@ -156,7 +166,10 @@ This section describes the text structuring and text formatting features.
 
 ## Equations
 
-We distinguish two parts of equations: _inline equations_ are embedded into a text of a paragraph. _Full equations_ are rendered in a separate line. The latter are numbered by default.
+We distinguish two kinds of equations:
+_inline equations_ are embedded into a text of a paragraph.
+_Full equations_ are rendered in one or more separate lines.
+The latter are numbered by default.
 
 Equations are encoded in `TeX` notation.
 
@@ -182,7 +195,7 @@ Equations are encoded in `TeX` notation.
   The label is optional.
 
   A numbering is displayed right to the equation per default.
-  Keyword `EQUATION*` hides the numbering. Example:
+  An asterisk `*` hides the numbering. Example:
 
   ```
   ---
@@ -198,22 +211,29 @@ Equations are encoded in `TeX` notation.
 
   Equations are written in plain `TeX` code.
   In some cases, the notation is rather long.
-  We introduce some (optional) abbreviations for a shorter notation.
-  The following table lists implemented abbreviations:
+  We introduce some abbreviations for a shorter notation.
+  The following table lists all implemented abbreviations:
 
-  | type   | plain tex                                                                                    | short notation                    |
-  | ------ | -------------------------------------------------------------------------------------------- | --------------------------------- |
-  | matrix | `\begin{pmatrix}` <br> &nbsp;&nbsp;`A & B\\` <br> &nbsp;&nbsp;`C & D\\` <br> `\end{pmatrix}` | `\MAT(A, B; C, D)` <br> <br> <br> |
+  | type         | plain tex                                                                                    | short notation                    |     |
+  | ------------ | -------------------------------------------------------------------------------------------- | --------------------------------- | --- |
+  | $\mathbb{R}$ | `\mathbb{R}`                                                                                 | `\R`                              |     |
+  | $\mathbb{Z}$ | `\mathbb{Z}`                                                                                 | `\Z`                              |     |
+  | $\mathbb{C}$ | `\mathbb{C}`                                                                                 | `\C`                              |     |
+  | matrix       | `\begin{pmatrix}` <br> &nbsp;&nbsp;`A & B\\` <br> &nbsp;&nbsp;`C & D\\` <br> `\end{pmatrix}` | `\MAT(A, B; C, D)` <br> <br> <br> |     |
 
-  (TODO: extend table)
+  Using abbreviations is optional.
+
+<!-- (TODO: extend table) -->
 
 ## Figures
 
-MBL only supports to plot functions. All other figures must be generated with external tools (for example [Inkscape](https://inkscape.org)).
+MBL provides syntax to plot function graphs.
+All other figures must be generated with external tools.
+We highly recommend to generate files in the `SVG` (Scalable Vector Graphics) format using [Inkscape](https://inkscape.org)).
 
-- `Plots`
+- `Function Plots`
 
-  Plots of functions are described in a _block_ with keyword `PLOT2D`. Example:
+  Functions graphs are described in a _block_ with keyword `PLOT2D`. Example:
 
   ```
   ---
@@ -230,7 +250,11 @@ MBL only supports to plot functions. All other figures must be generated with ex
   ---
   ```
 
-  Keywords `xaxis`, `yaxis`, `colorX`, `plot` are self-explanatory.
+  Axis definition is done by &nbsp;&nbsp; `xaxis LABEL from MIN to MAX` &nbsp;&nbsp; for the x-axis and &nbsp;&nbsp; `yaxis LABEL from MIN to MAX` &nbsp;&nbsp; for the y-axis.
+
+  `colorX` changes the current color. All subsequent plots are drawn in that color. `X` is an integer value for the color key.
+
+  `plot F` renders a function curve `F` that is specified as term. An exact definition is essential. In particular, all multiplication operators (`*`) must be denoted explicitly. The exact syntax is described in the SMPL documentation.
 
   Keyword `coord X Y` renders a small circle at position $(X,Y)$.
 
@@ -241,13 +265,16 @@ MBL only supports to plot functions. All other figures must be generated with ex
   ```
   ---
   FIGURE My figure title @fig:myFigure
+  @options
+  width-75
+  @path
   images/myImage.svg
   ---
   ```
 
-## Itemizations and Enumerations
+  Option `width-P` specifies the displayed width with a percentage value for `P`. E.g. `width-50` renders the figure with 75 % of the display width. Default is `width-100`.
 
-_Note: Hierarchical itemizations are not supported for didactical reasons._
+## Itemizations and Enumerations
 
 - `Itemize`
 
@@ -273,7 +300,7 @@ _Note: Hierarchical itemizations are not supported for didactical reasons._
   # third item
   ```
 
-  A line that starts with a dash (`#`) is rendered with numbering (1, 2, ...)
+  A line that starts with a dash (`#`) is rendered with numbering (1, 2, ...).
 
 - `Enumeration (letters)`
 
@@ -286,33 +313,47 @@ _Note: Hierarchical itemizations are not supported for didactical reasons._
   -) third item
   ```
 
-  A line that starts with a dash and closing parenthesis (`-)`) is rendered with preceding letters `a)`, ` b)`, ...
+  A line that starts with a dash following a closing parenthesis (`-)`) is rendered with preceding letters `a)`, ` b)`, ... .
+
+_Note: Hierarchical itemizations are not supported for didactical reasons, as well as a mobile friendly presentation._
 
 ## Tables
 
-A table is described by a block with keyword `TABLE`.
-It simply lists row by word.
-The first row is considered as headline.
+A table is described by a _block_ with keyword `TABLE`.
+Each row of the table is written without line break.
 Columns are separated by `&`.
+The first row is considered as headline.
 
 Example:
 
 ```
 ---
 TABLE title @tab:label
+@options
+align-left
+@text
 $x$ & $f(x)$
 1 & 1
 2 & 4
 3 & 9
-... & ...
 ---
 ```
 
+The alignment option `align-X` specifies the placing of the table. Parameter `X` is one of `left`, `center`, `right`.
+Default is `align-center`.
+
 ## Exercises
 
-Exercises provide questions to students.
+Exercises provide interactive elements to the course.
+For example, multiple choice questions display multiple answers, from which students have to select all correct ones to gather scores.
 
-> Note: The part `code` in an exercise uses the **Simple Math Programing Language (SMPL)**. The documentation can be found [here](https://github.com/mathebuddy/mathebuddy-smpl) (scroll down in the link).
+<!-- TODO: scoring -->
+
+Most exercises contain a `@code` part to generate randomized variables and to calculate the sample solution.
+It is denoted in the _Simple Math Programing Language (SMPL)_.
+The documentation can be found [here](https://app.f07-its.fh-koeln.de/docs-smpl.html).
+
+The following paragraphs describe all implemented exercise types.
 
 - `Numeric Exercise`
 
@@ -337,11 +378,13 @@ Exercises provide questions to students.
   @options
   term-tokens-1.5
   @code
-  F(x) = 1/3*x^3 + 7*x
+  f(x) = 1/3*x^3 + 7*x
   @text
   Solve $\int (x^2+7) \dx$ = #F
   ---
   ```
+
+  TODO: equivalency, forbidden terms, ...
 
   Without any option, the student is required to enter `1/3*x^3 + 7*x` (or an algebraic equivalent solution).
 
