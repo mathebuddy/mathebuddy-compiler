@@ -802,15 +802,17 @@ number of solution fields on their own.</p>
 one of them shows the correct solution (refer to exercise type
 <code>integers and real numbers</code>).</p></li>
 <li><p><code>matrices</code></p>
-<pre><code>EXERCISE Matrix Operations
+<pre><code>---
+EXERCISE Matrix Operations
 @options
 n-rows
 n-cols
 @code
-let A/B/C = rand&lt;3,3&gt;(0, 5);
+let A/B/C = rand&lt;3,3&gt;(0, 5);  % 3x3-matrices
 let D = A*B + C;
 @text
-Calculate $A*B + C=$ #D</code></pre>
+Calculate $A*B + C=$ #D
+---</code></pre>
 <p>Per default, an input matrix is shown with a text field for each
 element of the solution matrix.</p>
 <p>If option <code>n-rows</code> is given, students must figure out the
@@ -820,27 +822,24 @@ number of solution columns on their own.</p>
 <p>Option <code>choices-X</code> renders <code>X</code> buttons, where
 one of them shows the correct solution (refer to exercise type
 <code>integers and real numbers</code>).</p></li>
-<li><p><code>vectors</code></p></li>
-<li><p><code>terms</code></p></li>
-</ul>
-<p>TODO: set-exercise, matrix, fractions, complex, …</p>
-<p>TODO: scores per field, …</p>
-<p>TODO: matrix dimensions given or not, …</p></li>
-<li><p><code>Term Exercises</code></p>
+<li><p><code>vectors</code></p>
+<p>Exercises with vector solutions are technically matrix exercises with
+the number of rows, or columns respectively, set to one.</p></li>
+<li><p><code>terms</code></p>
 <pre><code>---
-EXERCISE Title @ex:myLabel
+EXERCISE Simple Integration @ex:intSimple
 @options
 term-tokens-1.5
 @code
-f(x) = 1/3*x^3 + 7*x
+F(x) = 1/3*x^3 + 7*x
 @text
 Solve $\int (x^2+7) \dx$ = #F
 ---</code></pre>
-<p>TODO: equivalency, forbidden terms, …</p>
 <p>Without any option, the student is required to enter
-<code>1/3*x^3 + 7*x</code> (or an algebraic equivalent solution).</p>
-<p>Option <code>term-tokens-X</code> lists a set of buttons, each
-representing a part of the solution term. In the example, buttons
+<code>1/3*x^3 + 7*x</code> (or an algebraic equivalent solution) on a
+keyboard.</p>
+<p>Option <code>term-tokens-X</code> lists a set of buttons. Each button
+represents a part of the solution term. In the example, buttons
 <code>[1/3]</code>, <code>[*]</code>, <code>[x^3]</code>,
 <code>[+]</code>, <code>[7]</code>, <code>[x]</code> are shown in random
 order. The student has to click on the buttons to construct the
@@ -848,7 +847,12 @@ solution. Attribute <code>X</code> represents the overhead factor,
 i.e. the number of additional buttons with (most likely) useless
 options. The example sets <code>X</code> to <code>1,5</code>. In this
 case 9 instead of 6 buttons are shown (e.g. <code>[1/5]</code>,
-<code>[/]</code>, <code>[x^4]</code>).</p></li>
+<code>[/]</code>, <code>[x^4]</code>).</p>
+<!-- TODO: equivalency, forbidden terms, ... --></li>
+</ul>
+<p>TODO: set-exercise, matrix, fractions, complex, …</p>
+<p>TODO: scores per field, …</p>
+<p>TODO: matrix dimensions given or not, …</p></li>
 <li><p><code>Static Multiple Choice Exercise</code></p>
 <pre><code>---
 EXERCISE My Multiple Choice Exercise @ex:myMultiChoice
