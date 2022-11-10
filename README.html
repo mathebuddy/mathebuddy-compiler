@@ -848,11 +848,24 @@ i.e. the number of additional buttons with (most likely) useless
 options. The example sets <code>X</code> to <code>1,5</code>. In this
 case 9 instead of 6 buttons are shown (e.g. <code>[1/5]</code>,
 <code>[/]</code>, <code>[x^4]</code>).</p>
-<!-- TODO: equivalency, forbidden terms, ... --></li>
-</ul>
-<p>TODO: set-exercise, matrix, fractions, complex, …</p>
-<p>TODO: scores per field, …</p>
-<p>TODO: matrix dimensions given or not, …</p></li>
+<p>Option <code>forbid-X</code> does not allow <code>X</code>in the
+solution term. For example <code>forbid-sin</code> forbids to use the
+sinus function. List of supported values for <code>X</code> (in
+alphabetical order): <code>abs</code>, <code>acos</code>,
+<code>asin</code>, <code>atan</code>, <code>cos</code>,
+<code>exp</code>, <code>log</code>, <code>sin</code>, <code>tan</code>.
+For multiple forbiddings, repeat the <code>forbid-X</code> option with
+different identifiers for <code>X</code>.</p>
+<p>Option <code>require-X</code> forces the student to use
+<code>X</code> in the answer. The set of supported values is equal to
+the definition of <code>forbid-X</code>.</p>
+<!-- TODO: equivalency, ... -->
+<!-- TODO: exercise with fraction answer --></li>
+</ul></li>
+<li><p>Scoring of answers</p>
+<p>Per default, each input field is weighted with 1 score. And the total
+score per exercise is defined as sum of scores of the input
+fields.</p></li>
 <li><p><code>Static Multiple Choice Exercise</code></p>
 <pre><code>---
 EXERCISE My Multiple Choice Exercise @ex:myMultiChoice
