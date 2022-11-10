@@ -864,18 +864,48 @@ the definition of <code>forbid-X</code>.</p>
 </ul></li>
 <li><p>Scoring of answers</p>
 <p>Per default, each input field is weighted with 1 score. And the total
-score per exercise is defined as sum of scores of the input
-fields.</p></li>
+score per exercise is defined as sum of scores of the input fields.</p>
+<p>Example for custom scoring:</p>
+<pre><code>---
+EXERCISE Scoring example
+@options
+scores-5        % total score of the exercise (5/3 for fa; 10/3 for fb)
+score-fa-1      % relative score for solution fa
+score-fb-2      % relative score for solution fb
+@code
+let a = rand(2,4);
+let b = rand(5,8)
+let fa = fac(a);
+let fb = fac(b);
+@text
+Calculate $ a! = $ #fa
+Calculate $ b! = $ #fb
+---</code></pre>
+<p>Option <code>scores-X</code> defines that <code>X</code> is the total
+score for the exercise a student can receive at maximum.</p>
+<p>Option <code>score-V-X</code> defines that <code>X</code> is the
+maximum score for solution variable <code>V</code>.</p>
+<p>The sum of all <code>score-V-Xi</code> must <em>not</em> necessarily
+be equal to <code>score-V-X</code>.</p></li>
 <li><p><code>Static Multiple Choice Exercise</code></p>
+<p>Multiple choice exercises list a set of answers, which can be
+selected or deselected by the student with checkboxes. Correct answers
+are defined by <code>[x]</code>. Incorrect answers are defined by
+<code>[ ]</code>. Example:</p>
 <pre><code>---
 EXERCISE My Multiple Choice Exercise @ex:myMultiChoice
+@options
+keep-order
 @text
 [x] This answer is correct.
 [ ] This answer is incorrect.
 [x] This answer is correct.
 ---</code></pre>
-<p>Each correct answer is marked by <code>x</code>.</p></li>
+<p>Answers are displayed in random order per default. Option
+<code>keep-order</code> suppresses random shuffling.</p></li>
 <li><p><code>Dynamic Multiple Choice Exercise</code></p>
+<p>Dynamic multiple choice exercises calculate the correctness of
+answers at runtime. Example:</p>
 <pre><code>---
 EXERCISE My dynamic Multiple Choice Exercise @ex:myMultiChoice
 @code
