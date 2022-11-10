@@ -711,15 +711,121 @@ documentation can be found <a href="https://app.f07-its.fh-koeln.de/docs-smpl.ht
 <p>The following paragraphs describe all implemented exercise types.</p>
 <ul>
 <li><p><code>Numeric Exercise</code></p>
-<p>A numeric exercise TODO</p>
+<p>This type of exercise asks students to solve a question with one ore
+more numeric solutions. Solutions can be scalars, vectors, matrices or
+sets.</p>
 <pre><code>---
 EXERCISE My exercise @ex:myLabel
 @code
 let x/y = rand(1, 5);
 let z = x + y;
+let A/B = rand&lt;2,3&gt;();
+let C = A + B;
 @text
 Calculate $x+y=$ #z
----</code></pre></li>
+Calculate $xA+B=$ #C
+---</code></pre>
+<p><em>Note: <code>let x/y = rand(1, 5);</code> is an abbreviation for
+<code>let x = rand(1, 5); let y = rand(1, 5);</code> with guarantee that
+<span class="math inline"><em>x</em> ≠ <em>y</em></span></em></p>
+<p>Part <code>@code</code> draws random variables and generates the
+sample solution.</p>
+<p>Part <code>@texts</code> describes the question text. Typography,
+itemizations, equations, etc. can be included, as described above. Input
+fields are generated for patterns <code>#V</code>, where <code>V</code>
+is a valid variable from part <code>@code</code>. Take care, that input
+fields are <em>not</em> inserted within equations.</p>
+<p>Variables in math mode (inline equations embedded into dollar signs)
+are substituted by values of code variables by default. In the example
+above, <span class="math inline"><em>x</em></span> is e.g. shown as
+<span class="math inline">3</span> (depending on the present value for
+<span class="math inline"><em>x</em></span>). If the variable
+identifiers should be rendered instead, the concerned variable name must
+written in quotes, e.g.   <code>$ &quot;x&quot; + &quot;y&quot; $</code>   (spacing is
+optional).</p>
+<!-- TODO: number of random instances; default 10 -->
+<p>Input Types:</p>
+<ul>
+<li><p><code>integers and real numbers</code></p>
+<p>Example:</p>
+<pre><code>---
+EXERCISE Multiplication
+@options
+choices-4
+@code
+let x/y = rand(10,20);
+let z = x * y;
+@text
+Calculate $x * y=$ #z
+---</code></pre>
+<p>Without any options, an input field is generated for each input
+<code>#V</code>. The student has to type in the answer on a numeric
+keyboard.</p>
+<p>If option <code>choices-X</code> is given, a set of <code>X</code>
+possible answers is shown. One of theses answers correct. All other
+answers are incorrect. The student has to select the correct solution to
+gather scoring.</p></li>
+<li><p><code>complex numbers</code></p>
+<pre><code>---
+EXERCISE Complex addition
+@options
+polar-form
+@code
+let x/y = complex(rand(10,20), rand(10,20));
+let z = x + y;
+@text
+Calculate $x + y=$ #z
+---</code></pre>
+<p>Per default, two input fields of the form    <code>[ ] + [ ]i</code>
+   are shown to enter the solution in normal form.</p>
+<p>If the option <code>polar-form</code> is given, then the student as
+to enter the solution in polar form.</p>
+<p>Option <code>choices-X</code> renders <code>X</code> buttons, where
+one of them shows the correct solution (refer to exercise type
+<code>integers and real numbers</code>).</p></li>
+<li><p><code>sets</code></p>
+<pre><code>---
+EXERCISE Linear Equations
+@options
+n-args
+@code
+let s = set(-2, 2);
+@text
+Solve $x^2 - 4 = 0$.
+$x=$ #s
+---</code></pre>
+<p>Per default, if the set has length <span class="math inline"><em>n</em></span>, then <span class="math inline"><em>n</em></span> input fields are shown to enter
+the solution from a numeric keyboard.</p>
+<p>If option <code>n-args</code> is given, students must figure out the
+number of solution fields on their own.</p>
+<p>Option <code>choices-X</code> renders <code>X</code> buttons, where
+one of them shows the correct solution (refer to exercise type
+<code>integers and real numbers</code>).</p></li>
+<li><p><code>matrices</code></p>
+<pre><code>EXERCISE Matrix Operations
+@options
+n-rows
+n-cols
+@code
+let A/B/C = rand&lt;3,3&gt;(0, 5);
+let D = A*B + C;
+@text
+Calculate $A*B + C=$ #D</code></pre>
+<p>Per default, an input matrix is shown with a text field for each
+element of the solution matrix.</p>
+<p>If option <code>n-rows</code> is given, students must figure out the
+number of solution rows on their own.</p>
+<p>If option <code>n-cols</code> is given, students must figure out the
+number of solution columns on their own.</p>
+<p>Option <code>choices-X</code> renders <code>X</code> buttons, where
+one of them shows the correct solution (refer to exercise type
+<code>integers and real numbers</code>).</p></li>
+<li><p><code>vectors</code></p></li>
+<li><p><code>terms</code></p></li>
+</ul>
+<p>TODO: set-exercise, matrix, fractions, complex, …</p>
+<p>TODO: scores per field, …</p>
+<p>TODO: matrix dimensions given or not, …</p></li>
 <li><p><code>Term Exercises</code></p>
 <pre><code>---
 EXERCISE Title @ex:myLabel
