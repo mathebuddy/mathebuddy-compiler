@@ -520,11 +520,44 @@ The following paragraphs describe all implemented exercise types.
 
   Per default, each input field is weighted with 1 score. And the total score per exercise is defined as sum of scores of the input fields.
 
+  Example for custom scoring:
+
+  ```
+  ---
+  EXERCISE Scoring example
+  @options
+  scores-5        % total score of the exercise (5/3 for fa; 10/3 for fb)
+  score-fa-1      % relative score for solution fa
+  score-fb-2      % relative score for solution fb
+  @code
+  let a = rand(2,4);
+  let b = rand(5,8)
+  let fa = fac(a);
+  let fb = fac(b);
+  @text
+  Calculate $ a! = $ #fa
+  Calculate $ b! = $ #fb
+  ---
+  ```
+
+  Option `scores-X` defines that `X` is the total score for the exercise a student can receive at maximum.
+
+  Option `score-V-X` defines that `X` is the maximum score for solution variable `V`.
+
+  The sum of all `score-V-Xi` must _not_ necessarily be equal to `score-V-X`.
+
 - `Static Multiple Choice Exercise`
+
+  Multiple choice exercises list a set of answers, which can be selected or deselected by the student with checkboxes.
+  Correct answers are defined by `[x]`.
+  Incorrect answers are defined by `[ ]`.
+  Example:
 
   ```
   ---
   EXERCISE My Multiple Choice Exercise @ex:myMultiChoice
+  @options
+  keep-order
   @text
   [x] This answer is correct.
   [ ] This answer is incorrect.
@@ -532,9 +565,12 @@ The following paragraphs describe all implemented exercise types.
   ---
   ```
 
-  Each correct answer is marked by `x`.
+  Answers are displayed in random order per default.
+  Option `keep-order` suppresses random shuffling.
 
 - `Dynamic Multiple Choice Exercise`
+
+  Dynamic multiple choice exercises calculate the correctness of answers at runtime. Example:
 
   ```
   ---
