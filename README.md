@@ -458,15 +458,17 @@ The following paragraphs describe all implemented exercise types.
   - `matrices`
 
     ```
+    ---
     EXERCISE Matrix Operations
     @options
     n-rows
     n-cols
     @code
-    let A/B/C = rand<3,3>(0, 5);
+    let A/B/C = rand<3,3>(0, 5);  % 3x3-matrices
     let D = A*B + C;
     @text
     Calculate $A*B + C=$ #D
+    ---
     ```
 
     Per default, an input matrix is shown with a text field for each element of the solution matrix.
@@ -478,33 +480,40 @@ The following paragraphs describe all implemented exercise types.
     Option `choices-X` renders `X` buttons, where one of them shows the correct solution (refer to exercise type `integers and real numbers`).
 
   - `vectors`
+
+    Exercises with vector solutions are technically matrix exercises with the number of rows, or columns respectively, set to one.
+
   - `terms`
+
+    ```
+    ---
+    EXERCISE Simple Integration @ex:intSimple
+    @options
+    term-tokens-1.5
+    @code
+    F(x) = 1/3*x^3 + 7*x
+    @text
+    Solve $\int (x^2+7) \dx$ = #F
+    ---
+    ```
+
+    Without any option, the student is required to enter `1/3*x^3 + 7*x` (or an algebraic equivalent solution) on a keyboard.
+
+    Option `term-tokens-X` lists a set of buttons.
+    Each button represents a part of the solution term.
+    In the example, buttons `[1/3]`, `[*]`, `[x^3]`, `[+]`, `[7]`, `[x]` are shown in random order.
+    The student has to click on the buttons to construct the solution.
+    Attribute `X` represents the overhead factor, i.e. the number of additional buttons with (most likely) useless options.
+    The example sets `X` to `1,5`.
+    In this case 9 instead of 6 buttons are shown (e.g. `[1/5]`, `[/]`, `[x^4]`).
+
+    <!-- TODO: equivalency, forbidden terms, ... -->
 
   TODO: set-exercise, matrix, fractions, complex, ...
 
   TODO: scores per field, ...
 
   TODO: matrix dimensions given or not, ...
-
-- `Term Exercises`
-
-  ```
-  ---
-  EXERCISE Title @ex:myLabel
-  @options
-  term-tokens-1.5
-  @code
-  f(x) = 1/3*x^3 + 7*x
-  @text
-  Solve $\int (x^2+7) \dx$ = #F
-  ---
-  ```
-
-  TODO: equivalency, forbidden terms, ...
-
-  Without any option, the student is required to enter `1/3*x^3 + 7*x` (or an algebraic equivalent solution).
-
-  Option `term-tokens-X` lists a set of buttons, each representing a part of the solution term. In the example, buttons `[1/3]`, `[*]`, `[x^3]`, `[+]`, `[7]`, `[x]` are shown in random order. The student has to click on the buttons to construct the solution. Attribute `X` represents the overhead factor, i.e. the number of additional buttons with (most likely) useless options. The example sets `X` to `1,5`. In this case 9 instead of 6 buttons are shown (e.g. `[1/5]`, `[/]`, `[x^4]`).
 
 - `Static Multiple Choice Exercise`
 
