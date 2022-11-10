@@ -394,9 +394,31 @@ font-style: italic;
 <p class="date">2022-11-10</p>
 </header>
 <p>The following sections describe the syntax of the <em>mathe:buddy
-language (MBL)</em>.</p>
+language (MBL)</em>, which can be used to create mathematical based
+online courses. MBL describes contents as well as randomized training
+exercises. It is also used to structure large courses with many levels,
+including dependencies of content. Tags can be inserted to transform the
+definition into a semantical network. The latter can be used for example
+in chat bots or didactical learning concepts; e.g. smart repetition for
+optimized memoization.</p>
+<p>Some concepts of MBL are taken (or copied) from other formal
+languages:</p>
+<ul>
+<li>Text formatting is inspired from <code>Markdown</code>, as it
+provides a very expressive and memorable syntax.</li>
+<li><code>TeX</code> is used for equations, as most mathematical staff
+at universities is firm to that language.</li>
+<li><code>SMPL</code>, which is developed in parallel to
+<code>MBL</code>, is a general purpose language with focus on expressive
+math. It is used to generate random variables in exercises, as well as
+to calculate sample solutions.</li>
+</ul>
+<!-- TODO: implement such tags in to the language! -->
+<p>The language definition of MBL is independent of concrete
+implementations. All concepts can be transferred to other learning
+management systems.</p>
 <p>Visit <a href="https://github.com/mathebuddy/mathebuddy-public-courses">https://github.com/mathebuddy/mathebuddy-public-courses</a>
-for more examples.</p>
+for practical examples, written in MBL.</p>
 <h2 id="hello-world">Hello, world!</h2>
 <p>The following lines define a trivial level page:</p>
 <pre><code>My first level
@@ -942,7 +964,7 @@ definition of multiple choice exercises. We use round parentheses
 care, that no more than one option is correct. In case of more than one
 correct answers, the behavior is undefined.</p></li>
 <li><p><code>Gap Exercise</code></p>
-<p>Gap exercises provide an input field to enter a words within fluent
+<p>Gap exercises provide an input field to enter words within fluent
 paragraph text.</p>
 <pre><code>---
 EXERCISE My Gap Exercise @ex:myLabel
@@ -952,16 +974,17 @@ restricted-keyboard
 @text
 Garfield is a #&quot;cat&quot;. Rain is #&quot;wet&quot;.
 ---</code></pre>
-<p>The option <code>show-length</code> hints the number of characters of
-the solution word.</p>
-<p>The option <code>restricted-keyboard</code> displays a
-context-sensitive keyboard. E.g. for the first answer <code>cat</code>
-from the example, the student only sees keys <code>[A]</code>,
-<code>[C]</code> and <code>[T]</code>.</p></li>
-</ul>
-<p>TODO: numeric answers with given patterns</p>
-<ul>
+<p>Option <code>show-length</code> hints the number of characters of the
+solution word.</p>
+<p>Option <code>restricted-keyboard</code> displays a context-sensitive
+keyboard that only shows characters needed for the solution. E.g. for
+the first answer <code>cat</code> from the example, the student only
+sees keys <code>[A]</code>, <code>[C]</code> and
+<code>[T]</code>.</p></li>
 <li><p><code>Arrangement Exercise</code></p>
+<p>Arrangement exercises show a sequence of strings or numbers that must
+be reordered by the student.</p>
+<!-- TODO: string arrangement -->
 <pre><code>---
 EXERCISE Title @ex:label
 @options
@@ -976,15 +999,20 @@ for (let i=2; i&lt;n; i++) {   % calc sequence iteratively
 @text
 Arrange the following numbers to get the first numbers of the Fibonacci sequence: #:order(s,f)
 ---</code></pre>
-<p>The answer field <code>#f</code> would ask the student to type in the
-elements of the row vector: <code>[0, 1, 1, 2, 3, 5, ...]</code>.</p>
-<p>Writing <code>#:order(v)</code> lists a shuffled form of vector
-<code>v</code> and requires the student to reorder the vector to finally
-get vector <code>v</code>.</p>
+<p><em>Preface: The answer field <code>#f</code> would ask the student
+to type in the elements of the row vector:
+<code>[0, 1, 1, 2, 3, 5, ...]</code>.</em></p>
+<p>Writing   <code>#:order(v)</code>   lists a randomly shuffled form of
+vector <code>v</code>. The student is required to reorder the vector to
+finally get vector <code>v</code>.</p>
 <p>The option <code>accept-immediately</code> accepts the answer
 immediately when it is correct. If the option is missing, then the
 student needs to submit the solution explicitly.</p></li>
 <li><p><code>Timed Exercise</code></p>
+<p>A timed exercise is repeatedly shown. Each instance uses different
+variables. Quick and correct responses results in a large high score.
+This question type might test, if students are already trained well to a
+specific topic.</p>
 <pre><code>---
 EXERCISE Title @ex:label
 @options
@@ -998,8 +1026,6 @@ let z = x + y;
 @text
 Calculate $x+y=$ #z
 ---</code></pre>
-<p>A timed exercise repeatedly shows exercises. Quick and correct
-responses results in a large high score.</p>
 <p>Option <code>timed-X</code> enables timing. The student has
 <code>X</code> seconds to give an answer.</p>
 <p>Option <code>accelerate</code> decreases time per question.</p>
