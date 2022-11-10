@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content />
-  <meta name="dcterms.date" content="2022-11-09" />
+  <meta name="dcterms.date" content="2022-11-10" />
   <title>MATHE:BUDDY LANGUAGE (MBL)</title>
   <style>
 code{white-space: pre-wrap;}
@@ -391,7 +391,7 @@ font-style: italic;
 <header id="title-block-header">
 <h1 class="title">MATHE:BUDDY LANGUAGE (MBL)</h1>
 <p class="author"></p>
-<p class="date">2022-11-09</p>
+<p class="date">2022-11-10</p>
 </header>
 <p>The following sections describe the syntax of the <em>mathe:buddy
 language (MBL)</em>.</p>
@@ -418,14 +418,15 @@ optional.</p></li>
 <pre><code>My Section @sec:myLabel
 ==========</code></pre>
 <p>Five or more equal signs (<code>=</code>) are required. Labels are
-optional. We suggest to user prefix <code>sec:</code> for section
-labels, but this is optional.</p></li>
+optional. We suggest to use prefix <code>sec:</code> for section labels,
+but this is optional.</p></li>
 <li><p><code>Subsections</code></p>
-<p>A section can be subdivided into subsections. Example:</p>
+<p>A section can be subdivided into one or multiple subsections.
+Example:</p>
 <pre><code>My Subsection @subsec:myLabel
 -------------</code></pre>
 <p>Five or more dashes (<code>-</code>) are required. Labels are
-optional. We suggest to user prefix <code>subsec:</code> for subsection
+optional. We suggest to use prefix <code>subsec:</code> for subsection
 labels, but this is optional.</p></li>
 <li><p><code>Paragraphs</code></p>
 <p>A paragraph consists of one or multiple lines of continuous text.
@@ -439,33 +440,39 @@ An empty line starts a new paragraph.</code></pre></li>
 syntactically starts and ends with each a line of three dashes
 (<code>---</code>). Examples:</p>
 <pre><code>---
-DEFINITION Positive @def:myLabel
+DEFINITION Positive @def:positive
 For any integer $n$, $n$ is **positive** if $n&gt;0$.
 ---</code></pre>
 <pre><code>---
-THEOREM The Aristotelian Syllogism @thm:myLabel
+THEOREM The Aristotelian Syllogism @thm:socrates
 If every man is mortal and Socrates is a man, then Socrates is mortal.
 ---</code></pre></li>
 <li><p><code>Bold, Italic and Colored Text</code></p>
-<p>Basic text format options are bold text, italic text and colored
+<p>Basic text formatting options are bold text, italic text and colored
 text. Examples:</p>
 <pre><code>Some **bold** text. Some *italic* text.
-The word [sky]@color1 is written.
+The word [sky]@color1 is written not in primary color.
 [Some text written in the secondary color.]@color2.
 You can also write [bold text]@bold and [italic text]@italic similar to color notation.</code></pre>
 <p>Colors are only defined implicitly. The exact rendering depends on
 the runtime environment. We restricted the degree of freedom per design
-to force uniformly presented courses. <code>color0</code> is always
-black.</p></li>
+to force uniformly presented courses. <code>color0</code> defines black
+color in all cases.</p></li>
 <li><p><code>Links and References</code></p>
 <p>Each section, subsection, equation, exercise, … can be labeled at
-time of declaration. A label has the form <code>@myLabel</code>. Refer
-to the examples above.</p>
-<p>A link to such a label can be places in paragraph text by writing
-<code>@myLabel</code> again.</p>
+declaration. A label has the form <code>@PREFIX:LABEL</code>, with
+identifiers for <code>PREFIX</code> and <code>LABEL</code>. Using
+prefixes is optional.</p>
+<p>A link to a labeled object can be placed in paragraph text. One has
+to write <code>@PREFIX:LABEL</code> again.</p>
+<p>The order of declaration and reference is arbitrary.</p>
+<!-- TODO: references to other levels.. -->
 <p>Example:</p>
-<pre><code>Refer to section @sec:intro.</code></pre>
-<p>We suggest to use the following prefixes, but this is optional:</p>
+<pre><code>An introduction is given in @sec:intro.
+
+Intro @sec:intro
+=====</code></pre>
+<p>We suggest to use the following prefixes:</p>
 <table>
 <thead>
 <tr class="header">
@@ -480,7 +487,7 @@ to the examples above.</p>
 </tr>
 <tr class="even">
 <td><code>subsec:</code></td>
-<td> subsections</td>
+<td>subsections</td>
 </tr>
 <tr class="odd">
 <td><code>ex:</code></td>
@@ -501,23 +508,24 @@ to the examples above.</p>
 </tbody>
 </table></li>
 <li><p><code>Comments</code></p>
-<p>Comments are notes, intended for course developers. Comments are
-ignored by the compiler. You can use comments to temporarily hide
-unfinished stuff. Example:</p>
+<p>All characters after <code>%</code> are ignored by the compiler,
+until the current line ends.</p>
+<p>Comments can e.g. be used to make notes to other developers, or
+temporarily hide unfinished stuff. Example:</p>
 <pre><code>This text is displayed in the output. % only a course developer can read this.</code></pre></li>
 <li><p><code>Page Breaks</code></p>
 <p>A level can be scrolled vertically by the student. Doom-scrolling
 should be avoided (not only) for didactical reasons. Page breaks can be
-inserted by a block containing the keyword <code>NEWPAGE</code>.
-Example:</p>
+inserted by a <code>NEWPAGE</code>-<em>block</em>. Example:</p>
 <pre><code>---
 NEWPAGE
 ---</code></pre></li>
 </ul>
 <h2 id="equations">Equations</h2>
-<p>We distinguish two parts of equations: <em>inline equations</em> are
+<p>We distinguish two kinds of equations: <em>inline equations</em> are
 embedded into a text of a paragraph. <em>Full equations</em> are
-rendered in a separate line. The latter are numbered by default.</p>
+rendered in one or more separate lines. The latter are numbered by
+default.</p>
 <p>Equations are encoded in <code>TeX</code> notation.</p>
 <ul>
 <li><p><code>Inline Equations</code></p>
@@ -532,8 +540,8 @@ EQUATION @eq:myLabel
 a^2 + b^2 = c^2
 ---</code></pre>
 <p>The label is optional.</p>
-<p>A numbering is displayed right to the equation per default. Keyword
-<code>EQUATION*</code> hides the numbering. Example:</p>
+<p>A numbering is displayed right to the equation per default. An
+asterisk <code>*</code> hides the numbering. Example:</p>
 <pre><code>---
 EQUATION* @eq:myLabel
 a^2 + b^2 = c^2
@@ -543,39 +551,62 @@ a^2 + b^2 = c^2
 runtime environment).</p></li>
 <li><p>Abbreviations</p>
 <p>Equations are written in plain <code>TeX</code> code. In some cases,
-the notation is rather long. We introduce some (optional) abbreviations
-for a shorter notation. The following table lists implemented
+the notation is rather long. We introduce some abbreviations for a
+shorter notation. The following table lists all implemented
 abbreviations:</p>
-<table style="width:100%;">
+<table>
 <colgroup>
-<col style="width: 4%" />
-<col style="width: 70%" />
-<col style="width: 25%" />
+<col style="width: 8%" />
+<col style="width: 65%" />
+<col style="width: 23%" />
+<col style="width: 2%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th>type</th>
 <th>plain tex</th>
 <th>short notation</th>
+<th></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
+<td><span class="math inline">ℝ</span></td>
+<td><code>\mathbb{R}</code></td>
+<td><code>\R</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">ℤ</span></td>
+<td><code>\mathbb{Z}</code></td>
+<td><code>\Z</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">ℂ</span></td>
+<td><code>\mathbb{C}</code></td>
+<td><code>\C</code></td>
+<td></td>
+</tr>
+<tr class="even">
 <td>matrix</td>
 <td><code>\begin{pmatrix}</code> <br>   <code>A &amp; B\\</code> <br>
   <code>C &amp; D\\</code> <br> <code>\end{pmatrix}</code></td>
 <td><code>\MAT(A, B; C, D)</code> <br> <br> <br></td>
+<td></td>
 </tr>
 </tbody>
 </table>
-<p>(TODO: extend table)</p></li>
+<p>Using abbreviations is optional.</p></li>
 </ul>
+<!-- (TODO: extend table) -->
 <h2 id="figures">Figures</h2>
-<p>MBL only supports to plot functions. All other figures must be
-generated with external tools (for example <a href="https://inkscape.org">Inkscape</a>).</p>
+<p>MBL provides syntax to plot function graphs. All other figures must
+be generated with external tools. We highly recommend to generate files
+in the <code>SVG</code> (Scalable Vector Graphics) format using <a href="https://inkscape.org">Inkscape</a>).</p>
 <ul>
-<li><p><code>Plots</code></p>
-<p>Plots of functions are described in a <em>block</em> with keyword
+<li><p><code>Function Plots</code></p>
+<p>Functions graphs are described in a <em>block</em> with keyword
 <code>PLOT2D</code>. Example:</p>
 <pre><code>---
 PLOT2D My plot title @fig:myPlot
@@ -589,8 +620,16 @@ color0
 coord -1 1
 coord 2 4
 ---</code></pre>
-<p>Keywords <code>xaxis</code>, <code>yaxis</code>, <code>colorX</code>,
-<code>plot</code> are self-explanatory.</p>
+<p>Axis definition is done by   
+<code>xaxis LABEL from MIN to MAX</code>    for the x-axis and   
+<code>yaxis LABEL from MIN to MAX</code>    for the y-axis.</p>
+<p><code>colorX</code> changes the current color. All subsequent plots
+are drawn in that color. <code>X</code> is an integer value for the
+color key.</p>
+<p><code>plot F</code> renders a function curve <code>F</code> that is
+specified as term. An exact definition is essential. In particular, all
+multiplication operators (<code>*</code>) must be denoted explicitly.
+The exact syntax is described in the SMPL documentation.</p>
 <p>Keyword <code>coord X Y</code> renders a small circle at position
 <span class="math inline">(<em>X</em>,<em>Y</em>)</span>.</p></li>
 <li><p><code>Figures</code></p>
@@ -599,13 +638,18 @@ coord 2 4
 Example:</p>
 <pre><code>---
 FIGURE My figure title @fig:myFigure
+@options
+width-75
+@path
 images/myImage.svg
----</code></pre></li>
+---</code></pre>
+<p>Option <code>width-P</code> specifies the displayed width with a
+percentage value for <code>P</code>. E.g. <code>width-50</code> renders
+the figure with 75 % of the display width. Default is
+<code>width-100</code>.</p></li>
 </ul>
 <h2 id="itemizations-and-enumerations">Itemizations and
 Enumerations</h2>
-<p><em>Note: Hierarchical itemizations are not supported for didactical
-reasons.</em></p>
 <ul>
 <li><p><code>Itemize</code></p>
 <p>An itemization lists a set of bullet points. Example:</p>
@@ -622,38 +666,49 @@ point.</p></li>
 # second item
 # third item</code></pre>
 <p>A line that starts with a dash (<code>#</code>) is rendered with
-numbering (1, 2, …)</p></li>
+numbering (1, 2, …).</p></li>
 <li><p><code>Enumeration (letters)</code></p>
 <p>Alphabetical enumerations list a sequence of items. Example:</p>
 <pre><code>My enumeration:
 -) first item
 -) second item
 -) third item</code></pre>
-<p>A line that starts with a dash and closing parenthesis
+<p>A line that starts with a dash following a closing parenthesis
 (<code>-)</code>) is rendered with preceding letters <code>a)</code>,
-<code>b)</code>, …</p></li>
+<code>b)</code>, … .</p></li>
 </ul>
+<p><em>Note: Hierarchical itemizations are not supported for didactical
+reasons, as well as a mobile friendly presentation.</em></p>
 <h2 id="tables">Tables</h2>
-<p>A table is described by a block with keyword <code>TABLE</code>. It
-simply lists row by word. The first row is considered as headline.
-Columns are separated by <code>&amp;</code>.</p>
+<p>A table is described by a <em>block</em> with keyword
+<code>TABLE</code>. Each row of the table is written without line break.
+Columns are separated by <code>&amp;</code>. The first row is considered
+as headline.</p>
 <p>Example:</p>
 <pre><code>---
 TABLE title @tab:label
+@options
+align-left
+@text
 $x$ &amp; $f(x)$
 1 &amp; 1
 2 &amp; 4
 3 &amp; 9
-... &amp; ...
 ---</code></pre>
+<p>The alignment option <code>align-X</code> specifies the placing of
+the table. Parameter <code>X</code> is one of <code>left</code>,
+<code>center</code>, <code>right</code>. Default is
+<code>align-center</code>.</p>
 <h2 id="exercises">Exercises</h2>
-<p>Exercises provide questions to students.</p>
-<blockquote>
-<p>Note: The part <code>code</code> in an exercise uses the
-<strong>Simple Math Programing Language (SMPL)</strong>. The
-documentation can be found <a href="https://github.com/mathebuddy/mathebuddy-smpl">here</a> (scroll
-down in the link).</p>
-</blockquote>
+<p>Exercises provide interactive elements to the course. For example,
+multiple choice questions display multiple answers, from which students
+have to select all correct ones to gather scores.</p>
+<!-- TODO: scoring -->
+<p>Most exercises contain a <code>@code</code> part to generate
+randomized variables and to calculate the sample solution. It is denoted
+in the <em>Simple Math Programing Language (SMPL)</em>. The
+documentation can be found <a href="https://app.f07-its.fh-koeln.de/docs-smpl.html">here</a>.</p>
+<p>The following paragraphs describe all implemented exercise types.</p>
 <ul>
 <li><p><code>Numeric Exercise</code></p>
 <p>A numeric exercise TODO</p>
@@ -671,10 +726,11 @@ EXERCISE Title @ex:myLabel
 @options
 term-tokens-1.5
 @code
-F(x) = 1/3*x^3 + 7*x
+f(x) = 1/3*x^3 + 7*x
 @text
 Solve $\int (x^2+7) \dx$ = #F
 ---</code></pre>
+<p>TODO: equivalency, forbidden terms, …</p>
 <p>Without any option, the student is required to enter
 <code>1/3*x^3 + 7*x</code> (or an algebraic equivalent solution).</p>
 <p>Option <code>term-tokens-X</code> lists a set of buttons, each
