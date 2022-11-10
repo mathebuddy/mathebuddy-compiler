@@ -19,9 +19,26 @@ We provide a simulator that translates and renders `*.mbl` files. Visit [https:/
 
 <!-- start-for-website -->
 
-The following sections describe the syntax of the _mathe:buddy language (MBL)_.
+The following sections describe the syntax of the _mathe:buddy language (MBL)_,
+which can be used to create mathematical based online courses.
+MBL describes contents as well as randomized training exercises.
+It is also used to structure large courses with many levels, including dependencies of content.
+Tags can be inserted to transform the definition into a semantical network.
+The latter can be used for example in chat bots or didactical learning concepts;
+e.g. smart repetition for optimized memoization.
 
-Visit [https://github.com/mathebuddy/mathebuddy-public-courses](https://github.com/mathebuddy/mathebuddy-public-courses) for more examples.
+Some concepts of MBL are taken (or copied) from other formal languages:
+
+- Text formatting is inspired from `Markdown`, as it provides a very expressive and memorable syntax.
+- `TeX` is used for equations, as most mathematical staff at universities is firm to that language.
+- `SMPL`, which is developed in parallel to `MBL`, is a general purpose language with focus on expressive math. It is used to generate random variables in exercises, as well as to calculate sample solutions.
+
+<!-- TODO: implement such tags in to the language! -->
+
+The language definition of MBL is independent of concrete implementations.
+All concepts can be transferred to other learning management systems.
+
+Visit [https://github.com/mathebuddy/mathebuddy-public-courses](https://github.com/mathebuddy/mathebuddy-public-courses) for practical examples, written in MBL.
 
 ## Hello, world!
 
@@ -616,7 +633,7 @@ The following paragraphs describe all implemented exercise types.
 
 - `Gap Exercise`
 
-  Gap exercises provide an input field to enter a words within fluent paragraph text.
+  Gap exercises provide an input field to enter words within fluent paragraph text.
 
   ```
   ---
@@ -629,13 +646,16 @@ The following paragraphs describe all implemented exercise types.
   ---
   ```
 
-  The option `show-length` hints the number of characters of the solution word.
+  Option `show-length` hints the number of characters of the solution word.
 
-  The option `restricted-keyboard` displays a context-sensitive keyboard. E.g. for the first answer `cat` from the example, the student only sees keys `[A]`, `[C]` and `[T]`.
-
-TODO: numeric answers with given patterns
+  Option `restricted-keyboard` displays a context-sensitive keyboard that only shows characters needed for the solution.
+  E.g. for the first answer `cat` from the example, the student only sees keys `[A]`, `[C]` and `[T]`.
 
 - `Arrangement Exercise`
+
+  Arrangement exercises show a sequence of strings or numbers that must be reordered by the student.
+
+  <!-- TODO: string arrangement -->
 
   ```
   ---
@@ -654,13 +674,20 @@ TODO: numeric answers with given patterns
   ---
   ```
 
-  The answer field `#f` would ask the student to type in the elements of the row vector: `[0, 1, 1, 2, 3, 5, ...]`.
+  _Preface: The answer field `#f` would ask the student to type in the elements of the row vector: `[0, 1, 1, 2, 3, 5, ...]`._
 
-  Writing `#:order(v)` lists a shuffled form of vector `v` and requires the student to reorder the vector to finally get vector `v`.
+  Writing &nbsp;&nbsp;`#:order(v)`&nbsp;&nbsp; lists a randomly shuffled form of vector `v`.
+  The student is required to reorder the vector to finally get vector `v`.
 
-  The option `accept-immediately` accepts the answer immediately when it is correct. If the option is missing, then the student needs to submit the solution explicitly.
+  The option `accept-immediately` accepts the answer immediately when it is correct.
+  If the option is missing, then the student needs to submit the solution explicitly.
 
 - `Timed Exercise`
+
+  A timed exercise is repeatedly shown.
+  Each instance uses different variables.
+  Quick and correct responses results in a large high score.
+  This question type might test, if students are already trained well to a specific topic.
 
   ```
   ---
@@ -677,8 +704,6 @@ TODO: numeric answers with given patterns
   Calculate $x+y=$ #z
   ---
   ```
-
-  A timed exercise repeatedly shows exercises. Quick and correct responses results in a large high score.
 
   Option `timed-X` enables timing. The student has `X` seconds to give an answer.
 
