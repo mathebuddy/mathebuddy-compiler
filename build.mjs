@@ -22,11 +22,11 @@ esbuild.buildSync({
 
 // ---- convert README.md to README.html ----
 const date = new Date().toISOString().slice(0, 10);
-execSync("sed -e '1,/<!-- start-for-website -->/d' README.md > __tmp.md");
+execSync("sed -e '1,/<!-- start-for-website -->/d' mbl.md > __tmp.md");
 execSync(
   'pandoc -s __tmp.md --metadata title="MATHE:BUDDY LANGUAGE (MBL)" --metadata author="" --metadata date="' +
     date +
-    '"  --css README.css --embed-resources --standalone -o README.html',
+    '"  --css README.css --embed-resources --standalone -o mbl.html',
 );
 execSync('rm __tmp.md');
 // TODO: --mathjax may be needed, but results in large file, if --self-contained option is provided...
