@@ -285,6 +285,29 @@ Equations are encoded in `TeX` notation.
   Equations can be labeled with `@`.
   For example, `@eq:myLabel` is displayed $Eq~(1)$ (depends on the runtime environment).
 
+- Options
+
+  Equations can be configured with the following options:
+
+  Option `align-left` left aligns the equation.
+
+  Option `align-equals` renders each specified line of the equation in a separate line and aligns it to the first equal sign (`=`) of each row.
+
+  Example:
+
+  ```
+  ---
+  EQUATION
+  @options
+  align-left
+  align-equals
+  @text
+  (x+1)^2 = (x+1)(x+1)
+          = x^2 + x + x + 1
+          = x^2 + 2x + 1
+  ---
+  ```
+
 - Abbreviations
 
   Equations are written in plain `TeX` code.
