@@ -641,6 +641,23 @@ a^2 + b^2 = c^2
 <p>Equations can be labeled with <code>@</code>. For example,
 <code>@eq:myLabel</code> is displayed <span class="math inline"><em>E</em><em>q</em> (1)</span> (depends on the
 runtime environment).</p></li>
+<li><p>Options</p>
+<p>Equations can be configured with the following options:</p>
+<p>Option <code>align-left</code> left aligns the equation.</p>
+<p>Option <code>align-equals</code> renders each specified line of the
+equation in a separate line and aligns it to the first equal sign
+(<code>=</code>) of each row.</p>
+<p>Example:</p>
+<pre><code>---
+EQUATION
+@options
+align-left
+align-equals
+@text
+(x+1)^2 = (x+1)(x+1)
+        = x^2 + x + x + 1
+        = x^2 + 2x + 1
+---</code></pre></li>
 <li><p>Abbreviations</p>
 <p>Equations are written in plain <code>TeX</code> code. In some cases,
 the notation is rather long. We introduce some abbreviations for a
