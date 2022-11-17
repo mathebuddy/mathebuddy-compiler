@@ -89,9 +89,9 @@ This section describes the text structuring and text formatting features.
   An empty line starts a new paragraph.
   ```
 
-- `Definitions and Theorems`
+- `Definitions, Theorems, Lemmas, ...`
 
-  Definitions and Theorems are embedded into a _block_ that syntactically starts and ends with each a line of three dashes (`---`). Examples:
+  Definitions, Theorems etc. are embedded into a _block_ that syntactically starts and ends with each a line of three dashes (`---`). Examples:
 
   ```
   ---
@@ -107,6 +107,31 @@ This section describes the text structuring and text formatting features.
   ---
   ```
 
+  The runtime environment may replace tag names with corresponding terms of the local language.
+
+  The complete list of supported tags is `DEFINITION`, `THEOREM`, `LEMMA`, `COROLLARY`, `PROPOSITION`, `CONJECTURE`, `AXIOM`, `CLAIM` `IDENTITY`, `PARADOX`.
+
+- `Examples`
+
+  Examples are embedded into a _block_ that syntactically starts and ends with each a line of three dashes (`---`).
+
+  ```
+  ---
+  EXAMPLE Addition of complex numbers @ex:myExample
+  $z_1=1+3i ~~ z_2=2+4i ~~ z_1+z_2=3+7i$
+  ---
+  ```
+
+  Full line equations can be inserted as described in subsection "nesting of blocks below. Example:
+
+  ```
+  ---
+  EXAMPLE Addition of complex numbers @ex:myExample
+  EQUATION
+  z_1=1+3i ~~ z_2=2+4i ~~ z_1+z_2=3+7i
+  ---
+  ```
+
 - `Bold, Italic and Colored Text`
 
   Basic text formatting options are bold text, italic text and colored text. Examples:
@@ -119,6 +144,20 @@ This section describes the text structuring and text formatting features.
   ```
 
   Colors are only defined implicitly. The exact rendering depends on the runtime environment. We restricted the degree of freedom per design to force uniformly presented courses. `color0` defines black color in all cases.
+
+- `Alignment`
+
+  The default alignment of paragraphs is left.
+  Block types `LEFT`, `CENTER` and `RIGHT` change the alignment.
+
+  Example:
+
+  ```
+  ---
+  CENTER
+  This text is centered.
+  ---
+  ```
 
 - `Links and References`
 
@@ -177,6 +216,32 @@ This section describes the text structuring and text formatting features.
   ---
   ```
 
+- Nesting of blocks:
+
+  In general, format blocks are used in a sequence, i.e. a new block starts after the last block ended.
+
+  In some cases, a nesting of blocks is needed.
+  The following example uses text alignment and an equation within a `DEFINITION`:
+
+  ```
+  ---
+  DEFINITION My definition @def:myDef
+  Some paragraph text here.
+
+  CENTER
+  This text is center aligned.
+
+  EQUATION @myEquation
+  x^2 + y^2 = z^2
+
+  TEXT
+  Another paragraph here.
+  ---
+  ```
+
+  Inner blocks do not use `---` as separator.
+  Note in the example, that `TEXT` is used to leave equation mode.
+
 ## Equations
 
 We distinguish two kinds of equations:
@@ -230,6 +295,7 @@ Equations are encoded in `TeX` notation.
   | type         | plain tex                                                                                    | short notation                    |     |
   | ------------ | -------------------------------------------------------------------------------------------- | --------------------------------- | --- |
   | $\mathbb{R}$ | `\mathbb{R}`                                                                                 | `\R`                              |     |
+  | $\mathbb{N}$ | `\mathbb{N}`                                                                                 | `\N`                              |     |
   | $\mathbb{Z}$ | `\mathbb{Z}`                                                                                 | `\Z`                              |     |
   | $\mathbb{C}$ | `\mathbb{C}`                                                                                 | `\C`                              |     |
   | matrix       | `\begin{pmatrix}` <br> &nbsp;&nbsp;`A & B\\` <br> &nbsp;&nbsp;`C & D\\` <br> `\end{pmatrix}` | `\MAT(A, B; C, D)` <br> <br> <br> |     |
@@ -504,7 +570,7 @@ The following paragraphs describe all implemented exercise types.
     @code
     F(x) = 1/3*x^3 + 7*x
     @text
-    Solve $\int (x^2+7) \dx$ = #F
+    Solve $\int (x^2+7) \dx =$  #F  $+C$
     ---
     ```
 
@@ -760,13 +826,13 @@ Complex Numbers
 TH Koeln
 
 !UNIT
-(0,2) start.mbl -> normal.mbl, gauss.mbl
-(0,1) gauss.mbl
-(1,3) normal.mbl -> conj.mbl
-(2,3) conj.mbl -> conj-props.mbl, abs.mbl
-(2,4) conj-props.mbl
+(2,0) start.mbl -> normal.mbl, gauss.mbl
+(1,0) gauss.mbl
+(3,1) normal.mbl -> conj.mbl
+(3,2) conj.mbl -> conj-props.mbl, abs.mbl
+(4,2) conj-props.mbl
 (3,3) abs.mbl -> polar.mbl
-(4,2) polar.mbl
+(2,4) polar.mbl
 
 !UNIT
 ...
