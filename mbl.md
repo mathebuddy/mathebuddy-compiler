@@ -109,7 +109,7 @@ This section describes the text structuring and text formatting features.
 
   The runtime environment may replace tag names with corresponding terms of the local language.
 
-  The complete list of supported tags is `DEFINITION`, `THEOREM`, `LEMMA`, `COROLLARY`, `PROPOSITION`, `CONJECTURE`, `AXIOM`, `CLAIM` `IDENTITY`, `PARADOX`.
+  The complete list of supported tags is `DEFINITION`, `THEOREM`, `LEMMA`, `COROLLARY`, `PROPOSITION`, `CONJECTURE`, `AXIOM`, `CLAIM`, `IDENTITY`, `PARADOX`.
 
 - `Examples`
 
@@ -138,7 +138,7 @@ This section describes the text structuring and text formatting features.
 
   ```
   Some **bold** text. Some *italic* text.
-  The word [sky]@color1 is written not in primary color.
+  The word [sky]@color1 is written in primary color.
   [Some text written in the secondary color.]@color2.
   You can also write [bold text]@bold and [italic text]@italic similar to color notation.
   ```
@@ -374,7 +374,7 @@ We highly recommend to generate files in the `SVG` (Scalable Vector Graphics) fo
   ---
   ```
 
-  Option `width-P` specifies the displayed width with a percentage value for `P`. E.g. `width-50` renders the figure with 75 % of the display width. Default is `width-100`.
+  Option `width-P` specifies the displayed width with a percentage value for `P`. E.g. `width-75` renders the figure with 75 % of the display width. Default is `width-100`.
 
 ## Itemizations and Enumerations
 
@@ -457,7 +457,7 @@ The following paragraphs describe all implemented exercise types.
 
 - `Calculation Exercises`
 
-  This type of exercise asks students to solve a question with one ore more numeric solutions.
+  This type of exercise asks students to solve a question with one or more numeric solutions.
   Solutions can be scalars, vectors, matrices or sets.
 
   ```
@@ -491,6 +491,13 @@ The following paragraphs describe all implemented exercise types.
 
   - `integers and real numbers`
 
+    Without any options, an input field is generated for each input with `#V`, for a variable `V` from part `@code`.
+    The student has to type in the answer on a numeric keyboard.
+
+    If option `choices-X` is given, a set of `X` possible answers is shown.
+    One of theses answers correct. All other answers are incorrect.
+    The student has to select the correct solution to gather scoring.
+
     Example:
 
     ```
@@ -506,14 +513,15 @@ The following paragraphs describe all implemented exercise types.
     ---
     ```
 
-    Without any options, an input field is generated for each input `#V`.
-    The student has to type in the answer on a numeric keyboard.
-
-    If option `choices-X` is given, a set of `X` possible answers is shown.
-    One of theses answers correct. All other answers are incorrect.
-    The student has to select the correct solution to gather scoring.
-
   - `complex numbers`
+
+    Per default, two input fields of the form &nbsp;&nbsp; `[ ] + [ ]i` &nbsp;&nbsp; are shown to enter the solution in normal form.
+
+    If the option `polar-form` is given, then the student as to enter the solution in polar form.
+
+    Option `choices-X` renders `X` buttons, where one of them shows the correct solution (refer to exercise type `integers and real numbers`).
+
+    Example:
 
     ```
     ---
@@ -528,13 +536,15 @@ The following paragraphs describe all implemented exercise types.
     ---
     ```
 
-    Per default, two input fields of the form &nbsp;&nbsp; `[ ] + [ ]i` &nbsp;&nbsp; are shown to enter the solution in normal form.
+  - `sets`
 
-    If the option `polar-form` is given, then the student as to enter the solution in polar form.
+    Per default, if the set has length $n$, then $n$ input fields are shown to enter the solution from a numeric keyboard.
+
+    If option `n-args` is given, students must figure out the number of solution fields on their own.
 
     Option `choices-X` renders `X` buttons, where one of them shows the correct solution (refer to exercise type `integers and real numbers`).
 
-  - `sets`
+    Example:
 
     ```
     ---
@@ -549,13 +559,17 @@ The following paragraphs describe all implemented exercise types.
     ---
     ```
 
-    Per default, if the set has length $n$, then $n$ input fields are shown to enter the solution from a numeric keyboard.
+  - `matrices`
 
-    If option `n-args` is given, students must figure out the number of solution fields on their own.
+    Per default, an input matrix is shown with a text field for each element of the solution matrix.
+
+    If option `n-rows` is given, students must figure out the number of solution rows on their own.
+
+    If option `n-cols` is given, students must figure out the number of solution columns on their own.
 
     Option `choices-X` renders `X` buttons, where one of them shows the correct solution (refer to exercise type `integers and real numbers`).
 
-  - `matrices`
+    Example:
 
     ```
     ---
@@ -570,14 +584,6 @@ The following paragraphs describe all implemented exercise types.
     Calculate $A*B + C=$ #D
     ---
     ```
-
-    Per default, an input matrix is shown with a text field for each element of the solution matrix.
-
-    If option `n-rows` is given, students must figure out the number of solution rows on their own.
-
-    If option `n-cols` is given, students must figure out the number of solution columns on their own.
-
-    Option `choices-X` renders `X` buttons, where one of them shows the correct solution (refer to exercise type `integers and real numbers`).
 
   - `vectors`
 
@@ -690,7 +696,7 @@ The following paragraphs describe all implemented exercise types.
 
   Correctness of an answer is determined by a boolean condition or variable, which is embedded into brackets `[ ]`.
 
-  You are allowed to mix static static and dynamic answers.
+  You are allowed to mix static and dynamic answers.
   If variable `x` is a boolean variable, then `[$x$]` is correct (incorrect) if $x$ is true (false).
   The notation `[x]` indicates that the answer is _always_ true.
 
