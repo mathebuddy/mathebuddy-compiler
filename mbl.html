@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content />
-  <meta name="dcterms.date" content="2022-11-17" />
+  <meta name="dcterms.date" content="2022-11-18" />
   <title>Mathe:Buddy Language (MBL)</title>
   <style>
 code{white-space: pre-wrap;}
@@ -391,7 +391,7 @@ font-style: italic;
 <header id="title-block-header">
 [<a href="https://app.f07-its.fh-koeln.de">Home</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbl.html">MBL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-smpl.html">SMPL Reference</a>]<h1 class="title">Mathe:Buddy Language (MBL)</h1>
 <p class="author"></p>
-<p class="date">2022-11-17</p>
+<p class="date">2022-11-18</p>
 </header>
 <hr />
 <p><strong>NOTE</strong> This reference guide is in work-in-progress
@@ -478,7 +478,8 @@ terms of the local language.</p>
 <p>The complete list of supported tags is <code>DEFINITION</code>,
 <code>THEOREM</code>, <code>LEMMA</code>, <code>COROLLARY</code>,
 <code>PROPOSITION</code>, <code>CONJECTURE</code>, <code>AXIOM</code>,
-<code>CLAIM</code> <code>IDENTITY</code>, <code>PARADOX</code>.</p></li>
+<code>CLAIM</code>, <code>IDENTITY</code>,
+<code>PARADOX</code>.</p></li>
 <li><p><code>Examples</code></p>
 <p>Examples are embedded into a <em>block</em> that syntactically starts
 and ends with each a line of three dashes (<code>---</code>).</p>
@@ -497,7 +498,7 @@ z_1=1+3i ~~ z_2=2+4i ~~ z_1+z_2=3+7i
 <p>Basic text formatting options are bold text, italic text and colored
 text. Examples:</p>
 <pre><code>Some **bold** text. Some *italic* text.
-The word [sky]@color1 is written not in primary color.
+The word [sky]@color1 is written in primary color.
 [Some text written in the secondary color.]@color2.
 You can also write [bold text]@bold and [italic text]@italic similar to color notation.</code></pre>
 <p>Colors are only defined implicitly. The exact rendering depends on
@@ -759,7 +760,7 @@ width-75
 images/myImage.svg
 ---</code></pre>
 <p>Option <code>width-P</code> specifies the displayed width with a
-percentage value for <code>P</code>. E.g. <code>width-50</code> renders
+percentage value for <code>P</code>. E.g. <code>width-75</code> renders
 the figure with 75 % of the display width. Default is
 <code>width-100</code>.</p></li>
 </ul>
@@ -825,7 +826,7 @@ documentation can be found <a href="https://app.f07-its.fh-koeln.de/docs-smpl.ht
 <p>The following paragraphs describe all implemented exercise types.</p>
 <ul>
 <li><p><code>Calculation Exercises</code></p>
-<p>This type of exercise asks students to solve a question with one ore
+<p>This type of exercise asks students to solve a question with one or
 more numeric solutions. Solutions can be scalars, vectors, matrices or
 sets.</p>
 <pre><code>---
@@ -861,6 +862,14 @@ optional).</p>
 <p>Input Types:</p>
 <ul>
 <li><p><code>integers and real numbers</code></p>
+<p>Without any options, an input field is generated for each input with
+<code>#V</code>, for a variable <code>V</code> from part
+<code>@code</code>. The student has to type in the answer on a numeric
+keyboard.</p>
+<p>If option <code>choices-X</code> is given, a set of <code>X</code>
+possible answers is shown. One of theses answers correct. All other
+answers are incorrect. The student has to select the correct solution to
+gather scoring.</p>
 <p>Example:</p>
 <pre><code>---
 EXERCISE Multiplication
@@ -871,15 +880,16 @@ let x/y = rand(10,20);
 let z = x * y;
 @text
 Calculate $x * y=$ #z
----</code></pre>
-<p>Without any options, an input field is generated for each input
-<code>#V</code>. The student has to type in the answer on a numeric
-keyboard.</p>
-<p>If option <code>choices-X</code> is given, a set of <code>X</code>
-possible answers is shown. One of theses answers correct. All other
-answers are incorrect. The student has to select the correct solution to
-gather scoring.</p></li>
+---</code></pre></li>
 <li><p><code>complex numbers</code></p>
+<p>Per default, two input fields of the form    <code>[ ] + [ ]i</code>
+   are shown to enter the solution in normal form.</p>
+<p>If the option <code>polar-form</code> is given, then the student as
+to enter the solution in polar form.</p>
+<p>Option <code>choices-X</code> renders <code>X</code> buttons, where
+one of them shows the correct solution (refer to exercise type
+<code>integers and real numbers</code>).</p>
+<p>Example:</p>
 <pre><code>---
 EXERCISE Complex addition
 @options
@@ -889,15 +899,16 @@ let x/y = complex(rand(10,20), rand(10,20));
 let z = x + y;
 @text
 Calculate $x + y=$ #z
----</code></pre>
-<p>Per default, two input fields of the form    <code>[ ] + [ ]i</code>
-   are shown to enter the solution in normal form.</p>
-<p>If the option <code>polar-form</code> is given, then the student as
-to enter the solution in polar form.</p>
+---</code></pre></li>
+<li><p><code>sets</code></p>
+<p>Per default, if the set has length <span class="math inline"><em>n</em></span>, then <span class="math inline"><em>n</em></span> input fields are shown to enter
+the solution from a numeric keyboard.</p>
+<p>If option <code>n-args</code> is given, students must figure out the
+number of solution fields on their own.</p>
 <p>Option <code>choices-X</code> renders <code>X</code> buttons, where
 one of them shows the correct solution (refer to exercise type
-<code>integers and real numbers</code>).</p></li>
-<li><p><code>sets</code></p>
+<code>integers and real numbers</code>).</p>
+<p>Example:</p>
 <pre><code>---
 EXERCISE Linear Equations
 @options
@@ -907,15 +918,18 @@ let s = set(-2, 2);
 @text
 Solve $x^2 - 4 = 0$.
 $x=$ #s
----</code></pre>
-<p>Per default, if the set has length <span class="math inline"><em>n</em></span>, then <span class="math inline"><em>n</em></span> input fields are shown to enter
-the solution from a numeric keyboard.</p>
-<p>If option <code>n-args</code> is given, students must figure out the
-number of solution fields on their own.</p>
+---</code></pre></li>
+<li><p><code>matrices</code></p>
+<p>Per default, an input matrix is shown with a text field for each
+element of the solution matrix.</p>
+<p>If option <code>n-rows</code> is given, students must figure out the
+number of solution rows on their own.</p>
+<p>If option <code>n-cols</code> is given, students must figure out the
+number of solution columns on their own.</p>
 <p>Option <code>choices-X</code> renders <code>X</code> buttons, where
 one of them shows the correct solution (refer to exercise type
-<code>integers and real numbers</code>).</p></li>
-<li><p><code>matrices</code></p>
+<code>integers and real numbers</code>).</p>
+<p>Example:</p>
 <pre><code>---
 EXERCISE Matrix Operations
 @options
@@ -926,16 +940,7 @@ let A/B/C = rand&lt;3,3&gt;(0, 5);  % 3x3-matrices
 let D = A*B + C;
 @text
 Calculate $A*B + C=$ #D
----</code></pre>
-<p>Per default, an input matrix is shown with a text field for each
-element of the solution matrix.</p>
-<p>If option <code>n-rows</code> is given, students must figure out the
-number of solution rows on their own.</p>
-<p>If option <code>n-cols</code> is given, students must figure out the
-number of solution columns on their own.</p>
-<p>Option <code>choices-X</code> renders <code>X</code> buttons, where
-one of them shows the correct solution (refer to exercise type
-<code>integers and real numbers</code>).</p></li>
+---</code></pre></li>
 <li><p><code>vectors</code></p>
 <p>Exercises with vector solutions are technically matrix exercises with
 the number of rows, or columns respectively, set to one.</p></li>
@@ -1037,7 +1042,7 @@ let b = z&gt;w;
 ---</code></pre>
 <p>Correctness of an answer is determined by a boolean condition or
 variable, which is embedded into brackets <code>[ ]</code>.</p>
-<p>You are allowed to mix static static and dynamic answers. If variable
+<p>You are allowed to mix static and dynamic answers. If variable
 <code>x</code> is a boolean variable, then <code>[$x$]</code> is correct
 (incorrect) if <span class="math inline"><em>x</em></span> is true
 (false). The notation <code>[x]</code> indicates that the answer is
