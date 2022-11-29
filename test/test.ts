@@ -13,7 +13,7 @@ import * as lz_string from 'lz-string';
 console.log('mathe:buddy Compiler (c) 2022 by TH Koeln');
 
 // for all demo files
-const inputPath = '../mathebuddy-public-courses/demo-basic/';
+const inputPath = 'examples/';
 const files = fs.readdirSync(inputPath);
 for (const file of files) {
   const path = inputPath + file;
