@@ -24,15 +24,45 @@ The reference compiler to translate MBL to MBCL can be found on [GitHub](https:/
 ### Intrinsic Data Types
 
 - IDENTIFIER
+
+  Example: `"hello"`
+
 - STRING
+
+  Example: `"hello, world!"`
+
 - INTEGER
+
+  Example: `1337`
+
 - REAL
+
+  Example: `3.14159`
+
 - UNIX_TIMESTAMP
+
+  Time in seconds from 1.1.1970 00:00
+
+  Example: `1669712632`
+
 - MATH_STRING:
-  - INT = INTEGER;
-  - REAL = REAL;
-  - INT_SET = "{" [ INT , { "," INT } ] "}";
-  - VECTOR = "[" [ REAL , { "," REAL } ] "]";
+
+  - EBNF Definition: `INT = INTEGER;`
+
+    Example: `"3"`
+
+  - EBNF Definition: `REAL = REAL;`
+
+    Example: `"-3.14"`
+
+  - EBNF Definition: `INT_SET = "{" [ INT , { "," INT } ] "}";`
+
+    Example: `"{1,3,5}"`
+
+  - EBNF Definition: `VECTOR = "[" [ REAL , { "," REAL } ] "]";`
+
+    Example: `"[-1337,2.71,9.81]"`
+
   - TODO
 
 ### COURSE
