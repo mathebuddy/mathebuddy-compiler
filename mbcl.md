@@ -21,6 +21,26 @@ The reference compiler to translate MBL to MBCL can be found on [GitHub](https:/
 
 ## JSON Specification
 
+We use the following notation instead of JSON-schema (which is overkill!) to denote the structure of data.
+
+- `A = { "x":IDENTIFIER, "y":B }; B = { "z": INT };` denotes an object with name `A` and entries `x` and `y`. The value of `x` must be an identifier, while `y` is an object of type `B`.
+
+  JSON-Example that is compatible to the grammar:
+
+  `{"x": "leet", "y": {"z": 1337}}`
+
+- `X = {"a":INT|"xx"}` denotes alternative definitions for attribute `a`.
+
+  JSON-Example that is compatible to the grammar:
+
+  `{"a":"xx"}` or `{"a":314}` or `{"a":42}`
+
+- `Y = {"x":"txt"} | INT;` denotes alternative definitions for object `Y`.
+
+  JSON-Examples (fragments only) that are all compatible to the grammar:
+
+  `{"x":"txt}` or `1337` or `271`.
+
 ### Intrinsic Data Types
 
 - IDENTIFIER
@@ -78,7 +98,7 @@ COURSE = {
   "mbclVersion": INTEGER
   "modifiedDate": UNIX_TIMESTAMP,
   "chapters": CHAPTER[]
-}
+};
 ```
 
 Example:
@@ -100,7 +120,7 @@ CHAPTER = {
   "title": STRING,
   "alias": STRING,
   "levels": LEVEL[];
-}
+};
 ```
 
 ### LEVEL
@@ -112,7 +132,7 @@ LEVEL = {
   "posY": INTEGER,
   "requires": LEVEL[],
   "items": LEVEL_ITEM[]
-}
+};
 ```
 
 ```
@@ -120,6 +140,47 @@ LEVEL_ITEM = {
   "type": "exercise" | TODO,
   "title": STRING,
   "data": EXERCISE | TODO
+};
+```
+
+### PARAGRAPH
+
+```
+TEXT = {
+  "type": "paragraph",
+  "items": TEXT[]
+} | {
+  "type": "text",
+  "value": STRING
+} | {
+  "type": "inline-math",
+  "items": TEXT[]
+} | {
+  "type": "variable",
+  "value": IDENTIFIER
+} | {
+  "type": "linefeed"
+};
+```
+
+The following example represents a paragraph containing a bold text &nbsp;&nbsp; **Hello, world $x^2 + y^2$!** &nbsp;&nbsp; that ends with a line feed.
+
+```json
+{
+  "type": "paragraph",
+  "items": [
+    {
+      "type": "bold",
+      "items": [
+        { "type": "text", "value": "Hello, world" },
+        { "type": "inline-math", "items": [{"type":"text","value":"x^2+y^2"}]}
+        { "type": "text", "value": "!" }
+      ]
+    },
+    {
+      "type": "linefeed"
+    }
+  ]
 }
 ```
 
@@ -130,20 +191,20 @@ EXERCISE = {
   "variables": { IDENTIFIER: VARIABLE },
   "instances": INSTANCE[],
   "text": PARAGRAPH
-}
+};
 ```
 
 ```
 VARIABLE = {
   "type": "INT" | "INT_SET" | "REAL" | "REAL_SET"
-          | "COMPLEX" | "COMPLEX_SET" | "VECTOR" | "MATRIX",
-}
+          | "COMPLEX" | "COMPLEX_SET" | "VECTOR" | "MATRIX"
+};
 ```
 
 ```
 INSTANCE = {
   IDENTIFIER: MATH_STRING
-}
+};
 ```
 
 ## Compressed Courses
