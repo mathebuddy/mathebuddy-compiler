@@ -1,0 +1,18 @@
+Exercise 144
+################
+
+---
+EXERCISE Restklassen
+@code
+let a:b:c = rand(10,20);
+let a2:b2:c2:c3 = rand(2,5);
+let sa = a mod a2;
+b = - b;
+let sb = b mod b2;
+let sc = c2*c3 mod c2;
+@text
+Geben Sie jeweils den **Standardrepräsentanten** an:
+- $ \Z_c2: c2*c3 \equiv$ #sc $\mod c2 $
+- $ \Z_a2: a \equiv$  #sa  $\mod a2 $
+- $ \Z_b2: b \equiv$  #sb  $\mod b2 $
+---

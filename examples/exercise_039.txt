@@ -1,0 +1,14 @@
+Exercise 39
+################
+
+---
+EXERCISE Konvergente Folgen
+@code
+let x:y:z:w = rand(2,5);
+@text
+Welche der folgenden Folgen sind **konvergent**?
+[x] $ (a_n)_{n \in \N} $ mit $ a_n = x $
+[ ] $ (a_n)_{n \in \N} $ mit $ a_n = x \cdot n $
+[x] $ (a_n)_{n \in \N} $ mit $ a_n = (x \cdot n^10 + y \cdot n^2)/(z \cdot n^{10} + w \cdot n^4) $
+[ ] $ (a_n)_{n \in \N} $ mit $ a_n = (-1)^n \cdot x $
+---

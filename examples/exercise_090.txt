@@ -1,0 +1,11 @@
+Exercise 90
+################
+
+---
+EXERCISE Substitutionsregel
+@code
+let f(x) = (x+1)^2;
+@text
+Bestimme durch **Substitution:**
+$ \int f \dx = #[diff x]f + C ~~ (C \in \R)$
+---

@@ -1,0 +1,18 @@
+Exercise 98
+################
+
+---
+EXERCISE Kollinear
+@code
+let a:b = rand(-4,4);
+let ux:uy = rand(-3,3);
+let u1 = [[ux],[uy]];
+let v1 = a * u1;
+let ux2:uy2 = rand(-3,3);
+let u2 = [[ux2],[uy2]];
+let v2 = [[ux2*b],[uy2*(-b)]];
+@text
+Welche der folgenden Ortsvektoren sind **kollinear**?
+[x] $ u=u1 $ und $ v=v1 $
+[ ] $ u=u2 $ und $ v=v2 $
+---

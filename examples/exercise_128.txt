@@ -1,0 +1,13 @@
+Exercise 128
+################
+
+---
+EXERCISE Inverse einer komplexen Zahl
+@code
+let a:b = rand(2,5);
+let c = a^2 + b^2;
+let r = complex(a,b);
+@text
+Sei $"z" \in \C$ und $z=\frac{a}{c}-\frac{b}{c} \cdot i $.
+- Berechne $\frac{1}{z}=$ #r
+---

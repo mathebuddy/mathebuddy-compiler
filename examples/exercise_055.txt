@@ -1,0 +1,13 @@
+Exercise 55
+################
+
+---
+EXERCISE Ableitungen
+@code 
+let a:b = rand(3,8);
+f1(x) = a / x;
+f1_deriv(x) = diff(f1, x);
+@text
+$ f(x) = f1 $
+$ f'(x) = $ #f1_deriv
+---

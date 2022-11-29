@@ -1,0 +1,15 @@
+Exercise 121
+################
+
+---
+
+----
+EXERCISE Rang
+@code
+let A = rand<3,3>(0,2);
+let r = rank(A);
+@text
+Sei $ "A" = A $ eine 3 x 3 Matrix über $ \R $.
+Bestimmen Sie den **Rang**:
+- $ rg("A") = $ #r
+---

@@ -1,0 +1,15 @@
+Exercise 134
+################
+
+---
+EXERCISE Komplexe Nullstellen
+@code
+let a = rand(2,8)^2;
+let z1 = sqrt(a) * 1i;
+let z2 = -z1;
+let r = set(z1,z2);
+@text
+Gegeben sei das Polynom $f(z) = z^2 + a$
+- Bestimme die beiden **Nullstellen**: $z=$ #res
+*Hinweis: Gebe komplexe Zahlen in der Form $"a"+"b"i$ ein*
+---

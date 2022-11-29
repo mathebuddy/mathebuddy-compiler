@@ -1,0 +1,11 @@
+Exercise 75
+################
+
+---
+EXERCISE Grenzen
+@code
+let a = rand(3,8);
+let i = 0;
+@text
+Bestimme $ \int_a^a f(x) dx = $ #i
+---

@@ -1,0 +1,10 @@
+Exercise 77
+################
+
+---
+EXERCISE Integrierbarkeit
+@text
+Seien $a,b \in \R, a < b$:
+[x] Jede **stetige** Funktion $f:[a,b] \to \R$ ist integrierbar.
+[x] Jede **monotone** Funktion $f:[a,b] \to \R$ ist integrierbar.
+---

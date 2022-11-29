@@ -1,0 +1,14 @@
+Exercise 4
+################
+
+---
+EXERCISE Mengen
+@code
+let a/b/c = rand(1,10);
+let x = max(a,b,c) + 4;
+let A = set(a,b,c);
+@text
+Gegeben Sei die Menge $"A"=A$. Welche der folgenden Aussagen sind wahr?
+[x] $ a \in "A" $
+[x] $ x \notin "A" $
+---

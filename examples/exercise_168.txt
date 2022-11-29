@@ -1,0 +1,17 @@
+Exercise 168
+################
+
+---
+EXERCISE Partielle Ableitungen
+@code
+let a = rand(0,1);
+let b = 1 - a;
+let c = rand(4,8);
+let f(x,y) = c / (a*x^2 + b*y^2);
+let fx(x,y) = diff(f, x);
+let fy(x,y) = diff(f, y);
+@text
+Sei $"f"(x,y)=f$. Bestimme die **partiellen Ableitungen**:
+- $\frac{\partial f}{\partial x}=$ #fx
+- $\frac{\partial f}{\partial y}=$ #fy
+---

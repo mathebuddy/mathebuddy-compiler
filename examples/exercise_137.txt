@@ -1,0 +1,14 @@
+Exercise 137
+################
+
+---
+EXERCISE Komplexe Potenzen
+@code
+let a = rand(1,2);
+let c = rand(4,8);
+let z = complex(a,a);
+let res = z^c;
+@text
+Berechne $(z)^c$ unter Verwendung der Exponentialform:
+- #res
+---

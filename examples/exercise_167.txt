@@ -1,0 +1,15 @@
+Exercise 167
+################
+
+---
+EXERCISE Partielle Ableitungen
+@code
+let a:b:c:d:e = rand(2,5);
+let f(x,y) = a*x^b + c*x^d*y^e;
+let fx(x,y) = diff(f, x);
+let fy(x,y) = diff(f, y);
+@text
+Sei $"f"(x,y)=f$. Bestimme die **partiellen Ableitungen**:
+- $\frac{\partial f}{\partial x}=$ #fx
+- $\frac{\partial f}{\partial y}=$ #fy
+---

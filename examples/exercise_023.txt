@@ -1,0 +1,11 @@
+Exercise 23
+################
+
+---
+EXERCISE Umkehrabbildung
+@text
+Eine Funktion $f$ besitzt genau dann eine Umkehrfunktion, wenn folgendes gilt:
+[x] $f$ ist injektiv.
+[x] $f$ ist surjektiv.
+[x] $f$ ist bijektiv.
+---

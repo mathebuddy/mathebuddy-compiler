@@ -1,0 +1,13 @@
+Exercise 147
+################
+
+---
+EXERCISE Untervektorräume
+@code
+let a:b:c:d = rand(1,5);
+@text
+Welche der folgenden Mengen sind Untervektorräume des $\R^2$?
+[ ] $ M_1 = \{ \MAT{a;b} \} $
+[x] $ M_2 = \{ \MAT{0;0} \} $
+[ ] $ M_3 = \{ \mu \cdot \MAT{c;d} ~|~ \mu \in \Z } $
+---

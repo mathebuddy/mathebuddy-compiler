@@ -1,0 +1,10 @@
+Exercise 37
+################
+
+---
+EXERCISE Konvergenz von Folgen
+@text
+Sei $ (a_n)_{n \in \N} $ eine konvergente Folge. Dann ist die Folge $ (a_n) $
+[x] beschränkt
+[ ] unbeschränkt
+---

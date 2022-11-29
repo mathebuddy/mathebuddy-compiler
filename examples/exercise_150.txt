@@ -1,0 +1,17 @@
+Exercise 150
+################
+
+---
+EXERCISE Matrizenoperationen
+@options
+n-rows
+n-cols
+@code
+let A:C = rand<2,1>(0,1);
+let B = rand<2,2>(0,1);
+let term = transpose(A + transpose(B) * C) mod 2;
+@text
+Berechne den folgenden Term über $\GF(2)$.
+- $ (A + B^T \cdot C)^T =$ #term
+*Hinweis: Dimensioniere zunächst die Ergebnismatrix.*
+---

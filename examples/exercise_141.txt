@@ -1,0 +1,15 @@
+Exercise 141
+################
+
+---
+EXERCISE Transponierte Matrix
+@options
+n-rows
+n-cols
+@code
+let A = rand<3,2>(1,3);
+let B = transpose(A);
+@text
+Berechne $A^T=$ #B
+*Hinweis: Dimensioniere zunächst die Ergebnismatrix.*
+---

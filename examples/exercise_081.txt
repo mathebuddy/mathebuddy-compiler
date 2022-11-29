@@ -1,0 +1,12 @@
+Exercise 81
+################
+
+---
+EXERCISE Stammfunktion
+@code
+let u:v = rand(3,8);
+let f(x) = u + v * x;
+@text
+Bestimme die Stammfunktion zu $"f"(x) = f $
+$ F(x) = $ #[diff x]f $ + C ~~ (C \in \R)$
+---

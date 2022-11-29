@@ -1,0 +1,11 @@
+Exercise 69
+################
+
+---
+EXERCISE Krümmung
+@text
+Sei $f$ eine auf $[a,b]$ stetige und auf $]a,b[$ zweimal differenzierbare Funktion.
+Gilt $f''(x)>0$ für alle $x in ]a,b[$, so ist $f$ auf dem Intervall $]a,b[$
+(x) **linksgekrümmt oder konvex**.
+( ) **rechtsgekrümmt oder konkav**.
+---

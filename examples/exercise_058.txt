@@ -1,0 +1,12 @@
+Exercise 58
+################
+
+---
+EXERCISE Ableitungen
+@code
+let f1(x) = sin(x);
+let f1_deriv(x) = diff(f1, x);
+@text
+$ f(x) = f1 $
+$ f'(x) = $ #f1_deriv
+---

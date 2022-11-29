@@ -1,0 +1,11 @@
+Exercise 67
+################
+
+---
+EXERCISE Stationäre Stellen
+@text
+Sei $f$ eine auf $]a,b[$ zweimal differenzierbare Funktion und $x_0 \in ]a,b[$ eine Stelle mit $f'(x_0)=0$.
+Gilt $f''(x_0)<0$, so besitzt $f$ an der Stelle $x_0$:
+(x) ein lokales **Maximum**.
+( ) ein lokales **Minimum**.
+---

@@ -1,0 +1,10 @@
+Exercise 32
+################
+
+---
+EXERCISE Sinus und Cosinus
+@text
+Sei $P=(u,v)$ ein Punkt auf dem Einheitskreis. Dann ist:
+(x) $ sin(x) = v $
+( ) $ sin(x) = u $
+---

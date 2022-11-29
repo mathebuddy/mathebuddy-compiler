@@ -1,0 +1,12 @@
+Exercise 155
+################
+
+---
+EXERCISE Lineare Abbildungen
+@code
+let a:b:c:d = rand(2,9);
+@text
+Ist $f:\R^2\to\R^2$, $f(x_1,x_2)=(a x_1 + b x_2, c x_1 + d)$ eine **lineare Abbildung**?
+( ) ja
+(x) nein
+---

@@ -1,0 +1,13 @@
+Exercise 43
+################
+
+---
+EXERCISE Geometrische Reihe
+@code
+let x = rand(2,5);
+let q = 1/x;
+let res = 1/(1-q) - 1 - q;
+@text
+Bestimme $ \sum_{k=2}^{\infty} (1/x)^k $
+- #res
+---

@@ -1,0 +1,12 @@
+Exercise 76
+################
+
+---
+EXERCISE Eigenschaften des Riemann-Integrals
+@text
+Seien $a<b<c$ und $f:[a,c] \to \R$ eine Funktion die auf dem Intervall $[a,c]$ Riemann-integrierbar ist.
+Wählen Sie die korrekten Aussagen:
+[x] $ \int_a^c f(x) dx = \int_a^b f(x) dx + \int_b^c f(x) dx $
+[x] $ \int_b^a f(x) dx = - \int_a^b f(x) dx $
+[ ] $ \int_b^a f(x) dx = \int_a^b f(x) dx $
+---

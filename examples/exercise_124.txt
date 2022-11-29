@@ -1,0 +1,14 @@
+Exercise 124
+################
+
+---
+EXERCISE Addition
+@code
+let a = rand(1,5) + rand(1,5)*1i;
+let b = randZ(-1,1)*rand(1,5) + rand(1,5)*1i;
+let c = a + b;
+@text
+Seien $z_1=a$ und $z_2=b$ komplexe Zahlen.
+Berechne die folgende **Summe** und gebe das Ergebnis in Normalform an:
+- $z_1+z_2=$ #c
+---

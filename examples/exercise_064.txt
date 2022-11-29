@@ -1,0 +1,17 @@
+Exercise 64
+################
+
+---
+EXERCISE Höhere Ableitungen
+@code
+let a:b:c = rand(3,8);
+let f1(x) = a*x^2 + b*x + c;
+let f1_deriv_1(x) = diff(f1, x);
+let f1_deriv_2(x) = diff(f1_deriv_1, x);
+let f1_deriv_3(x) = diff(f1_deriv_2, x);
+@text
+$ f(x) = f1 $
+$ f'(x) = $ #f1_deriv_1
+$ f''(x) = $ #f1_deriv_2
+$ f'''(x) = $ #f1_deriv_3
+---

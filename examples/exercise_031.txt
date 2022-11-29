@@ -1,0 +1,14 @@
+Exercise 31
+################
+
+---
+EXERCISE Rechenregeln für allgemeine Exponentialfunktionen und Logarithmen
+@text
+Seien $ a, b > 0 $. Wähle die richtigen Antworten.
+[x] $ {a_1 a_2}^x = a_1^x a_2^x $     für $x \in \R$
+[x] $ log_a(1/x) = -log_a(x) $     für $x > 0$
+[x] $ log_a(b^x) = x log_a(b) $     für $x \in \R$
+[x] $ log_a(a^x) = x $     für $x \in \R$
+[x] $ log_a(x_1 x_2) = log_a(x_1) + log_a(x_2) $     für $x_1, x_2 > 0$
+[ ] $ log_a(x_1 x_2) = log_a(x_1) * log_a(x_2) $     für $x_1, x_2 > 0$
+---

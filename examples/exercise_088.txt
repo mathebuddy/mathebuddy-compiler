@@ -1,0 +1,11 @@
+Exercise 88
+################
+
+---
+EXERCISE Partielle Integration
+@code
+let f(x) = x * sin(x);
+@text
+Bestimme durch **partielle Integration:**
+$ \int f \dx = $ #[diff x]f $ + C ~~ (C \in \R)$
+---

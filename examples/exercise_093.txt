@@ -1,0 +1,16 @@
+Exercise 93
+################
+
+---
+EXERCISE Partialbruchzerlegung
+@code
+let a:b = rand(3,5);
+@text
+Das folgende Integral soll gelöst werden:
+- $\int b / (x (x-a)^2) \dx$
+Welcher ist der richtige **Ansatz**?
+(x) $ (A)/(x) + (B_1)/(x-a) + (B_2)/((x-a)^2)$
+( ) $ (A)/(x) + (B)/((x-a)^2)$
+( ) $ (A)/((x-a)^2)$
+( ) $ (A)/(x-a) + (B)/((x-a)^2)$
+---

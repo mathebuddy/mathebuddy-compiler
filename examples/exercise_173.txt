@@ -1,0 +1,19 @@
+Exercise 173
+################
+
+---
+EXERCISE Höhere partielle Ableitungen
+@code
+let a = rand(0,1);
+let b = 1 - a;
+let c:d = rand(3,4);
+let f(x,y) = c * x^d * y + x^(d-1);
+let dxx(x,y) = diff( diff(f,x), x);
+let dxy(x,y) = diff( diff(f,x), y);
+let dyy(x,y) = diff( diff(f,y), y);
+@text
+Sei $"f"(x,y)=f$. Bestimme die folgenden **höheren partiellen Ableitungen**:
+- $\frac{\partial^2 "f"}{\partial x^2}=$ #dxx
+- $\frac{\partial^2 "f"}{\partial x \partial y}=$ #dxy
+- $\frac{\partial^2 "f"}{\partial y^2}=$ #dyy
+---

@@ -1,0 +1,12 @@
+Exercise 97
+################
+
+---
+EXERCISE Rechenregeln
+@text
+Welche der folgenden Rechenregeln zur Addition und skalaren Multiplikation im $\R^n$ sind korrekt?
+[x] $ (u+v)+w = u+(v+w) ~~ \forall u, v, w in \R^n $
+[x] $ 1 * v = v ~~ \forall v in V $
+[x] $ (lambda + mu) v = lambda v + mu v ~~ \forall lambda, mu \in \R, ~~ v \in \R^n $
+[x] $ v + w = w + v ~~ \forall v, w \in \R^n $
+---

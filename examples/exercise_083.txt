@@ -1,0 +1,11 @@
+Exercise 83
+################
+
+---
+EXERCISE Stammfunktion
+@code
+let f(x) = cos(x);
+@text
+Bestimme die Stammfunktion zu $"f"(x) = f $
+$ F(x) = #[diff x]f + C ~~ (C \in \R)$
+---

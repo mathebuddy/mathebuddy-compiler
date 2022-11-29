@@ -1,0 +1,12 @@
+Exercise 85
+################
+
+---
+EXERCISE Uneigentliches Integral
+@code
+let a = rand(3,8);
+let f(x) = a / x^2;
+@text
+Bestimme das folgende uneigentliche Integral:
+$ \int_1^{\infty} f \dx = $ #a
+---

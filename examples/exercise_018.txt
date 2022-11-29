@@ -1,0 +1,14 @@
+Exercise 18
+################
+
+---
+EXERCISE Injektivität, Surjektivität, Bijektivität
+@code
+let a = rand(2,10);
+@text
+Betrachten Sie die folgende Abbildung und wählen Sie die richtigen Antworten aus:
+$ f : \R \to [a,\infty[, ~~  f(x) = x^2 + a $
+[ ] $f$ ist injektiv.
+[x] $f$ ist surjektiv.
+[ ] $f$ ist bijektiv.
+---

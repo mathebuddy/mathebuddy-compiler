@@ -1,0 +1,14 @@
+Exercise 16
+################
+
+---
+EXERCISE Aussagenlogik
+@code
+let a:b:c:d = rand(3,5);
+@text
+Welche der folgenden Ausdrücke sind **wahre Aussagen**?
+[ ] Die Menge $M=\{k \in \N | k=2 m text( und ) m>3}$ hat 3 Elemente.
+[ ] $a + b * c$.
+[x] $\exists x \in \z ~~ x < 0$
+[x] Die Gleichung $a x + c = d$ besitzt genau eine Lösung.
+---

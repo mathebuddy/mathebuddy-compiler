@@ -1,0 +1,17 @@
+Exercise 36
+################
+
+---
+EXERCISE Konvergenz von Folgen
+@code
+let x:y:z = rand(2,5);
+let u:v:w = rand(2,5);
+let res1 = 0;
+let res2 = x / y;
+let res3 = x / u;
+@text
+Bestimme:
+* $ \lim_{n \to \infty} x/n=$ #res1
+* $ \lim_{n \to \infty} (x*n)/(y*n+z)=$ #res2
+* $ \lim_{n \to \infty} (x*n^2 + y*n + z)/(u*n^2 + v*n + w)=$ #res3
+---

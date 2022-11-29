@@ -1,0 +1,14 @@
+Exercise 101
+################
+
+---
+EXERCISE Eukidische Norm
+@code 
+let ux:uy:uz = rand(-5,5);
+let u = [[ux],[uy],[uz]];
+let en = sqrt(ux*ux + uy*uy + uz*uz);
+@text
+Sei $ "u"=u \in \R^3 $. Berechne die **euklidische Norm**:
+- $ ||"u"|| = $ #en
+*Hinweis: Schreiben Sie (sofern nötig) für $\sqrt{x}$ `sqrt(x)`.*
+---

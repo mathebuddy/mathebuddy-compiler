@@ -1,0 +1,17 @@
+Exercise 68
+################
+
+---
+EXERCISE Stationäre Stellen
+@code
+let a:b = rand(3,5);
+let f1(x) = a * x^2 + b;
+let f1_deriv_1(x) = diff(f1, x);
+let f1_deriv_2(x) = diff(f1_deriv_1, x);
+let s = 0;
+@text
+Sei $ f(x) = f1 $. Bestimme die stationäre Stelle: $x_0=$ #s
+Dann besitzt $f$ in $x_0$:
+( ) ein lokales Maximum
+(x) ein lokales Minimum
+---

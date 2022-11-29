@@ -1,0 +1,15 @@
+Exercise 122
+################
+
+---
+EXERCISE Inverse Matrix
+@code
+let A = zeros<3,3>();
+do {
+    A = rand<3,3>(0,2);
+} while(is_invertible(A) == false);
+let iA = inv(A);
+@text
+Berechnen Sie die **inverse** Matrix:
+- $ A^(-1) = $ #iA
+---

@@ -1,0 +1,18 @@
+Exercise 171
+################
+
+---
+EXERCISE Gradient
+@code
+let a = rand(0,1);
+let b = 1 - a;
+let c:d = rand(2,5);
+let f(x,y) = exp(c*x) * (a*sin(d*y) + b*cos(d*y));
+let fx(x,y) = diff(f, x);
+let fy(x,y) = diff(f, y);
+@text
+Gegeben sei eine Funktion $"f"(x,y)=f$.
+Bestimme den **Gradienten**:
+- $\nabla"f($  #fx  ,  #fy  $)$
+*Hinweis: gebe die Exponentialfunktion in der Form `exp(x)` an.*
+---

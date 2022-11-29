@@ -1,0 +1,15 @@
+Exercise 162
+################
+
+---
+EXERCISE Orthogonale Matrizen
+@code
+let c = rand(-4,-2);
+let d = rand(2,4);
+let a = c^2 + d^2;
+let b = -c;
+@text
+Bestimme $a, b \in \R$, sodass die folgende Matrix über $\R$ **orthogonal** ist:
+- $ \frac{1}{\sqrt{"a"}} [[c,d],[d,"b"]] $
+$"a"=$ #a $"b"=$ #b
+---

@@ -1,0 +1,19 @@
+Exercise 161
+################
+
+---
+EXERCISE Orthogonale Matrizen
+@code
+let E2 = eye(2);
+let A/B/C/D = rand<2,2>(0,1);
+let qa = (A * transpose(A)) == E2;
+let qb = (B * transpose(B)) == E2;
+let qc = (C * transpose(C)) == E2;
+let qd = (D * transpose(D)) == E2;
+@text
+Welche der folgenden Matrizen über $\R$ sind **orthogonal**?
+[$qa$] $A$
+[$qb$] $B$
+[$qc$] $C$
+[$qd$] $D$
+---

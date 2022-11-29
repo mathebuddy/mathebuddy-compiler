@@ -1,0 +1,12 @@
+Exercise 89
+################
+
+---
+EXERCISE Partielle Integration
+@code
+let f(x) = (x+1) / exp(x);
+@text
+Bestimme durch **partielle Integration:**
+$ \int f \dx = $ #[diff x]f $ + C ~~ (C \in \R)$
+*Hinweis: Schreiben Sie $e^x$ als $exp(x)$.*
+---

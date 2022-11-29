@@ -1,0 +1,15 @@
+Exercise 78
+################
+
+---
+EXERCISE Bestimmtes Integral
+@code 
+let a = rand(0,1);
+let b = rand(4,5);
+let u = rand(3,8);
+let f(x) = u;
+let f_int = integrate(f, x, a, b);
+@text
+Bestimme das folgende **bestimmte** Integral:
+- $ \int_a^b f \dx = $ #f_int
+---

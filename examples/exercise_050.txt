@@ -1,0 +1,10 @@
+Exercise 50
+################
+
+---
+EXERCISE Geradensteigung
+@text
+Sei $g$ eine Gerade im $\R^2$ und $(x_0, y_0), (x_1, y_1)$ zwei verschiedene Punkte auf $g$. Dann ist die Steigung $m$ definiert durch:
+(x) $m = \frac{y_1-y_0}{x_1-x_0} = \frac{\Delta y}{\Delta x}$
+( ) $m = \frac{x_1-x_0}{y_1-y_0} = \frac{\Delta x}{\Delta y}$
+---

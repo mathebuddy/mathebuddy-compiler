@@ -1,0 +1,23 @@
+Exercise 172
+################
+
+---
+EXERCISE Rotation und Divergenz
+@code
+let a:b = rand(0,1);
+let c = 1 - a;
+let dd = 1 - b;
+let e = rand(2,9);
+let f1(x,y,z) = a * x + c * z;
+let f2(x,y,z) = b * sin(PI*y) + dd * cos(PI*x);
+let f3(x,y,z) = x^3 + e * z^2;
+let rx(x,y,z) = diff(f3,y) - diff(f2,z);
+let ry(x,y,z) = diff(f1,z) - diff(f3,x);
+let rz(x,y,z) = diff(f2,x) - diff(f1,y);
+let d(x,y,z) = diff(f1,x) + diff(f2,y) + diff(f3,z);
+@text
+Sei $f(x,y) = ( f1, f2, f3 )$.
+Bestimme **Rotation** und **Divergenz** des Vektorfeldes.
+- rot$(f)=($  #rx  ,  #ry ,  #rz  $)$
+- div$(f)=$ #d
+---

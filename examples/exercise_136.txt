@@ -1,0 +1,13 @@
+Exercise 136
+################
+
+---
+EXERCISE Konvergenzradius
+@code
+let a:b = rand(2,10);
+let z1 = complex(a,b);
+let res = 1;
+@text
+Bestimme den **Konvergenzradius** der Potenzreihe $\sum_{k=0}^{\infty} k \cdot (z1) \cdot z^k$
+- $R=$ #res
+---

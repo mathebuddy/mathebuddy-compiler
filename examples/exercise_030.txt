@@ -1,0 +1,14 @@
+Exercise 30
+################
+
+---
+EXERCISE Logarithmus
+@text
+Wähle die richtigen Antworten ($a > 0$):
+[x] $ log_a (x) = {ln(x)}/{ln(a)} $
+[ ] $ log_a (x) = {ln(a)}/{ln(x)} $
+[x] $ log_a (1) = 0 $
+[x] $ log_a (a) = 1 $
+[ ] $ log_a (1) = 1 $
+[ ] $ log_a (0) = 0 $
+---

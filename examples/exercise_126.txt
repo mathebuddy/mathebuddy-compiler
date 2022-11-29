@@ -1,0 +1,14 @@
+Exercise 126
+################
+
+---
+EXERCISE Komplex konjugierte Zahl
+@code
+let z = rand(1,5) + rand(1,5)*1i;
+let c = conj(z);
+let z2 = z * c;
+@text
+Sei $"z" \in \C$ und $"z"=z$.
+- Berechne die zu $"z"$ **komplex konjugierte** Zahl: $\bar{"z"}=$ #c
+- Berechne $"z" \cdot \bar{"z"}=$ #z2
+---

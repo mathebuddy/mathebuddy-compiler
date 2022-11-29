@@ -1,0 +1,14 @@
+Exercise 33
+################
+
+---
+EXERCISE Sinus und Cosinus
+@text
+Sei $x \in \R$. Wähle die richtigen Antworten:
+[x] $ sin(x + pi) = - sin(x) $
+[x] $ sin^2(x) + cos^2(x) = 1 $
+[x] $ sin(-x) = -sin(x) $
+[x] $ cos(-x) = cos(x) $
+[ ] $ sin(-x) = sin(x) $
+[ ] $ cos(-x) = -cos(x) $
+---

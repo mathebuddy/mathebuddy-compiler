@@ -1,0 +1,13 @@
+Exercise 19
+################
+
+---
+EXERCISE Verkettung von Funktionen
+@code
+let a:b:c = rand(2,5);
+@text
+Sei  $ f : \R \to \R, f(x) = a*x + b $ und $ g : \R \to \R, g(x) = x^c $.
+Wählen Sie die richtige Antwort aus:
+(x) $ (g \circ f)(x) = (a*x + b)^c $
+( ) $ (g \circ f)(x) = a*x^c + b $
+---

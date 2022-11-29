@@ -1,0 +1,15 @@
+Exercise 96
+################
+
+---
+EXERCISE Einheitsvektor
+@options
+n-rows
+@code
+let k = rand(0,2);
+let v = zeros<3,1>();
+v[k,0] = 1;
+@text
+Geben Sie den Einheitsvektor $e_k$ im $\R^3$ an:
+#v
+---

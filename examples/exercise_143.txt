@@ -1,0 +1,16 @@
+Exercise 143
+################
+
+---
+EXERCISE Matrizenoperationen
+@options
+n-rows
+n-cols
+@code
+let A:C = rand<2,1>(1,3);
+let B = rand<2,2>(1,3);
+let D = transpose(A + transpose(B) * C);
+@text
+Berechne $ (A+B^T \cdot C)^T =$ #D
+*Hinweis: Dimensioniere zunächst die Ergebnismatrix.*
+---

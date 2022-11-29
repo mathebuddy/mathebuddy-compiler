@@ -1,0 +1,10 @@
+Exercise 15
+################
+
+---
+EXERCISE Aussagenlogik
+@text
+Seien $A$ und $B$ Aussagen. Die **Konjunktion** von $A$ und $B$ wird dargestellt durch:
+(x) $A \land B$
+( ) $A \lor B$
+---

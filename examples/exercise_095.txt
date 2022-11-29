@@ -1,0 +1,16 @@
+Exercise 95
+################
+
+---
+EXERCISE Vektorrechnung
+@code
+let lambda = rand(-9,9);
+let u:v = rand<3,1>(-9,9);
+let w = u + v;
+let x = lambda * u;
+@text
+Gegeben sind die beiden Vektoren $"u"=u$ und $"v"=v$ im $RR^3$. Berechne:
+TODO: input rows = resizable
+- $ "u"+"v" = $ #w
+- $ lambda "u" = $ #x
+---

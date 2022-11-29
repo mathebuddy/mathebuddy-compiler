@@ -1,0 +1,15 @@
+Exercise 170
+################
+
+---
+EXERCISE Gradient
+@code
+let c = rand(2,5);
+let f(u,v) = u^2 / v^2 + c;
+let fu(u,v) = diff(f, u);
+let fv(u,v) = diff(f, v);
+@text
+Gegeben sei eine Funktion $"f"(u,v)=f$.
+Bestimme den **Gradienten**:
+- $\nabla"f($  #fu  ,  #fv  $)$
+---

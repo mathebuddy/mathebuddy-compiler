@@ -1,0 +1,24 @@
+Exercise 47
+################
+
+---
+EXERCISE Stetigkeit
+@code
+let a1:b1:c1:d1 = rand(3,8);
+let a2:b2 = rand(3,8);
+let a3 = rand(3,8);
+let a4:b4:c4 = rand(3,8);
+let a5:b5 = rand(3,8);
+let a6:b6 = rand(3,8);
+let a7:b7 = rand(2,4);
+let c7 = rand(5,7);
+@text
+Welche der folgenden Funktionen sind auf ganz $RR$ stetig?
+[x] $f(x) = a1 \cdot x^3 + b1 \cdot x^2 + c1 \cdot x + d1$
+[x] $f(x) = a2 \cdot sin(b2 \cdot x)$
+[x] $f(x)= (a3 \cdot x^2)/(x)$
+[x] $f(x)= a4 \cdot \e^{b4 \cdot x+c4}$
+[ ] $f(x)= a5 \cdot \sqrt{b5 \cdot x}$
+[x] $f(x)= ( (x-a6) \cdot (x-b6) ) / (x-a6)$
+[ ] $f(x)= ( (x-a7) \cdot (x-b7) ) / (x-c7)$
+---

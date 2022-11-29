@@ -1,0 +1,12 @@
+Exercise 12
+################
+
+---
+EXERCISE Supremum, Infimum
+@text
+Sei $X \subset \R$.
+* $M \in \R$ heißt **Supremum** von $X$, falls $M$ eine #"obere" Schranke ist und keine kleinere #"obere" Schranke existiert.
+* $M \in \R$ heißt **Infimum** von $X$, falls $m$ eine #"untere" Schranke ist und keine größere #"untere" Schranke existiert.
+
+Füllen Sie den Lückentext aus.
+---

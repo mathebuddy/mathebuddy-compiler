@@ -1,0 +1,15 @@
+Exercise 28
+################
+
+---
+EXERCISE Exponentialfunktion
+@code
+let a:b = rand(2,8);
+@text
+Gegeben sei die Funktion $ f : RR \to RR, x \mapsto e^{-a \cdot x+b} $.
+Welche der folgenden Aussagen sind wahr?
+[ ] $f$ ist streng monoton steigend
+[x] $f$ ist streng monoton fallend
+[x] $f$ besitzt den Wertebereich $ ]0, \infty[ $
+[ ] $f$ besitzt den Wertebereich $ ]b, \infty[ $
+---

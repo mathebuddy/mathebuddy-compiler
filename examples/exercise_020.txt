@@ -1,0 +1,12 @@
+Exercise 20
+################
+
+---
+EXERCISE Gerade und ungerade Funktionen
+@text
+Welche der nachfolgenden Funktionen sind **gerade**?
+[x] $ f(x) = x^2 $
+[ ] $ f(x) = x^3 $
+[x] $ f(x) = x^4 + 3 x^2 + 7 $
+[ ] $ f(x) = 2 x^5 - 2 x^2 + 4 $
+---

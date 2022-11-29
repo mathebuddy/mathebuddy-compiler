@@ -1,0 +1,13 @@
+Exercise 11
+################
+
+---
+EXERCISE Intervalle reeller Zahlen
+@text
+Seien $ a, b \in \R $.
+Wähle die richtigen Antworten aus:
+[x] $ [a, b] $ ist ein geschlossenes Intervall
+[x] $ [a, b[ $ ist ein halboffenes Intervall
+[ ] $ ]a, b[ $ ist ein geschlossenes Intervall
+[x] $ ]a, b] $ ist ein halboffenes Intervall
+---

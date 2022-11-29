@@ -1,0 +1,17 @@
+Exercise 164
+################
+
+---
+EXERCISE Eigenwerte
+@code
+let A = rand<2,2>(1,2);   % TODO: {1,2,4}
+while ( !is_invertible(A) || !is_symmetric(A) ) {
+    A = rand<2,2>(1,2);   % TODO: {1,2,4}
+}
+let lambda = eigenvalues_sym(A);
+@text
+Sei $"A"=A$.
+Gebe die **Eigenwerte** von $"A"$ an:
+- $"lambda"=$ #lambda
+*Hinweis: Geben bei Bedarf `sqrt(x)` für $\sqrt{x}$ an.*
+---

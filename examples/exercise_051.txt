@@ -1,0 +1,13 @@
+Exercise 51
+################
+
+---
+EXERCISE Ableitungen
+@code
+let a = rand(3,8);
+let f1(x) = a;
+let f1d(x) = diff(f1, x);
+@text
+$f(x)=f1$
+$f'(x)=$ #f1d
+---

@@ -1,0 +1,12 @@
+Exercise 9
+################
+
+---
+EXERCISE Fakultät
+@code
+let a = rand(3,6);
+let f = fac(a);
+@text
+Gebe $a!$ wertmäßig an:
+#f
+---

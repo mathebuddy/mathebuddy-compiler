@@ -1,0 +1,17 @@
+Exercise 132
+################
+
+---
+EXERCISE Komplexe Folgen
+@code
+let c = rand(2,4);
+let z = 1/c + 1/c * 1i;
+let	a1 = z^1;
+let a2 = z^2;
+@text
+Bestimme die ersten $2$ **Folgenglieder** der komplexen Folge $(a_n)_{n \in \N} = ((1/c+1/c*i)^n)_{n \in \N}$
+- $n=1:$ #a1
+- $n=2:$ #a2
+(x) Die Folge ist **konvergent**
+( ) Die Folge ist **divergent**
+---

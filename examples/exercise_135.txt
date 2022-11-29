@@ -1,0 +1,19 @@
+Exercise 135
+################
+
+---
+EXERCISE Quotienten von Polynomen
+@code
+let a:b:c:d = rand(2,8);
+let ee = rand(2,9)^2;
+let A = 0*1i;
+let B = sqrt(ee)*1i;
+let C = -sqrt(ee)*1i;
+let res = set(A,B,C);
+@text
+Gegeben sei die folgende rationale Funktion:
+- $r(z) = \frac{(a+b*i)*z+c*i+d}{z*(z^2+ee)}$
+Bestimme den Definitionsbereich $D_r = \C \setminus X$
+- $X=$ #res
+*Hinweis: Gebe komplexe Zahlen in der Form $"a"+"b"i$ ein*
+---

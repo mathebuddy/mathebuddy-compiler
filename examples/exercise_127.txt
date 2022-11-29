@@ -1,0 +1,15 @@
+Exercise 127
+################
+
+---
+EXERCISE Betrag einer komplexen Zahl
+@code
+let a:b = rand(1,3);
+let x = a^2 - b^2;
+let y = 2 * a * b;
+let z = complex(x,y);
+let r = abs(z);
+@text
+Sei $"z" \in \C$ und $"z"=z$.
+- Berechne $\abs{"z"}=$ #r
+---

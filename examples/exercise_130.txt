@@ -1,0 +1,14 @@
+Exercise 130
+################
+
+---
+EXERCISE Komplexe Terme
+@code
+let a:b:c:d = rand(1,3);
+let pow = 2;
+let z1 = complex(a,b);
+let z2 = complex(c,d);
+let res = z1^pow + z2;
+@text
+- Berechne den folgenden **komplexen Term** und gebe das Ergebnis in Normalform an: $ (z1)^pow + z2 = #res $
+---

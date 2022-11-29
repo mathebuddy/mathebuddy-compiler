@@ -1,0 +1,13 @@
+Exercise 41
+################
+
+---
+EXERCISE Unbestimmt divergent
+@code
+let x:y:z:w:u = rand(2,5);
+@text
+Welche der folgenden Folgen sind **unbestimmt divergent**?
+[x] $ (a_n)_{n \in NN} $ mit $ a_n = (-1)^n \cdot x $
+[ ] $ (a_n)_{n \in NN} $ mit $ a_n = | x - (y \cdot n)/(x \cdot n+z) | $
+[ ] $ (a_n)_{n \in NN} $ mit $ a_n = (x \cdot n^3+w \cdot n)/(y \cdot n^3+u) $
+---

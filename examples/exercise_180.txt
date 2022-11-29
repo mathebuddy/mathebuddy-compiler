@@ -1,0 +1,20 @@
+Exercise 180
+################
+
+---
+EXERCISE Fehlerfortpflanzung
+@code
+let a:b:c:vx:vy = rand(2,4);
+let f(x,y) = a*x^b * y^c + x*y;
+let ex(x,y) = diff(f, x);
+let ey(x,y) = diff(f, y);
+let delta = 0.1;
+let zmax = abs(ex(vx,vy))*delta + abs(ey(vx,vy))*delta;
+@text
+Sei $"f"(x,y) = f$.
+Bestimmen die **maximale Messunsicherheit** bei **linearer Fehlerfortpflanzung**:
+- $ (\Delta z)_{\max} = \abs("a") \Delta "x" + \abs("b") \Delta "y" $; $"a"=$  #ex  ,  $"b"=$  #ey
+Seien nun $x=vx$, $y=vy$ und $\Delta x = \Delta y = \delta$.
+Berechnen die folgende Fehlergröße:
+* $ (\Delta z)_{\max} =$  #zmax
+---

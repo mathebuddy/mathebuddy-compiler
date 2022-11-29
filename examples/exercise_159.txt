@@ -1,0 +1,20 @@
+Exercise 159
+################
+
+---
+EXERCISE Basen
+@code
+let A = rand<3,3>(0,4);
+while (is_invertible(A) == false) {
+    A = rand<3,3>(0,4);
+}
+let q1 = true;
+let B = rand<3,3>(0,2);
+B[2,2] = 0;
+let q2 = det(B) != 0;
+@text
+Bilden die folgenden Vektoren eine **Basis** des $\R^3$?
+*Hinweis: Bestimme zunächst die Determinante.*
+[q1] $ A[:,1], A[:,2], A[:,3] $
+[q2] $ B[:,1], B[:,2], B[:,3] $
+---

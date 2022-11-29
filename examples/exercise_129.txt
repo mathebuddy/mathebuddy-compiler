@@ -1,0 +1,15 @@
+Exercise 129
+################
+
+---
+EXERCISE Division
+@code
+let a:b:c:d = rand(1,5);
+a = randZ(-1,1) * a;
+let z2 = complex(a,b);
+let r = complex(c,d);
+let z1 = z2 * r;
+@text
+Seien $z_1=z1$ und $z_2=z2$ komplexe Zahlen.
+- Berechne den folgenden **Quotienten** und gebe das Ergebnis in Normalform an: $\frac{z_1}{z_2}=$ #res
+---

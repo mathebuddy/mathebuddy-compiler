@@ -1,0 +1,13 @@
+Exercise 133
+################
+
+---
+EXERCISE Komplexe Reihen
+@code
+let a:b = rand(2,6);
+@text
+Ist die folgende geometrische Reihe **absolut konvergent**?
+- $\sum_{k=0}^{\infty} (1/a + 1/b \cdot i)^k$
+(x) ja
+( ) nein
+---

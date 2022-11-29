@@ -1,0 +1,12 @@
+Exercise 74
+################
+
+---
+EXERCISE Begriffe
+@text
+Sei $ \int_a^b f(x) dx$. Finden Sie die richtigen **Begriffe**:
+* $a$ und $b$ heißen #"Integrationsgrenzen".
+* $x$ heißt #"Integrationsvariable".
+* $f(x)$ heißt #"Integrand".
+* $dx$ heißt #"Differential".
+---

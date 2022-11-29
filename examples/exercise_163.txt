@@ -1,0 +1,14 @@
+Exercise 163
+################
+
+---
+EXERCISE Eigenwerte
+@code
+let a = rand(1,5);
+let b = rand(-8,-2);
+let lambda = set(a,b);
+@text
+Sei $A=[[a,0],[0,b]]$.
+Geben Sie die **Eigenwerte** von $A$ an:
+- $\lambda=$ #lambda
+---

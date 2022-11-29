@@ -1,0 +1,14 @@
+Exercise 156
+################
+
+---
+EXERCISE Lineare Abbildungen
+@code
+let A = rand<2,3>(2,9);
+A[0,1] = 0;
+@text
+Sei die folgende **lineare Abbildung** gegeben:
+- $ f:\R^3 \to \R^2 = (a \cdot x_1 + b \cdot x_3, c \cdot x_2 + d \cdot x_3 + e \cdot x_1)$
+Gebe die zugehörige Abbildungsmatrix $"A"$ an:
+- $ "A"=$ #A
+---

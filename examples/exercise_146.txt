@@ -1,0 +1,18 @@
+Exercise 146
+################
+
+---
+EXERCISE Multiplikativ inverses Element
+@code
+let n = rand(3,7);
+let b = rand(1,7);
+let c = b + 1;
+b = b mod (n-1) + 1;
+c = c mod (n-1) + 1;
+%TODO: let s1 = xgcd(b, n)[1] mod n;
+%TODO: let s2 = xgcd(c, n)[1] mod n;
+@text
+Gebe die **multiplikativ inversen Elemente** für den Körper $\GF(n)$ an:
+- $b^{-1} \equiv$  #s1  $\mod n$
+- $c^{-1} \equiv$  #s2  $\mod n$
+---

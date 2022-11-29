@@ -1,0 +1,20 @@
+Exercise 158
+################
+
+---
+EXERCISE Lineare Unabhängigkeit
+@code
+let A:B = rand<2,2>(0,1);
+let C = rand<3,3>(0,1);
+let q1 = (int(det(A)) mod 2) != 0;
+let q2 = (int(det(B)) mod 2) != 0;
+let q3 = (int(det(C)) mod 2) != 0;
+let A1 = column(A,0); let A2 = column(A,1);
+let B1 = column(B,0); let B2 = column(B,1);
+let C1 = column(C,0); let C2 = column(C,1); let C3 = column(C,2);
+@text
+Welche der unten stehenden Vektoren über dem $\GF(2)$ sind **linear unabhängig**?
+[$q1$] $A1,A2$
+[$q2$] $B1,B2$
+[$q3$] $C1,C2,C3$
+---

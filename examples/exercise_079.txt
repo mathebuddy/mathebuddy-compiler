@@ -1,0 +1,14 @@
+Exercise 79
+################
+
+---
+EXERCISE Unbestimmte Integrale
+@code
+let u1:u2 = rand(2,9);
+let f(x) = u1;
+let g(y) = u2;
+@text
+Bestimme die folgenden **unbestimmten** Integrale:
+- $ \int f \dx = $ #[diff x]f $ + C ~~ (C \in \R)$
+- $ \int g \dy = $ #[diff y]g $ + C ~~ (C \in \R)$
+---

@@ -1,0 +1,12 @@
+Exercise 91
+################
+
+---
+EXERCISE Substitutionsregel
+@code
+let f(x) = exp(3*x-1);
+@text
+Bestimme durch **Substitution:**
+$ \int f \dx = $ #[diff x]f $ + C ~~ (C \in \R)$
+*Hinweis: Schreiben Sie $e^x$ als $exp(x)$.*
+---

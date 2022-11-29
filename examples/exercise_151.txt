@@ -1,0 +1,18 @@
+Exercise 151
+################
+
+---
+EXERCISE Matrix-Vektor Multiplikation
+@options
+n-rows
+n-cols
+@code
+let A = rand<2,2>(1,4);
+let x = rand<2,1>(1,4);
+let Ax = A * x;
+@text
+Seien $"A"=A$ und $"x"=x$. 
+Berechne:
+- $ f("x") = "A" \code "x"$ = #Ax
+*Hinweis: Dimensioniere zunächst die Ergebnismatrix.*
+---

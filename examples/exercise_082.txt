@@ -1,0 +1,12 @@
+Exercise 82
+################
+
+---
+EXERCISE Stammfunktion
+@code
+let u = rand(3,8);
+let f(x) = u * x^2;
+@text
+Bestimme die Stammfunktion zu $"f"(x) = f $
+$ F(x) = $ #[diff x]f $ + C ~~ (C \in \R)$
+---

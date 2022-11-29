@@ -1,0 +1,10 @@
+Exercise 73
+################
+
+---
+EXERCISE Riemann Integral
+@text
+Zur Bestimmung des **Riemann-Integrals** einer Funktion $f:[a,b] \to \R$ unterteilt man [a,b] in "kleine" Teilintervalle und bestimmt für diese Intervalle jeweils den kleinsten und größten Funktionswert. Die Summation der vorzeichenbehafteten Flächen mit dem größten Funktionswert liefert die
+(x) **Obersumme**
+( ) **Untersumme**
+---

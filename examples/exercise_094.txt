@@ -1,0 +1,18 @@
+Exercise 94
+################
+
+---
+EXERCISE Partialbruchzerlegung
+@code
+let a:b = rand(2,5);
+let c = 2*a;
+let d = a^2+b;
+@text
+Das folgende Integral soll gelöst werden:
+- $\int 1 / (x^2 + c x + d) \dx$
+Welcher ist der richtige **Ansatz**?
+(x) $ (A)/((x+a)^2+b)$
+( ) $ (A)/(x-a)$
+( ) $ (A)/(x-a) + (B)/(x-a)^2$
+( ) $ (A)/(x-c)^2 + (B)/(x-d)$
+---

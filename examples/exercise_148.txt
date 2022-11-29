@@ -1,0 +1,11 @@
+Exercise 148
+################
+
+---
+EXERCISE Untervektorräume
+@text
+Welche der folgenden Mengen sind Untervektorräume des $\GF(2)^2$?
+[ ] $ M_1 = { \MAT{1;1} } $
+[x] $ M_2 = { \MAT{0;0} } $
+[x] $ M_4 = { \lambda \cdot \MAT{0;1} ~|~ \lambda \in \GF(2) } $
+---

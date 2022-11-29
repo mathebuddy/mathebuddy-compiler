@@ -1,0 +1,12 @@
+Exercise 100
+################
+
+---
+EXERCISE Eukidische Norm
+@text
+Sei $u=[[u_1],[...],[u_n]] in \R^n$. 
+Wie ist die **euklidische Norm** definiert?
+(x) $ \sqrt{u_1^2 + u_2^2 + \dots + u_n^2} $
+( ) $ |u_1| + |u_2| + \dots + |u_n| $
+( ) $ \max_{i=1,\dots,n} |u_i| $
+---

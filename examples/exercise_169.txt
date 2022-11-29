@@ -1,0 +1,16 @@
+Exercise 169
+################
+
+---
+EXERCISE Gradient
+@code
+let a:b = rand(0,1);
+let c = rand(2,5);
+let f(x,y) = - x^3 - a*y^3 + b*c*x*y;
+let fx(x,y) = diff(f, x);
+let fy(x,y) = diff(f, y);
+@text
+Gegeben sei eine Funktion $"f"(x,y)=f$.
+Bestimme den **Gradienten**:
+- $\nabla"f($  #fx  ,  #fy  $)$
+---

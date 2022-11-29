@@ -1,0 +1,12 @@
+Exercise 145
+################
+
+---
+EXERCISE Körper
+@text
+Welche der folgenden Restklassen sind **Körper**?
+[x] $\Z_3$
+[ ] $\Z_4$
+[x] $\Z_7$
+[ ] $\Z_{10}$
+---

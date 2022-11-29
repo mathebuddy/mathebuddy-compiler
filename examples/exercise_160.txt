@@ -1,0 +1,19 @@
+Exercise 160
+################
+
+---
+EXERCISE Orthonormalbasis
+@code
+let a = randZ(-2,2);
+let b = a + 1;
+let x = a^2 - b^2;
+let y = 2 * a * b;
+let c1 = -y;
+let c2 = 1 / sqrt(x^2 + y^2);
+@text
+Bestimme $c_1 \in \R$, sodass die folgenden beiden Vektoren eine **Orthogonalbasis** des $\R^2$ bilden:
+- $ "b_1"=[[x],[y]]$ $ "b_2"=[[c_1],[x]]$
+- $c_1=$ #c1
+Bestimme nun $c_2 \in \R$, sodass die Basis $\{ c_2 \cdot "b_1", c_2 \cdot "b_2" \}$ eine **Orthonormalbasis** ist.
+- $c_2=$ #c2
+---

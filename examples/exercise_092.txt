@@ -1,0 +1,11 @@
+Exercise 92
+################
+
+---
+EXERCISE Substitutionsregel
+@code
+let f(x) = 3*x * sin(x^2+1);
+@text
+Bestimme durch **Substitution:**
+$ \int f \dx = #[diff x]f + C ~~ (C \in \R)$
+---

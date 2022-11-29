@@ -1,0 +1,19 @@
+Exercise 157
+################
+
+---
+EXERCISE Zusammengesetzte lineare Abbildungen
+@code
+let A:B = rand<2,2>(0,1);
+let AB = (A*B) mod 2;
+@text
+Seien die beiden linearen Abbildungen $"f","g" : \GF(2)^2 \to |GF(2)^2 $ gegeben:
+- $ "f"(x_1, x_2) = ( a \cdot x_1 + b \cdot x_2, c \cdot x_1 + d \cdot x_2 ) $
+- $ "g"(x_1, x_2) = ( e \cdot x_1 + f \cdot x_2, g \cdot x_1 + h \cdot x_2 ) $
+Bestimmen Sie zunächst die **lineare Abbildung** $"f"$ und geben Sie die Lösung als Matrix an:
+- $"A"=$ #A
+Bestimme weiterhin die **lineare Abbildung** $"g"$:
+- $"B"=$ #B
+Bestimme nun die **zusammengesetzte Abbildung** $ "f" \circ "g" $.
+- $"AB"=$ #AB
+---

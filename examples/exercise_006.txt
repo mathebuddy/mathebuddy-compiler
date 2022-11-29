@@ -1,0 +1,13 @@
+Exercise 6
+################
+
+---
+EXERCISE Summe
+@code
+let a = rand(2,4);
+let n = rand(3,5);
+let s = a * n;
+@text
+Berechne $\sum_{i=1}^n a$:
+#s
+---

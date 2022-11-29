@@ -1,0 +1,13 @@
+Exercise 21
+################
+
+---
+EXERCISE Beschränktheit
+@code
+let a = rand(2,5);
+@text
+Sei $ f : \R -> \R, x \mapsto (x+a)^2 $.
+Wählen Sie die richtigen Antworten aus:
+[x] $f$ ist nach **unten beschränkt**.
+[ ] $f$ ist nach **oben beschränkt**.
+---

@@ -1,0 +1,15 @@
+Exercise 142
+################
+
+---
+EXERCISE Matrizenoperationen
+@options
+n-rows
+n-cols
+@code
+let A:B = rand<2,2>(1,3);
+let C = A * B;
+@text
+Berechne $A \cdot B=$ #C
+*Hinweis: Dimensioniere zunächst die Ergebnismatrix.*
+---

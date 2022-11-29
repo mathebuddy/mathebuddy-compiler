@@ -1,0 +1,12 @@
+Exercise 3
+################
+
+---
+EXERCISE Menge
+@code
+let a/b/c = rand(1,5);
+let n = 2;
+@text
+Wie viele Elemente hat die Menge $\{\{a,b\},\{c\}\}$?
+#n
+---

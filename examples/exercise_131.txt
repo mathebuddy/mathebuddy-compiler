@@ -1,0 +1,18 @@
+Exercise 131
+################
+
+---
+EXERCISE Komplexe Folgen
+@code
+let z = rand(2,4) * 1i;
+let a1 = z^1;
+let a2 = z^2;
+let a3 = z^3;
+@text
+Bestimme die ersten $3$ **Folgenglieder** der komplexen Folge $(a_n)_{n \in \N} = {(c \cdot i)^n}_{n \in \N}$
+- $n=1:$ #a1
+- $n=2:$ #a2
+- $n=3:$ #a3
+( ) Die Folge ist **konvergent**
+(x) Die Folge ist **divergent**
+---

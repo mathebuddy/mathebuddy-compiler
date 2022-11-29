@@ -1,0 +1,14 @@
+Exercise 22
+################
+
+---
+EXERCISE Monotonie
+@code
+let a:b:c:d = rand(2,5);
+@text
+Wählen Sie die richtigen Antworten aus:
+[ ] $ f : \R \to \R, f(x)=a $ ist **monoton wachsend**.
+[x] $ f : \R \to \R, f(x)=b x + c $ ist **streng monoton wachsend**.
+[ ] $ f : \R \to \R, f(x)=|x| $ ist **streng monoton wachsend**.
+[x] $ f : \R \to \R, f(x)=-x^3-x-d $ ist **streng monoton fallend**.
+---

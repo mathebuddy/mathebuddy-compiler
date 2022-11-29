@@ -1,0 +1,15 @@
+Exercise 14
+################
+
+---
+EXERCISE Betrag
+@code
+let a = rand(-10,-1);
+let b = abs(a);
+@text
+$|a|=$ #b
+Wähle die richtigen Antworten aus:
+[x]   $ |xy| = |x| |y| $
+[x]   $ |x+y| \leq |x| + |y| $
+[ ]   $ |x+y| \geq |x + y| $
+---

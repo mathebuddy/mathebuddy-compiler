@@ -1,0 +1,10 @@
+Exercise 26
+################
+
+---
+EXERCISE Potenz und Wurzelfunktion
+@text
+Sei $ k \in \N, k > 0 $. Wähle die richtigen Antworten:
+[x] $ \sqrt[k]{x} = x^{1/k} $
+[ ] $ \sqrt[k]{x} = 1/x^k $
+---

@@ -1,0 +1,12 @@
+Exercise 99
+################
+
+---
+EXERCISE Skalarprodukt
+@code
+let u:v = rand<3>(-5,5);
+let s = dot(u,v);
+@text
+Gegeben sind die beiden Vektoren $"u"=u$ und $"v"=v$ im $\R^3$.
+Berechne das **Skalarprodukt** $ "u" \cdot "v" = $ #s
+---

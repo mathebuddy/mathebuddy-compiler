@@ -1,0 +1,13 @@
+Exercise 1
+################
+
+---
+EXERCISE Mengen
+@code
+let a/b/c/d = rand(1,10);
+let A = set(a, a+b, a+b+c, a+b+c+d);
+let p = 2^len(A);
+@text
+Sei $"A"=A$. Wie viele Elemente hat die **Potenzmenge** $P("A")$?
+#p
+---

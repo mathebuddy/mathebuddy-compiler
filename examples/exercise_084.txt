@@ -1,0 +1,12 @@
+Exercise 84
+################
+
+---
+EXERCISE Stammfunktion
+@code
+let a = rand(2,4);
+let f(x) = a * sin(x);
+@text
+Bestimme die Stammfunktion zu $"f"(x) = f $
+$ F(x) = $ #[diff x]f $ + C ~~ (C in RR)$
+---

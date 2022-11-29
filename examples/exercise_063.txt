@@ -1,0 +1,13 @@
+Exercise 63
+################
+
+---
+EXERCISE Ableitungen
+@code
+let a:b = rand(3,8);
+let f1(x) = sin(a*x) + cos(b*x);
+let f1_deriv(x) = diff(f1, x);
+@text
+$ f(x) = f1 $
+$ f'(x) = $ #f1_deriv
+---

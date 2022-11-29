@@ -1,0 +1,15 @@
+Exercise 152
+################
+
+---
+EXERCISE Determinante
+@code
+let A = rand<3,3>(-5,5);
+A[0,0] = 0;
+A[0,1] = 0;
+let d = det(A);
+@text
+Sei $"A"=A$ eine $3 \times 3$ Matrix über $K=\R$.
+Berechnen die **Determinante**:
+- $ \det("A")=$ #d
+---

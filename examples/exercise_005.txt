@@ -1,0 +1,12 @@
+Exercise 5
+################
+
+---
+EXERCISE Mengen
+@code
+let a = rand(1,5);
+let B = set(a,a*2,a*3);
+@text
+Gegeben Sei die Menge $ "B" = \{ k \in NN | k=a*n text( und ) n <= 3 } $. Geben Sie die Menge **explizit** an:
+$"B"=$ #B
+---

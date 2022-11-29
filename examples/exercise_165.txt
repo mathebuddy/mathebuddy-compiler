@@ -1,0 +1,14 @@
+Exercise 165
+################
+
+---
+EXERCISE Eigenwerte
+@code
+let A = rand<4,4>(-10,10);
+A = triu(A);
+let lambda = set(A[0,0], A[1,1], A[2,2], A[3,3]);
+@text
+Sei $"A"=A$.
+Geben die **Eigenwerte** von $"A"$ an:
+- $"lambda"=$ #lambda
+---

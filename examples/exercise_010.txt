@@ -1,0 +1,13 @@
+Exercise 10
+################
+
+---
+EXERCISE Binomialkoeffizient
+@code
+let n = rand(3,5);
+let k = rand(0,n);
+let b = binomial(n,k);
+@text
+Bestimme den Binomialkoeffizienten $\VEC(n,k)$ mit Hilfe des **Pascalschen Dreiecks**.
+#b
+---

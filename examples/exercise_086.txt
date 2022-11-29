@@ -1,0 +1,13 @@
+Exercise 86
+################
+
+---
+EXERCISE Uneigentliche Integrale
+@code
+let a:b:c:d:e = rand(3,4);
+@text
+Welche der folgenden Integrale sind **konvergent**?
+[ ] $\int_0^{\infty} a x^2 + b \dx$
+[ ] $\int_0^c d/x \dx $
+[x] $\int_1^c e/x \dx $
+---

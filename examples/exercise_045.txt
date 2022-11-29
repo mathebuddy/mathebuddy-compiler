@@ -1,0 +1,12 @@
+Exercise 45
+################
+
+---
+EXERCISE Konvergenzradius
+@code
+let a = rand(3,8);
+let r = 1/a;
+@text
+Bestimmen Sie den Konvergenzradius $R$ der Potenzreihe $ \sum_{k=0}^{\infty} a^k \cdot x^k $:
+* $R=$ #r
+---

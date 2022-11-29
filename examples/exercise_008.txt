@@ -1,0 +1,13 @@
+Exercise 8
+################
+
+---
+EXERCISE Produkt
+@code
+let a = rand(2,4);
+let n = rand(3,5);
+let p = a^n;
+@text
+Berechne $\prod_{i=1}^n a$:
+#p
+---
