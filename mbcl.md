@@ -23,23 +23,29 @@ The reference compiler to translate MBL to MBCL can be found on [GitHub](https:/
 
 We use the following notation instead of JSON-schema (which is overkill!) to denote the structure of data.
 
-- `A = { "x":IDENTIFIER, "y":B }; B = { "z": INT };` denotes an object with name `A` and entries `x` and `y`. The value of `x` must be an identifier, while `y` is an object of type `B`.
+- `A = { "x":IDENTIFIER, "y":B }; B = { "z": INTEGER };` denotes an object with name `A` and entries `x` and `y`. The value of `x` must be an identifier, while `y` is an object of type `B`.
 
   JSON-Example that is compatible to the grammar:
 
   `{"x": "leet", "y": {"z": 1337}}`
 
-- `X = {"a":INT|"xx"}` denotes alternative definitions for attribute `a`.
+- `X = {"a":INTEGER|"xx"}` denotes alternative definitions for attribute `a`.
 
-  JSON-Example that is compatible to the grammar:
+  JSON-Examples that are compatible to the grammar:
 
   `{"a":"xx"}` or `{"a":314}` or `{"a":42}`
 
-- `Y = {"x":"txt"} | INT;` denotes alternative definitions for object `Y`.
+- `Y = {"x":"txt"} | INTEGER;` denotes alternative definitions for object `Y`.
 
   JSON-Examples (fragments only) that are all compatible to the grammar:
 
-  `{"x":"txt}` or `1337` or `271`.
+  `{"x":"txt}` or `1337` or `271`
+
+- `Z = {"k":INTEGER[]}` denotes that attribute `k` is an array of type integer.
+
+  JSON-Examples that are compatible to the grammar:
+
+  `{"k":[1,1,2,3,5,8,13]}` or `{"k":[]}`
 
 ### Intrinsic Data Types
 
