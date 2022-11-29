@@ -21,6 +21,10 @@ esbuild.buildSync({
   outfile: 'build/mathebuddy-compiler.min.js',
 });
 
+// ---- update examples/ directory ----
+
+execSync('python3 examples/_get.py');
+
 // ---- convert README.md to README.html ----
 
 const date = new Date().toISOString().slice(0, 10);
