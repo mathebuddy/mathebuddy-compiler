@@ -535,6 +535,41 @@ and games.</p>
   &quot;title&quot;: STRING,
   &quot;data&quot;: EXERCISE | TODO
 }</code></pre>
+<h3 id="paragraph">PARAGRAPH</h3>
+<pre><code>TEXT = {
+  &quot;type&quot;: &quot;paragraph&quot;,
+  &quot;items&quot;: TEXT[]
+} | {
+  &quot;type&quot;: &quot;text&quot;,
+  &quot;value&quot;: STRING
+} | {
+  &quot;type&quot;: &quot;inline-math&quot;,
+  &quot;items&quot;: TEXT[]
+} | {
+  &quot;type&quot;: &quot;variable&quot;,
+  &quot;value&quot;: IDENTIFIER
+} | {
+  &quot;type&quot;: &quot;linefeed&quot;
+}</code></pre>
+<p>The following example represents a paragraph containing a bold text
+   <strong>Hello, world <span class="math inline"><em>x</em><sup>2</sup> + <em>y</em><sup>2</sup></span>!</strong>
+   that ends with a line feed.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;paragraph&quot;</span><span class="fu">,</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;items&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;bold&quot;</span><span class="fu">,</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;items&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span> <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Hello, world&quot;</span> <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;inline-math&quot;</span><span class="fu">,</span> <span class="dt">&quot;items&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span><span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;text&quot;</span><span class="fu">,</span><span class="dt">&quot;value&quot;</span><span class="fu">:</span><span class="st">&quot;x^2+y^2&quot;</span><span class="fu">}</span><span class="ot">]</span><span class="fu">}</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span> <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;!&quot;</span> <span class="fu">}</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="ot">]</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;linefeed&quot;</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <h3 id="exercise">EXERCISE</h3>
 <pre><code>EXERCISE = {
   &quot;variables&quot;: { IDENTIFIER: VARIABLE },
@@ -543,7 +578,7 @@ and games.</p>
 }</code></pre>
 <pre><code>VARIABLE = {
   &quot;type&quot;: &quot;INT&quot; | &quot;INT_SET&quot; | &quot;REAL&quot; | &quot;REAL_SET&quot;
-          | &quot;COMPLEX&quot; | &quot;COMPLEX_SET&quot; | &quot;VECTOR&quot; | &quot;MATRIX&quot;,
+          | &quot;COMPLEX&quot; | &quot;COMPLEX_SET&quot; | &quot;VECTOR&quot; | &quot;MATRIX&quot;
 }</code></pre>
 <pre><code>INSTANCE = {
   IDENTIFIER: MATH_STRING
