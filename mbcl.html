@@ -471,18 +471,30 @@ file stores a complete course, defined by the Mathe:Buddy Language
 <h2 id="json-specification">JSON Specification</h2>
 <h3 id="intrinsic-data-types">Intrinsic Data Types</h3>
 <ul>
-<li>IDENTIFIER</li>
-<li>STRING</li>
-<li>INTEGER</li>
-<li>REAL</li>
-<li>UNIX_TIMESTAMP</li>
-<li>MATH_STRING:
+<li><p>IDENTIFIER</p>
+<p>Example: <code>&quot;hello&quot;</code></p></li>
+<li><p>STRING</p>
+<p>Example: <code>&quot;hello, world!&quot;</code></p></li>
+<li><p>INTEGER</p>
+<p>Example: <code>1337</code></p></li>
+<li><p>REAL</p>
+<p>Example: <code>3.14159</code></p></li>
+<li><p>UNIX_TIMESTAMP</p>
+<p>Time in seconds from 1.1.1970 00:00</p>
+<p>Example: <code>1669712632</code></p></li>
+<li><p>MATH_STRING:</p>
 <ul>
-<li>INT = INTEGER;</li>
-<li>REAL = REAL;</li>
-<li>INT_SET = “{” [ INT , { “,” INT } ] “}”;</li>
-<li>VECTOR = “[” [ REAL , { ”,” REAL } ] ”]”;</li>
-<li>TODO</li>
+<li><p>EBNF Definition: <code>INT = INTEGER;</code></p>
+<p>Example: <code>&quot;3&quot;</code></p></li>
+<li><p>EBNF Definition: <code>REAL = REAL;</code></p>
+<p>Example: <code>&quot;-3.14&quot;</code></p></li>
+<li><p>EBNF Definition:
+<code>INT_SET = &quot;{&quot; [ INT , { &quot;,&quot; INT } ] &quot;}&quot;;</code></p>
+<p>Example: <code>&quot;{1,3,5}&quot;</code></p></li>
+<li><p>EBNF Definition:
+<code>VECTOR = &quot;[&quot; [ REAL , { &quot;,&quot; REAL } ] &quot;]&quot;;</code></p>
+<p>Example: <code>&quot;[-1337,2.71,9.81]&quot;</code></p></li>
+<li><p>TODO</p></li>
 </ul></li>
 </ul>
 <h3 id="course">COURSE</h3>
