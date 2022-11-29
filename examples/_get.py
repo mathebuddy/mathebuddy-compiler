@@ -41,6 +41,6 @@ for i, listing in enumerate(listings):
   listing = 'Exercise ' + str(i) + '\n################\n\n' + listing + '---\n'
   print('===== ' + str(i) + ' =====')
   print(listing)
-  f = open('examples/exercise_' + str(i).zfill(3) + '.txt', 'w')
+  f = open('examples/exercise_' + str(i).zfill(3) + '.mbl', 'w')
   f.write(listing)
   f.close()
