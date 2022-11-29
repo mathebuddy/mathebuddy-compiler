@@ -469,6 +469,31 @@ file stores a complete course, defined by the Mathe:Buddy Language
 (MBL).</p>
 <p>The reference compiler to translate MBL to MBCL can be found on <a href="https://github.com/mathebuddy/mathebuddy-compiler.git">GitHub</a>.</p>
 <h2 id="json-specification">JSON Specification</h2>
+<p>We use the following notation instead of JSON-schema (which is
+overkill!) to denote the structure of data.</p>
+<ul>
+<li><p><code>A = { &quot;x&quot;:IDENTIFIER, &quot;y&quot;:B }; B = { &quot;z&quot;: INTEGER };</code>
+denotes an object with name <code>A</code> and entries <code>x</code>
+and <code>y</code>. The value of <code>x</code> must be an identifier,
+while <code>y</code> is an object of type <code>B</code>.</p>
+<p>JSON-Example that is compatible to the grammar:</p>
+<p><code>{&quot;x&quot;: &quot;leet&quot;, &quot;y&quot;: {&quot;z&quot;: 1337}}</code></p></li>
+<li><p><code>X = {&quot;a&quot;:INTEGER|&quot;xx&quot;}</code> denotes alternative
+definitions for attribute <code>a</code>.</p>
+<p>JSON-Examples that are compatible to the grammar:</p>
+<p><code>{&quot;a&quot;:&quot;xx&quot;}</code> or <code>{&quot;a&quot;:314}</code> or
+<code>{&quot;a&quot;:42}</code></p></li>
+<li><p><code>Y = {&quot;x&quot;:&quot;txt&quot;} | INTEGER;</code> denotes alternative
+definitions for object <code>Y</code>.</p>
+<p>JSON-Examples (fragments only) that are all compatible to the
+grammar:</p>
+<p><code>{&quot;x&quot;:&quot;txt}</code> or <code>1337</code> or
+<code>271</code></p></li>
+<li><p><code>Z = {&quot;k&quot;:INTEGER[]}</code> denotes that attribute
+<code>k</code> is an array of type integer.</p>
+<p>JSON-Examples that are compatible to the grammar:</p>
+<p><code>{&quot;k&quot;:[1,1,2,3,5,8,13]}</code> or <code>{&quot;k&quot;:[]}</code></p></li>
+</ul>
 <h3 id="intrinsic-data-types">Intrinsic Data Types</h3>
 <ul>
 <li><p>IDENTIFIER</p>
@@ -507,7 +532,7 @@ and games.</p>
   &quot;mbclVersion&quot;: INTEGER
   &quot;modifiedDate&quot;: UNIX_TIMESTAMP,
   &quot;chapters&quot;: CHAPTER[]
-}</code></pre>
+};</code></pre>
 <p>Example:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;higher math 1&quot;</span><span class="fu">,</span></span>
@@ -521,7 +546,7 @@ and games.</p>
   &quot;title&quot;: STRING,
   &quot;alias&quot;: STRING,
   &quot;levels&quot;: LEVEL[];
-}</code></pre>
+};</code></pre>
 <h3 id="level">LEVEL</h3>
 <pre><code>LEVEL = {
   &quot;id&quot;: IDENTIFIER,
@@ -529,12 +554,12 @@ and games.</p>
   &quot;posY&quot;: INTEGER,
   &quot;requires&quot;: LEVEL[],
   &quot;items&quot;: LEVEL_ITEM[]
-}</code></pre>
+};</code></pre>
 <pre><code>LEVEL_ITEM = {
   &quot;type&quot;: &quot;exercise&quot; | TODO,
   &quot;title&quot;: STRING,
   &quot;data&quot;: EXERCISE | TODO
-}</code></pre>
+};</code></pre>
 <h3 id="paragraph">PARAGRAPH</h3>
 <pre><code>TEXT = {
   &quot;type&quot;: &quot;paragraph&quot;,
@@ -550,7 +575,7 @@ and games.</p>
   &quot;value&quot;: IDENTIFIER
 } | {
   &quot;type&quot;: &quot;linefeed&quot;
-}</code></pre>
+};</code></pre>
 <p>The following example represents a paragraph containing a bold text
    <strong>Hello, world <span class="math inline"><em>x</em><sup>2</sup> + <em>y</em><sup>2</sup></span>!</strong>
    that ends with a line feed.</p>
@@ -575,14 +600,14 @@ and games.</p>
   &quot;variables&quot;: { IDENTIFIER: VARIABLE },
   &quot;instances&quot;: INSTANCE[],
   &quot;text&quot;: PARAGRAPH
-}</code></pre>
+};</code></pre>
 <pre><code>VARIABLE = {
   &quot;type&quot;: &quot;INT&quot; | &quot;INT_SET&quot; | &quot;REAL&quot; | &quot;REAL_SET&quot;
           | &quot;COMPLEX&quot; | &quot;COMPLEX_SET&quot; | &quot;VECTOR&quot; | &quot;MATRIX&quot;
-}</code></pre>
+};</code></pre>
 <pre><code>INSTANCE = {
   IDENTIFIER: MATH_STRING
-}</code></pre>
+};</code></pre>
 <h2 id="compressed-courses">Compressed Courses</h2>
 <p>TODO: compression format, hex, …</p>
 <p><em>Author: Andreas Schwenk, TH Köln</em></p>
