@@ -8,6 +8,7 @@
 
 // TODO: use npm-package in future!
 import { Matrix } from '@mathebuddy/mathebuddy-smpl/src/matrix';
+import { Set_INT } from '@mathebuddy/mathebuddy-smpl/src/set';
 import { BaseType, SymTabEntry } from '@mathebuddy/mathebuddy-smpl/src/symbol';
 
 export type JSONValue =
@@ -149,7 +150,7 @@ export class ParagraphItem extends DocumentItem {
         this.subItems[i].type === ParagraphItemType.Text
       ) {
         let text = this.subItems[i].value;
-        if ('.,:'.includes(text) == false) text = ' ' + text;
+        if ('.,:!?'.includes(text) == false) text = ' ' + text;
         this.subItems[i - 1].value += text;
         // TODO: next line is an ugly hack for TeX..
         this.subItems[i - 1].value = this.subItems[i - 1].value.replace(
@@ -177,7 +178,16 @@ export class ExerciseInstance {
         case BaseType.MATRIX:
           res[v.id] = (v.value as Matrix).toString();
           break;
-        // TODO: other types
+        case BaseType.INT_SET:
+          res[v.id] = (v.value as Set_INT).toString();
+          break;
+        default:
+          console.log(
+            "WARNING: ExerciseInstance:toJSON(..): unimplemented type '" +
+              v.type.base +
+              "'",
+          );
+          break;
       }
     }
     return res;
