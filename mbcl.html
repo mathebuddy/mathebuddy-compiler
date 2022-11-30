@@ -469,7 +469,7 @@ MBCL-JSON file stores a complete course, defined by the Mathe:Buddy
 Language (MBL).</p>
 <p>The reference compiler to translate MBL to MBCL can be found on <a href="https://github.com/mathebuddy/mathebuddy-compiler.git">GitHub</a>.</p>
 <h2 id="json-specification">JSON Specification</h2>
-<p>TODO: “extends”, …</p>
+<p>TODO: “extends”, “&lt;OBJECT.ATTR&gt;”, “abstract(..)”…</p>
 <p>We use the following notation instead of JSON-schema (which is
 overkill!) to denote the structure of data.</p>
 <ul>
@@ -530,8 +530,8 @@ and games.</p>
 <pre><code>COURSE = {
   &quot;id&quot;: STRING,
   &quot;author&quot;: STRING,
-  &quot;mbclVersion&quot;: INTEGER
-  &quot;modifiedDate&quot;: UNIX_TIMESTAMP,
+  &quot;mbcl_version&quot;: INTEGER,
+  &quot;date_modified&quot;: UNIX_TIMESTAMP,
   &quot;chapters&quot;: CHAPTER[]
 };</code></pre>
 <p>Example:</p>
@@ -546,18 +546,19 @@ and games.</p>
 <pre><code>CHAPTER = {
   &quot;title&quot;: STRING,
   &quot;alias&quot;: STRING,
-  &quot;levels&quot;: LEVEL[];
+  &quot;levels&quot;: LEVEL[]
 };</code></pre>
 <h3 id="level">LEVEL</h3>
 <pre><code>LEVEL = {
   &quot;id&quot;: IDENTIFIER,
-  &quot;posX&quot;: INTEGER,
-  &quot;posY&quot;: INTEGER,
-  &quot;requires&quot;: LEVEL[],
+  &quot;pos_x&quot;: INTEGER,
+  &quot;pos_y&quot;: INTEGER,
+  &quot;requires&quot;: IDENTIFIER&lt;LEVEL.id&gt;[],
   &quot;items&quot;: LEVEL_ITEM[]
 };</code></pre>
 <pre><code>LEVEL_ITEM = SECTION | TEXT | EQUATION | DEFINITION | EXERCISE
            | FIGURE | TABLE | NEWPAGE;</code></pre>
+<p>TODO: units</p>
 <h3 id="section">SECTION</h3>
 <pre><code>SECTION = {
   &quot;type&quot;: &quot;title&quot; | &quot;section&quot; | &quot;subsection&quot; | &quot;subsubsection&quot;,
@@ -567,8 +568,8 @@ and games.</p>
 <h3 id="paragraph">PARAGRAPH</h3>
 <pre><code>TEXT = {
   &quot;type&quot;: &quot;paragraph&quot; | &quot;inline-math&quot; | &quot;bold&quot; | &quot;italic&quot; | &quot;itemize&quot;
-          | &quot;enumerate&quot; | &quot;enumerate-alpha&quot; | &quot;span&quot;
-          | &quot;align-left&quot; | &quot;align-center&quot; | &quot;align-right&quot;,
+        | &quot;enumerate&quot; | &quot;enumerate-alpha&quot; | &quot;span&quot;
+        | &quot;align-left&quot; | &quot;align-center&quot; | &quot;align-right&quot;,
   &quot;items&quot;: TEXT[]
 } | {
   &quot;type&quot;: &quot;text&quot;,
@@ -580,7 +581,7 @@ and games.</p>
   &quot;value&quot;: INTEGER
 } | {
   &quot;type&quot;: &quot;reference&quot;,
-  &quot;label&quot;: IDENTIFIER
+  &quot;label&quot;: IDENTIFIER&lt;SECTION.label|BLOCK_ITEM.label&gt;
 };</code></pre>
 <p>The following example represents a paragraph containing a bold text
    <strong>Hello, world <span class="math inline"><em>x</em><sup>2</sup> + <em>y</em><sup>2</sup></span>!</strong>
@@ -603,7 +604,7 @@ and games.</p>
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <h3 id="block-item">BLOCK ITEM</h3>
 <pre><code>BLOCK_ITEM = {
-  &quot;type&quot;: IDENTIFIER,
+  abstract(&quot;type&quot;): IDENTIFIER,
   &quot;title&quot;: STRING,
   &quot;label&quot;: IDENTIFIER
   &quot;error&quot;: STRING
@@ -619,7 +620,7 @@ and games.</p>
 <p>TODO: hierarchical blocks!!</p>
 <pre><code>DEFINITION extends BLOCK_ITEM = {
   &quot;type&quot;: &quot;definition&quot; | &quot;theorem&quot; | &quot;lemma&quot; | &quot;corollary&quot; | &quot;proposition&quot;
-          | &quot;conjecture&quot; | &quot;axiom&quot; | &quot;claim&quot; | &quot;identity&quot; | &quot;paradox&quot;,
+        | &quot;conjecture&quot; | &quot;axiom&quot; | &quot;claim&quot; | &quot;identity&quot; | &quot;paradox&quot;,
   &quot;items&quot;: DEFINITION_ITEM[]
 };</code></pre>
 <pre><code>DEFINITION_ITEM = EQUATION | TEXT;</code></pre>
@@ -631,32 +632,41 @@ and games.</p>
 };</code></pre>
 <pre><code>EXERCISE_TEXT extends TEXT = {
   &quot;type&quot;: &quot;variable&quot;,
-  &quot;variable&quot;: IDENTIFIER
+  &quot;variable&quot;: IDENTIFIER&lt;EXERCISE.VARIABLES&gt;
 } | {
   &quot;type&quot;: &quot;text-input&quot;,
   &quot;input-type&quot;: &quot;int&quot;
-                | &quot;complex_normal&quot; | &quot;complex_polar&quot;
-                | &quot;int_set&quot; | &quot;int_set_n_args&quot;
-                | &quot;vector&quot; | &quot;vector_flex&quot;
-                | &quot;matrix&quot; | &quot;matrix_flex_rows&quot; | &quot;matrix_flex_cols&quot; | &quot;matrix_flex&quot;
-                | &quot;term&quot;,
+              | &quot;complex_normal&quot; | &quot;complex_polar&quot;
+              | &quot;int_set&quot; | &quot;int_set_n_args&quot;
+              | &quot;vector&quot; | &quot;vector_flex&quot;
+              | &quot;matrix&quot; | &quot;matrix_flex_rows&quot; | &quot;matrix_flex_cols&quot; | &quot;matrix_flex&quot;
+              | &quot;term&quot;,
   &quot;input-require&quot;: IDENTIFIER[],
   &quot;input-forbid&quot;: IDENTIFIER[],
-  &quot;variable&quot;: IDENTIFIER,
+  &quot;variable&quot;: IDENTIFIER&lt;EXERCISE.VARIABLES&gt;,
   &quot;width&quot;: INTEGER
 } | {
   &quot;type&quot;: &quot;choices-input&quot;,
-  &quot;variable&quot;: IDENTIFIER,
+  &quot;variable&quot;: IDENTIFIER&lt;EXERCISE.VARIABLES&gt;,
   &quot;count&quot;: INTEGER
-}</code></pre>
+} | {
+  &quot;type&quot;: &quot;multi-choice-answer&quot;,
+  &quot;variable&quot;: IDENTIFIER&lt;EXERCISE.VARIABLES&gt;,
+  &quot;text&quot;: TEXT
+} | {
+  &quot;type&quot;: &quot;single-choice-answer&quot;,
+  &quot;variable&quot;: IDENTIFIER&lt;EXERCISE.VARIABLES&gt;,
+  &quot;text&quot;: TEXT
+};</code></pre>
 <pre><code>VARIABLE = {
   &quot;type&quot;: &quot;int&quot; | &quot;int_set&quot; | &quot;real&quot; | &quot;real_set&quot;
-          | &quot;complex&quot; | &quot;complex_set&quot; | &quot;vector&quot; | &quot;matrix&quot;
+        | &quot;complex&quot; | &quot;complex_set&quot; | &quot;vector&quot; | &quot;matrix&quot;
 };</code></pre>
 <pre><code>INSTANCE = {
-  IDENTIFIER: MATH_STRING
+  IDENTIFIER&lt;EXERCISE.VARIABLES&gt;: MATH_STRING
 };</code></pre>
 <p>TODO: scoring</p>
+<p>TODO: gap exercise, arrangement exercise, timed exercise</p>
 <h3 id="figure">FIGURE</h3>
 <pre><code>FIGURE extends BLOCK_ITEM = {
   &quot;path&quot;: STRING,
@@ -672,7 +682,9 @@ and games.</p>
     &quot;rows&quot;: TABLE_ROW[]
   }
 };</code></pre>
-<pre><code>TABLE_ROW = TEXT[];</code></pre>
+<pre><code>TABLE_ROW = {
+  &quot;row&quot;: TEXT[];
+}</code></pre>
 <p>TODO: must restrict <code>TEXT</code></p>
 <pre><code>TABLE_OPTION = &quot;align-left&quot; | &quot;align-center&quot; | &quot;align-right&quot;;</code></pre>
 <h3 id="new-page">NEW PAGE</h3>
