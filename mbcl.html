@@ -467,66 +467,107 @@ online courses technically.</p>
 <p>MBCL is a JSON-based format defined for the mathe:buddy App. Each
 MBCL-JSON file stores a complete course, defined by the Mathe:Buddy
 Language (MBL).</p>
+<p>MBL is intended to be used by course creators, i.e. humans, while
+MBCL is a pure computer language.</p>
+<p>This document assumes detailed knowledge about MBL. Definitions are
+not repeated here.</p>
 <p>The reference compiler to translate MBL to MBCL can be found on <a href="https://github.com/mathebuddy/mathebuddy-compiler.git">GitHub</a>.</p>
 <h2 id="json-specification">JSON Specification</h2>
-<p>TODO: “extends”, “&lt;OBJECT.ATTR&gt;”, “abstract(..)”…</p>
-<p>We use the following notation instead of JSON-schema (which is
-overkill!) to denote the structure of data.</p>
+<h3 id="intrinsic-data-types">Intrinsic Data Types</h3>
+<p>We use the following intrinsic data types.</p>
+<ul>
+<li><p><code>IDENTIFIER</code></p>
+<p>Examples: <code>&quot;hello&quot;</code>, <code>&quot;x314&quot;</code>,
+<code>&quot;_1337&quot;</code>, <code>&quot;AFFE&quot;</code></p></li>
+<li><p><code>STRING</code></p>
+<p>Example: <code>&quot;hello, world!&quot;</code></p></li>
+<li><p><code>INTEGER</code></p>
+<p>Example: <code>1337</code></p></li>
+<li><p><code>REAL</code></p>
+<p>Example: <code>3.14159</code></p></li>
+<li><p><code>UNIX_TIMESTAMP</code></p>
+<p>(Time in seconds since 1.1.1970 00:00)</p>
+<p>Example: <code>1669712632</code></p></li>
+<li><p><code>MATH_STRING = int | real | complex | int_set | vector | matrix;</code>:</p>
+<p>The following strings represent mathematical objects (in EBNF
+notation):</p>
+<ul>
+<li><p>Integers numbers: <code>int = INTEGER;</code></p>
+<p>Example: <code>&quot;3&quot;</code></p></li>
+<li><p>Real numbers: <code>real = REAL;</code></p>
+<p>Example: <code>&quot;-3.14&quot;</code></p></li>
+<li><p>Complex numbers:
+<code>complex = REAL &quot;+&quot; REAL &quot;i&quot; | REAL &quot;-&quot; REAL &quot;i&quot;;</code></p>
+<p>Example: <code>&quot;3-3i&quot;</code></p></li>
+<li><p>Set of integer numbers:
+<code>int_set = &quot;{&quot; [ INT { &quot;,&quot; INT } ] &quot;}&quot;;</code></p>
+<p>Example: <code>&quot;{1,3,5}&quot;</code></p></li>
+<li><p>Vectors: <code>vector = &quot;[&quot; [ REAL { &quot;,&quot; REAL } ] &quot;]&quot;;</code></p>
+<p>Example: <code>&quot;[-1337,2.71,9.81]&quot;</code></p></li>
+<li><p>Matrices:
+<code>matrix = &quot;[&quot; vector { &quot;,&quot; vector } &quot;]&quot;;</code></p>
+<p>Example: <code>&quot;[[1,2],[3,4]]&quot;</code></p></li>
+<li><p>Terms: TODO</p></li>
+</ul></li>
+</ul>
+<h3 id="custom-json-datatype-definition-language">Custom JSON Datatype
+Definition Language</h3>
+<p>We use the following custom notation instead of JSON-schema in this
+document to denote the structure of data.</p>
+<p><em>(Note: JSON-schema is NOT used, since its notation is rather long
+s.t. the context can only be grasped hardly.)</em></p>
 <ul>
 <li><p><code>A = { &quot;x&quot;:IDENTIFIER, &quot;y&quot;:B }; B = { &quot;z&quot;: INTEGER };</code>
-denotes an object with name <code>A</code> and entries <code>x</code>
-and <code>y</code>. The value of <code>x</code> must be an identifier,
-while <code>y</code> is an object of type <code>B</code>.</p>
-<p>JSON-Example that is compatible to the grammar:</p>
+denotes an object type with name <code>A</code> and attributes
+<code>x</code> and <code>y</code>. The value of attribute <code>x</code>
+must be an identifier, while attribute <code>y</code> is an object of
+type <code>B</code>.</p>
+<p><em>JSON-Example that is accepted by the grammar defined
+above:</em></p>
 <p><code>{&quot;x&quot;: &quot;leet&quot;, &quot;y&quot;: {&quot;z&quot;: 1337}}</code></p></li>
-<li><p><code>X = {&quot;a&quot;:INTEGER|&quot;xx&quot;}</code> denotes alternative
+<li><p><code>X = {&quot;a&quot;:INTEGER|STRING};</code> denotes alternative
 definitions for attribute <code>a</code>.</p>
-<p>JSON-Examples that are compatible to the grammar:</p>
-<p><code>{&quot;a&quot;:&quot;xx&quot;}</code> or <code>{&quot;a&quot;:314}</code> or
+<p><em>JSON-Examples that are accepted by the grammar defined
+above:</em></p>
+<p><code>{&quot;a&quot;:&quot;xx&quot;}</code>   or   <code>{&quot;a&quot;:314}</code>   or  
 <code>{&quot;a&quot;:42}</code></p></li>
 <li><p><code>Y = {&quot;x&quot;:&quot;txt&quot;} | INTEGER;</code> denotes alternative
 definitions for object <code>Y</code>.</p>
-<p>JSON-Examples (fragments only) that are all compatible to the
-grammar:</p>
-<p><code>{&quot;x&quot;:&quot;txt}</code> or <code>1337</code> or
+<p><em>JSON-Examples (fragments only) that are accepted by the grammar
+defined above:</em></p>
+<p><code>{&quot;x&quot;:&quot;txt&quot;}</code>   or   <code>1337</code>   or  
 <code>271</code></p></li>
-<li><p><code>Z = {&quot;k&quot;:INTEGER[]}</code> denotes that attribute
+<li><p><code>Z = {&quot;k&quot;:INTEGER[]};</code> denotes that attribute
 <code>k</code> is an array of type integer.</p>
-<p>JSON-Examples that are compatible to the grammar:</p>
-<p><code>{&quot;k&quot;:[1,1,2,3,5,8,13]}</code> or <code>{&quot;k&quot;:[]}</code></p></li>
+<p><em>JSON-Examples that are accepted by the grammar defined
+above:</em></p>
+<p><code>{&quot;k&quot;:[1,1,2,3,5,8,13]}</code>   or  
+<code>{&quot;k&quot;:[]}</code></p></li>
+<li><p><code>abstract(W) = {abstract(&quot;a&quot;):IDENTIFIER, &quot;b&quot;:STRING};</code>
+<code>V extends W = {&quot;a&quot;:&quot;xyz&quot;, &quot;c&quot;:REAL};</code> declares an abstract
+object type <code>W</code> and an object type <code>V</code> that
+inherits all attributes from <code>W</code>. Abstract object types and
+attributes can not be instantiated.</p>
+<p><em>JSON-Example that is accepted by the grammar defined
+above:</em></p>
+<p><code>{&quot;a&quot;:&quot;xyz&quot;,&quot;b&quot;:&quot;hello, world&quot;,&quot;c&quot;:3.14159}</code></p></li>
+<li><p><code>M = { &quot;id&quot;: IDENTIFIER }; N = { &quot;ref&quot;: IDENTIFIER&lt;M.id&gt; };</code>
+declares two object types <code>M</code> and <code>N</code>. Attribute
+<code>ref</code> in <code>N</code> must hold an identifier of some
+actual instance of <code>M</code>.</p>
+<p><em>JSON-Example that is accepted by the grammar defined
+above:</em></p>
+<p><code>{&quot;id&quot;:&quot;myId&quot;}</code>   for <code>M</code> and  
+<code>{&quot;ref&quot;:&quot;myId&quot;}</code>   for <code>N</code></p></li>
+<li><p><code>O = { IDENTIFIER: INT };</code> denotes a dictionary-like
+object type.</p>
+<p><em>JSON-Example that is accepted by the grammar defined
+above:</em></p>
+<p><code>{&quot;a&quot;:1,&quot;b&quot;:5,&quot;pi&quot;:314}</code></p></li>
 </ul>
-<h3 id="intrinsic-data-types">Intrinsic Data Types</h3>
-<ul>
-<li><p>IDENTIFIER</p>
-<p>Example: <code>&quot;hello&quot;</code></p></li>
-<li><p>STRING</p>
-<p>Example: <code>&quot;hello, world!&quot;</code></p></li>
-<li><p>INTEGER</p>
-<p>Example: <code>1337</code></p></li>
-<li><p>REAL</p>
-<p>Example: <code>3.14159</code></p></li>
-<li><p>UNIX_TIMESTAMP</p>
-<p>Time in seconds from 1.1.1970 00:00</p>
-<p>Example: <code>1669712632</code></p></li>
-<li><p>MATH_STRING:</p>
-<ul>
-<li><p>EBNF Definition: <code>INT = INTEGER;</code></p>
-<p>Example: <code>&quot;3&quot;</code></p></li>
-<li><p>EBNF Definition: <code>REAL = REAL;</code></p>
-<p>Example: <code>&quot;-3.14&quot;</code></p></li>
-<li><p>EBNF Definition:
-<code>INT_SET = &quot;{&quot; [ INT , { &quot;,&quot; INT } ] &quot;}&quot;;</code></p>
-<p>Example: <code>&quot;{1,3,5}&quot;</code></p></li>
-<li><p>EBNF Definition:
-<code>VECTOR = &quot;[&quot; [ REAL , { &quot;,&quot; REAL } ] &quot;]&quot;;</code></p>
-<p>Example: <code>&quot;[-1337,2.71,9.81]&quot;</code></p></li>
-<li><p>TODO</p></li>
-</ul></li>
-</ul>
-<h3 id="course">COURSE</h3>
-<p>A course represents the root of an MBCL file. Its contains a set of
-documents. Each document defines a page, consisting of text, exercises
-and games.</p>
+<h2 id="courses">Courses</h2>
+<p>A course represents the root of an MBCL file. It contains a set of
+chapters.</p>
 <pre><code>COURSE = {
   &quot;id&quot;: STRING,
   &quot;author&quot;: STRING,
@@ -538,17 +579,26 @@ and games.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;higher math 1&quot;</span><span class="fu">,</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;author&quot;</span><span class="fu">:</span> <span class="st">&quot;TH Koeln&quot;</span><span class="fu">,</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;mbclVersion&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;modifiedDate&quot;</span><span class="fu">:</span> <span class="dv">1669712632</span><span class="fu">,</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;mbcl_version&quot;</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;date_modified&quot;</span><span class="fu">:</span> <span class="dv">1669712632</span><span class="fu">,</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;chapters&quot;</span><span class="fu">:</span> <span class="ot">[]</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
-<h3 id="chapter">CHAPTER</h3>
+<h2 id="chapters">Chapters</h2>
+<p>A chapter consists of a set of levels.</p>
 <pre><code>CHAPTER = {
   &quot;title&quot;: STRING,
   &quot;alias&quot;: STRING,
   &quot;levels&quot;: LEVEL[]
 };</code></pre>
-<h3 id="level">LEVEL</h3>
+<p>Example:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;title&quot;</span><span class="fu">:</span> <span class="st">&quot;Complex Numbers&quot;</span><span class="fu">,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;alias&quot;</span><span class="fu">:</span> <span class="st">&quot;cmplx&quot;</span><span class="fu">,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;levels&quot;</span><span class="fu">:</span> <span class="ot">[]</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h2 id="levels">Levels</h2>
+<p>A level defines a part of course, consisting of e.g. text, exercises
+and games.</p>
 <pre><code>LEVEL = {
   &quot;id&quot;: IDENTIFIER,
   &quot;pos_x&quot;: INTEGER,
@@ -558,18 +608,24 @@ and games.</p>
 };</code></pre>
 <pre><code>LEVEL_ITEM = SECTION | TEXT | EQUATION | DEFINITION | EXERCISE
            | FIGURE | TABLE | NEWPAGE;</code></pre>
-<p>TODO: units</p>
-<h3 id="section">SECTION</h3>
+<!--
+TODO: units
+-->
+<h2 id="sectioning">Sectioning</h2>
+<p>A <em>title</em> is used as level title. (Sub-)Sections subdivide a
+level.</p>
 <pre><code>SECTION = {
   &quot;type&quot;: &quot;title&quot; | &quot;section&quot; | &quot;subsection&quot; | &quot;subsubsection&quot;,
   &quot;text&quot;: STRING,
   &quot;label&quot;: IDENTIFIER
 };</code></pre>
-<h3 id="paragraph">PARAGRAPH</h3>
+<h2 id="paragraphs">Paragraphs</h2>
+<p>A paragraph hierarchically defines a part of text, including format
+options and equations, alignment, enumerations etc.</p>
 <pre><code>TEXT = {
-  &quot;type&quot;: &quot;paragraph&quot; | &quot;inline-math&quot; | &quot;bold&quot; | &quot;italic&quot; | &quot;itemize&quot;
-        | &quot;enumerate&quot; | &quot;enumerate-alpha&quot; | &quot;span&quot;
-        | &quot;align-left&quot; | &quot;align-center&quot; | &quot;align-right&quot;,
+  &quot;type&quot;: &quot;paragraph&quot; | &quot;inline_math&quot; | &quot;bold&quot; | &quot;italic&quot; | &quot;itemize&quot;
+        | &quot;enumerate&quot; | &quot;enumerate_alpha&quot; | &quot;span&quot;
+        | &quot;align_left&quot; | &quot;align_center&quot; | &quot;align_right&quot;,
   &quot;items&quot;: TEXT[]
 } | {
   &quot;type&quot;: &quot;text&quot;,
@@ -583,80 +639,121 @@ and games.</p>
   &quot;type&quot;: &quot;reference&quot;,
   &quot;label&quot;: IDENTIFIER&lt;SECTION.label|BLOCK_ITEM.label&gt;
 };</code></pre>
-<p>The following example represents a paragraph containing a bold text
-   <strong>Hello, world <span class="math inline"><em>x</em><sup>2</sup> + <em>y</em><sup>2</sup></span>!</strong>
+<p>The following example represents a paragraph containing an italic
+text    <em>Hello, world <span class="math inline"><em>x</em><sup>2</sup> + <em>y</em><sup>2</sup></span>!</em>
    that ends with a line feed.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;paragraph&quot;</span><span class="fu">,</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;items&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;bold&quot;</span><span class="fu">,</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;items&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span> <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Hello, world&quot;</span> <span class="fu">}</span><span class="ot">,</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;inline-math&quot;</span><span class="fu">,</span> <span class="dt">&quot;items&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span><span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;text&quot;</span><span class="fu">,</span><span class="dt">&quot;value&quot;</span><span class="fu">:</span><span class="st">&quot;x^2+y^2&quot;</span><span class="fu">}</span><span class="ot">]</span><span class="fu">}</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span> <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;!&quot;</span> <span class="fu">}</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>      <span class="ot">]</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;linefeed&quot;</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
-<h3 id="block-item">BLOCK ITEM</h3>
-<pre><code>BLOCK_ITEM = {
+<div class="sourceCode" id="cb9"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;paragraph&quot;</span><span class="fu">,</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;items&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;italic&quot;</span><span class="fu">,</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;items&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span> <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Hello, world&quot;</span> <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;inline_math&quot;</span><span class="fu">,</span> <span class="dt">&quot;items&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span><span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;text&quot;</span><span class="fu">,</span><span class="dt">&quot;value&quot;</span><span class="fu">:</span><span class="st">&quot;x^2+y^2&quot;</span><span class="fu">}</span><span class="ot">]</span><span class="fu">}</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span> <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;!&quot;</span> <span class="fu">}</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>      <span class="ot">]</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;linefeed&quot;</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h2 id="block-items">Block Items</h2>
+<p>For example display style equations, figures and exercises are called
+<em>block items</em>. The following abstract type defines attributes
+that are common to all block items.</p>
+<pre><code>abstract(BLOCK_ITEM) = {
   abstract(&quot;type&quot;): IDENTIFIER,
   &quot;title&quot;: STRING,
   &quot;label&quot;: IDENTIFIER
   &quot;error&quot;: STRING
 };</code></pre>
-<h3 id="equation">EQUATION</h3>
+<p>Attribute <code>error</code> is used to indicate syntax errors in the
+MBL definition.</p>
+<h2 id="display-style-equations">Display Style Equations</h2>
+<p>A (numbered) equation is rendered in display style by the following
+object.</p>
 <pre><code>EQUATION extends BLOCK_ITEM = {
   &quot;type&quot;: &quot;equation&quot;,
   &quot;value&quot;: STRING,
+  &quot;numbering&quot;: INTEGER,
   &quot;options&quot;: EQUATION_OPTION[]
 };</code></pre>
 <pre><code>EQUATION_OPTION = &quot;align_left&quot; | &quot;align_center&quot; | &quot;align_right&quot; | &quot;align_equals&quot;;</code></pre>
-<h3 id="definition">DEFINITION</h3>
-<p>TODO: hierarchical blocks!!</p>
+<p>If attribute <code>numbering</code> is set to a negative value, the
+numbering is not displayed.</p>
+<h2 id="definitions">Definitions</h2>
+<p>A definition (and in the same way a theorem, lemma, …) is rendered as
+block. It may contain text and display-style equation items.</p>
 <pre><code>DEFINITION extends BLOCK_ITEM = {
   &quot;type&quot;: &quot;definition&quot; | &quot;theorem&quot; | &quot;lemma&quot; | &quot;corollary&quot; | &quot;proposition&quot;
         | &quot;conjecture&quot; | &quot;axiom&quot; | &quot;claim&quot; | &quot;identity&quot; | &quot;paradox&quot;,
   &quot;items&quot;: DEFINITION_ITEM[]
 };</code></pre>
 <pre><code>DEFINITION_ITEM = EQUATION | TEXT;</code></pre>
-<h3 id="exercise">EXERCISE</h3>
+<h2 id="examples">Examples</h2>
+<pre><code>EXAMPLE extends DEFINITION = {
+  &quot;type&quot;: &quot;example&quot;
+};</code></pre>
+<h2 id="exercises">Exercises</h2>
+<p>An exercise includes a set variables with values that can be used in
+the question text or as answers.</p>
+<p>The attribute <code>instance</code> defines concrete values for each
+variable. Randomized questions may have multiple (distinct)
+instances.</p>
 <pre><code>EXERCISE extends BLOCK_ITEM = {
-  &quot;variables&quot;: { IDENTIFIER: VARIABLE },
+  &quot;type&quot;: &quot;exercise&quot;,
+  &quot;variables&quot;: {
+    IDENTIFIER: VARIABLE
+  },
   &quot;instances&quot;: INSTANCE[],
   &quot;text&quot;: EXERCISE_TEXT
 };</code></pre>
+<p>Exercise text is extended to the following types:</p>
+<ul>
+<li><code>variable</code> refers to a question variable and displays the
+value of the the chosen instance.</li>
+<li><code>text_input</code> renders one or more text-based input
+field(s); dependent of the actual variable type.
+<ul>
+<li>Attribute <code>input_require</code> lists a set of identifiers that
+must be input by the student (e.g. <code>[&quot;sin&quot;]</code> to require using
+the sine-function).</li>
+<li>Attribute <code>input_forbid</code> is the opposite to
+<code>input_require</code>.</li>
+<li>Attribute <code>width</code> controls the width of the input
+field(s). <!-- TODO: specify unit! --></li>
+</ul></li>
+<li><code>choices_input</code> lists a set of <code>count</code>
+buttons, where one given answer is correct and the other answers are
+incorrect.</li>
+<li><code>multiple_choice</code> declares a set of answers of a
+multi-choice question</li>
+<li><code>single_choice</code> declares a set of answers of a
+single-choice question</li>
+</ul>
 <pre><code>EXERCISE_TEXT extends TEXT = {
   &quot;type&quot;: &quot;variable&quot;,
   &quot;variable&quot;: IDENTIFIER&lt;EXERCISE.VARIABLES&gt;
 } | {
-  &quot;type&quot;: &quot;text-input&quot;,
-  &quot;input-type&quot;: &quot;int&quot;
+  &quot;type&quot;: &quot;text_input&quot;,
+  &quot;input_type&quot;: &quot;int&quot;
               | &quot;complex_normal&quot; | &quot;complex_polar&quot;
               | &quot;int_set&quot; | &quot;int_set_n_args&quot;
               | &quot;vector&quot; | &quot;vector_flex&quot;
               | &quot;matrix&quot; | &quot;matrix_flex_rows&quot; | &quot;matrix_flex_cols&quot; | &quot;matrix_flex&quot;
               | &quot;term&quot;,
-  &quot;input-require&quot;: IDENTIFIER[],
-  &quot;input-forbid&quot;: IDENTIFIER[],
+  &quot;input_require&quot;: IDENTIFIER[],
+  &quot;input_forbid&quot;: IDENTIFIER[],
   &quot;variable&quot;: IDENTIFIER&lt;EXERCISE.VARIABLES&gt;,
   &quot;width&quot;: INTEGER
 } | {
-  &quot;type&quot;: &quot;choices-input&quot;,
+  &quot;type&quot;: &quot;choices_input&quot;,
   &quot;variable&quot;: IDENTIFIER&lt;EXERCISE.VARIABLES&gt;,
   &quot;count&quot;: INTEGER
 } | {
-  &quot;type&quot;: &quot;multi-choice-answer&quot;,
-  &quot;variable&quot;: IDENTIFIER&lt;EXERCISE.VARIABLES&gt;,
-  &quot;text&quot;: TEXT
-} | {
-  &quot;type&quot;: &quot;single-choice-answer&quot;,
-  &quot;variable&quot;: IDENTIFIER&lt;EXERCISE.VARIABLES&gt;,
-  &quot;text&quot;: TEXT
+  &quot;type&quot;: &quot;multiple_choice&quot; | &quot;single_choice&quot;,
+  &quot;items&quot;: SINGLE_MULTIPLE_CHOICE_OPTION[]
 };</code></pre>
 <pre><code>VARIABLE = {
   &quot;type&quot;: &quot;int&quot; | &quot;int_set&quot; | &quot;real&quot; | &quot;real_set&quot;
@@ -665,16 +762,28 @@ and games.</p>
 <pre><code>INSTANCE = {
   IDENTIFIER&lt;EXERCISE.VARIABLES&gt;: MATH_STRING
 };</code></pre>
-<p>TODO: scoring</p>
-<p>TODO: gap exercise, arrangement exercise, timed exercise</p>
-<h3 id="figure">FIGURE</h3>
+<pre><code>SINGLE_MULTIPLE_CHOICE_OPTION = {
+  &quot;variable&quot;: IDENTIFIER&lt;EXERCISE.VARIABLES&gt;,
+  &quot;text&quot;: TEXT
+};</code></pre>
+<!--
+TODO: scoring
+
+TODO: gap exercise, arrangement exercise, timed exercise
+-->
+<h2 id="figures">Figures</h2>
+<p>A figure renders a graphics file, as well as an optional caption.</p>
 <pre><code>FIGURE extends BLOCK_ITEM = {
   &quot;path&quot;: STRING,
+  &quot;caption&quot;: STRING,
   &quot;options&quot;: FIGURE_OPTION[]
 };</code></pre>
-<pre><code>FIGURE_OPTION = &quot;width-X&quot;;</code></pre>
-<p>with <code>X</code> the width as percentage of screen width</p>
-<h3 id="table">TABLE</h3>
+<pre><code>FIGURE_OPTION = &quot;width_X&quot;;</code></pre>
+<ul>
+<li><code>X</code> denotes the width as percentage of screen width.</li>
+</ul>
+<h2 id="tables">Tables</h2>
+<p>A table renders tabular data.</p>
 <pre><code>TABLE extends BLOCK_ITEM = {
   &quot;options&quot;: TABLE_OPTION[],
   &quot;content&quot;: {
@@ -685,14 +794,20 @@ and games.</p>
 <pre><code>TABLE_ROW = {
   &quot;row&quot;: TEXT[];
 }</code></pre>
-<p>TODO: must restrict <code>TEXT</code></p>
-<pre><code>TABLE_OPTION = &quot;align-left&quot; | &quot;align-center&quot; | &quot;align-right&quot;;</code></pre>
-<h3 id="new-page">NEW PAGE</h3>
+<!--
+TODO: must restrict `TEXT`
+-->
+<pre><code>TABLE_OPTION = &quot;align_left&quot; | &quot;align_center&quot; | &quot;align_right&quot;;</code></pre>
+<h2 id="page-breaks">Page Breaks</h2>
 <pre><code>NEWPAGE = {
   &quot;type&quot;: &quot;new_page&quot;
 };</code></pre>
 <h2 id="compressed-courses">Compressed Courses</h2>
-<p>TODO: compression format, hex, …</p>
+<p>The MBCL file size can be reduced by using LZ-based compression <a href="https://www.npmjs.com/package/lz-string">npm-package</a>.</p>
+<!--
+TODO: compression format, hex, ...
+TODO: encryption with password
+-->
 <p><em>Author: Andreas Schwenk, TH Köln</em></p>
 </body>
 </html>
