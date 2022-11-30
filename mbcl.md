@@ -17,87 +17,122 @@ which can be used to express mathematical based online courses technically.
 MBCL is a JSON-based format defined for the mathe:buddy App.
 Each MBCL-JSON file stores a complete course, defined by the Mathe:Buddy Language (MBL).
 
+MBL is intended to be used by course creators, i.e. humans, while MBCL is a pure computer language.
+
+This document assumes detailed knowledge about MBL. Definitions are not repeated here.
+
 The reference compiler to translate MBL to MBCL can be found on [GitHub](https://github.com/mathebuddy/mathebuddy-compiler.git).
 
 ## JSON Specification
 
-TODO: "extends", "<OBJECT.ATTR>", "abstract(..)"...
-
-We use the following notation instead of JSON-schema (which is overkill!) to denote the structure of data.
-
-- `A = { "x":IDENTIFIER, "y":B }; B = { "z": INTEGER };` denotes an object with name `A` and entries `x` and `y`. The value of `x` must be an identifier, while `y` is an object of type `B`.
-
-  JSON-Example that is compatible to the grammar:
-
-  `{"x": "leet", "y": {"z": 1337}}`
-
-- `X = {"a":INTEGER|"xx"}` denotes alternative definitions for attribute `a`.
-
-  JSON-Examples that are compatible to the grammar:
-
-  `{"a":"xx"}` or `{"a":314}` or `{"a":42}`
-
-- `Y = {"x":"txt"} | INTEGER;` denotes alternative definitions for object `Y`.
-
-  JSON-Examples (fragments only) that are all compatible to the grammar:
-
-  `{"x":"txt}` or `1337` or `271`
-
-- `Z = {"k":INTEGER[]}` denotes that attribute `k` is an array of type integer.
-
-  JSON-Examples that are compatible to the grammar:
-
-  `{"k":[1,1,2,3,5,8,13]}` or `{"k":[]}`
-
 ### Intrinsic Data Types
 
-- IDENTIFIER
+We use the following intrinsic data types.
 
-  Example: `"hello"`
+- `IDENTIFIER`
 
-- STRING
+  Examples: `"hello"`, `"x314"`, `"_1337"`, `"AFFE"`
+
+- `STRING`
 
   Example: `"hello, world!"`
 
-- INTEGER
+- `INTEGER`
 
   Example: `1337`
 
-- REAL
+- `REAL`
 
   Example: `3.14159`
 
-- UNIX_TIMESTAMP
+- `UNIX_TIMESTAMP`
 
-  Time in seconds from 1.1.1970 00:00
+  (Time in seconds since 1.1.1970 00:00)
 
   Example: `1669712632`
 
-- MATH_STRING:
+- `MATH_STRING = int | real | complex | int_set | vector | matrix;`:
 
-  - EBNF Definition: `INT = INTEGER;`
+  The following strings represent mathematical objects (in EBNF notation):
+
+  - Integers numbers: `int = INTEGER;`
 
     Example: `"3"`
 
-  - EBNF Definition: `REAL = REAL;`
+  - Real numbers: `real = REAL;`
 
     Example: `"-3.14"`
 
-  - EBNF Definition: `INT_SET = "{" [ INT , { "," INT } ] "}";`
+  - Complex numbers: `complex = REAL "+" REAL "i" | REAL "-" REAL "i";`
+
+    Example: `"3-3i"`
+
+  - Set of integer numbers: `int_set = "{" [ INT { "," INT } ] "}";`
 
     Example: `"{1,3,5}"`
 
-  - EBNF Definition: `VECTOR = "[" [ REAL , { "," REAL } ] "]";`
+  - Vectors: `vector = "[" [ REAL { "," REAL } ] "]";`
 
     Example: `"[-1337,2.71,9.81]"`
 
-  - TODO
+  - Matrices: `matrix = "[" vector { "," vector } "]";`
 
-### COURSE
+    Example: `"[[1,2],[3,4]]"`
+
+  - Terms: TODO
+
+### Custom JSON Datatype Definition Language
+
+We use the following custom notation instead of JSON-schema in this document to denote the structure of data.
+
+_(Note: JSON-schema is NOT used, since its notation is rather long s.t. the context can only be grasped hardly.)_
+
+- `A = { "x":IDENTIFIER, "y":B }; B = { "z": INTEGER };` denotes an object type with name `A` and attributes `x` and `y`. The value of attribute `x` must be an identifier, while attribute `y` is an object of type `B`.
+
+  _JSON-Example that is accepted by the grammar defined above:_
+
+  `{"x": "leet", "y": {"z": 1337}}`
+
+- `X = {"a":INTEGER|STRING};` denotes alternative definitions for attribute `a`.
+
+  _JSON-Examples that are accepted by the grammar defined above:_
+
+  `{"a":"xx"}` &nbsp; or &nbsp; `{"a":314}` &nbsp; or &nbsp; `{"a":42}`
+
+- `Y = {"x":"txt"} | INTEGER;` denotes alternative definitions for object `Y`.
+
+  _JSON-Examples (fragments only) that are accepted by the grammar defined above:_
+
+  `{"x":"txt"}` &nbsp; or &nbsp; `1337` &nbsp; or &nbsp; `271`
+
+- `Z = {"k":INTEGER[]};` denotes that attribute `k` is an array of type integer.
+
+  _JSON-Examples that are accepted by the grammar defined above:_
+
+  `{"k":[1,1,2,3,5,8,13]}` &nbsp; or &nbsp; `{"k":[]}`
+
+- `abstract(W) = {abstract("a"):IDENTIFIER, "b":STRING};` `V extends W = {"a":"xyz", "c":REAL};` declares an abstract object type `W` and an object type `V` that inherits all attributes from `W`. Abstract object types and attributes can not be instantiated.
+
+  _JSON-Example that is accepted by the grammar defined above:_
+
+  `{"a":"xyz","b":"hello, world","c":3.14159}`
+
+- `M = { "id": IDENTIFIER }; N = { "ref": IDENTIFIER<M.id> };` declares two object types `M` and `N`. Attribute `ref` in `N` must hold an identifier of some actual instance of `M`.
+
+  _JSON-Example that is accepted by the grammar defined above:_
+
+  `{"id":"myId"}` &nbsp; for `M` and &nbsp; `{"ref":"myId"}` &nbsp; for `N`
+
+- `O = { IDENTIFIER: INT };` denotes a dictionary-like object type.
+
+  _JSON-Example that is accepted by the grammar defined above:_
+
+  `{"a":1,"b":5,"pi":314}`
+
+## Courses
 
 A course represents the root of an MBCL file.
-Its contains a set of documents.
-Each document defines a page, consisting of text, exercises and games.
+It contains a set of chapters.
 
 ```
 COURSE = {
@@ -115,13 +150,15 @@ Example:
 {
   "id": "higher math 1",
   "author": "TH Koeln",
-  "mbclVersion": 1,
-  "modifiedDate": 1669712632,
+  "mbcl_version": 1,
+  "date_modified": 1669712632,
   "chapters": []
 }
 ```
 
-### CHAPTER
+## Chapters
+
+A chapter consists of a set of levels.
 
 ```
 CHAPTER = {
@@ -131,7 +168,19 @@ CHAPTER = {
 };
 ```
 
-### LEVEL
+Example:
+
+```json
+{
+  "title": "Complex Numbers",
+  "alias": "cmplx",
+  "levels": []
+}
+```
+
+## Levels
+
+A level defines a part of course, consisting of e.g. text, exercises and games.
 
 ```
 LEVEL = {
@@ -148,9 +197,14 @@ LEVEL_ITEM = SECTION | TEXT | EQUATION | DEFINITION | EXERCISE
            | FIGURE | TABLE | NEWPAGE;
 ```
 
+<!--
 TODO: units
+-->
 
-### SECTION
+## Sectioning
+
+A _title_ is used as level title.
+(Sub-)Sections subdivide a level.
 
 ```
 SECTION = {
@@ -160,13 +214,15 @@ SECTION = {
 };
 ```
 
-### PARAGRAPH
+## Paragraphs
+
+A paragraph hierarchically defines a part of text, including format options and equations, alignment, enumerations etc.
 
 ```
 TEXT = {
-  "type": "paragraph" | "inline-math" | "bold" | "italic" | "itemize"
-        | "enumerate" | "enumerate-alpha" | "span"
-        | "align-left" | "align-center" | "align-right",
+  "type": "paragraph" | "inline_math" | "bold" | "italic" | "itemize"
+        | "enumerate" | "enumerate_alpha" | "span"
+        | "align_left" | "align_center" | "align_right",
   "items": TEXT[]
 } | {
   "type": "text",
@@ -182,17 +238,17 @@ TEXT = {
 };
 ```
 
-The following example represents a paragraph containing a bold text &nbsp;&nbsp; **Hello, world $x^2 + y^2$!** &nbsp;&nbsp; that ends with a line feed.
+The following example represents a paragraph containing an italic text &nbsp;&nbsp; _Hello, world $x^2 + y^2$!_ &nbsp;&nbsp; that ends with a line feed.
 
 ```json
 {
   "type": "paragraph",
   "items": [
     {
-      "type": "bold",
+      "type": "italic",
       "items": [
         { "type": "text", "value": "Hello, world" },
-        { "type": "inline-math", "items": [{"type":"text","value":"x^2+y^2"}]}
+        { "type": "inline_math", "items": [{"type":"text","value":"x^2+y^2"}]}
         { "type": "text", "value": "!" }
       ]
     },
@@ -203,10 +259,13 @@ The following example represents a paragraph containing a bold text &nbsp;&nbsp;
 }
 ```
 
-### BLOCK ITEM
+## Block Items
+
+For example display style equations, figures and exercises are called _block items_.
+The following abstract type defines attributes that are common to all block items.
 
 ```
-BLOCK_ITEM = {
+abstract(BLOCK_ITEM) = {
   abstract("type"): IDENTIFIER,
   "title": STRING,
   "label": IDENTIFIER
@@ -214,12 +273,17 @@ BLOCK_ITEM = {
 };
 ```
 
-### EQUATION
+Attribute `error` is used to indicate syntax errors in the MBL definition.
+
+## Display Style Equations
+
+A (numbered) equation is rendered in display style by the following object.
 
 ```
 EQUATION extends BLOCK_ITEM = {
   "type": "equation",
   "value": STRING,
+  "numbering": INTEGER,
   "options": EQUATION_OPTION[]
 };
 ```
@@ -228,9 +292,12 @@ EQUATION extends BLOCK_ITEM = {
 EQUATION_OPTION = "align_left" | "align_center" | "align_right" | "align_equals";
 ```
 
-### DEFINITION
+If attribute `numbering` is set to a negative value, the numbering is not displayed.
 
-TODO: hierarchical blocks!!
+## Definitions
+
+A definition (and in the same way a theorem, lemma, ...) is rendered as block.
+It may contain text and display-style equation items.
 
 ```
 DEFINITION extends BLOCK_ITEM = {
@@ -244,44 +311,66 @@ DEFINITION extends BLOCK_ITEM = {
 DEFINITION_ITEM = EQUATION | TEXT;
 ```
 
-### EXERCISE
+## Examples
+
+```
+EXAMPLE extends DEFINITION = {
+  "type": "example"
+};
+```
+
+## Exercises
+
+An exercise includes a set variables with values that can be used in the question text or as answers.
+
+The attribute `instance` defines concrete values for each variable.
+Randomized questions may have multiple (distinct) instances.
 
 ```
 EXERCISE extends BLOCK_ITEM = {
-  "variables": { IDENTIFIER: VARIABLE },
+  "type": "exercise",
+  "variables": {
+    IDENTIFIER: VARIABLE
+  },
   "instances": INSTANCE[],
   "text": EXERCISE_TEXT
 };
 ```
+
+Exercise text is extended to the following types:
+
+- `variable` refers to a question variable and displays the value of the the chosen instance.
+- `text_input` renders one or more text-based input field(s); dependent of the actual variable type.
+  - Attribute `input_require` lists a set of identifiers that must be input by the student (e.g. `["sin"]` to require using the sine-function).
+  - Attribute `input_forbid` is the opposite to `input_require`.
+  - Attribute `width` controls the width of the input field(s). <!-- TODO: specify unit! -->
+- `choices_input` lists a set of `count` buttons, where one given answer is correct and the other answers are incorrect.
+- `multiple_choice` declares a set of answers of a multi-choice question
+- `single_choice` declares a set of answers of a single-choice question
 
 ```
 EXERCISE_TEXT extends TEXT = {
   "type": "variable",
   "variable": IDENTIFIER<EXERCISE.VARIABLES>
 } | {
-  "type": "text-input",
-  "input-type": "int"
+  "type": "text_input",
+  "input_type": "int"
               | "complex_normal" | "complex_polar"
               | "int_set" | "int_set_n_args"
               | "vector" | "vector_flex"
               | "matrix" | "matrix_flex_rows" | "matrix_flex_cols" | "matrix_flex"
               | "term",
-  "input-require": IDENTIFIER[],
-  "input-forbid": IDENTIFIER[],
+  "input_require": IDENTIFIER[],
+  "input_forbid": IDENTIFIER[],
   "variable": IDENTIFIER<EXERCISE.VARIABLES>,
   "width": INTEGER
 } | {
-  "type": "choices-input",
+  "type": "choices_input",
   "variable": IDENTIFIER<EXERCISE.VARIABLES>,
   "count": INTEGER
 } | {
-  "type": "multi-choice-answer",
-  "variable": IDENTIFIER<EXERCISE.VARIABLES>,
-  "text": TEXT
-} | {
-  "type": "single-choice-answer",
-  "variable": IDENTIFIER<EXERCISE.VARIABLES>,
-  "text": TEXT
+  "type": "multiple_choice" | "single_choice",
+  "items": SINGLE_MULTIPLE_CHOICE_OPTION[]
 };
 ```
 
@@ -298,26 +387,40 @@ INSTANCE = {
 };
 ```
 
+```
+SINGLE_MULTIPLE_CHOICE_OPTION = {
+  "variable": IDENTIFIER<EXERCISE.VARIABLES>,
+  "text": TEXT
+};
+```
+
+<!--
 TODO: scoring
 
 TODO: gap exercise, arrangement exercise, timed exercise
+-->
 
-### FIGURE
+## Figures
+
+A figure renders a graphics file, as well as an optional caption.
 
 ```
 FIGURE extends BLOCK_ITEM = {
   "path": STRING,
+  "caption": STRING,
   "options": FIGURE_OPTION[]
 };
 ```
 
 ```
-FIGURE_OPTION = "width-X";
+FIGURE_OPTION = "width_X";
 ```
 
-with `X` the width as percentage of screen width
+- `X` denotes the width as percentage of screen width.
 
-### TABLE
+## Tables
+
+A table renders tabular data.
 
 ```
 TABLE extends BLOCK_ITEM = {
@@ -335,13 +438,15 @@ TABLE_ROW = {
 }
 ```
 
+<!--
 TODO: must restrict `TEXT`
+-->
 
 ```
-TABLE_OPTION = "align-left" | "align-center" | "align-right";
+TABLE_OPTION = "align_left" | "align_center" | "align_right";
 ```
 
-### NEW PAGE
+## Page Breaks
 
 ```
 NEWPAGE = {
@@ -351,6 +456,11 @@ NEWPAGE = {
 
 ## Compressed Courses
 
+The MBCL file size can be reduced by using LZ-based compression [npm-package](https://www.npmjs.com/package/lz-string).
+
+<!--
 TODO: compression format, hex, ...
+TODO: encryption with password
+-->
 
 _Author: Andreas Schwenk, TH Köln_
