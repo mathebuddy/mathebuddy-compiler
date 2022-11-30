@@ -15,11 +15,13 @@ which can be used to express mathematical based online courses technically.
 ## Introduction
 
 MBCL is a JSON-based format defined for the mathe:buddy App.
-Each MBL file stores a complete course, defined by the Mathe:Buddy Language (MBL).
+Each MBCL-JSON file stores a complete course, defined by the Mathe:Buddy Language (MBL).
 
 The reference compiler to translate MBL to MBCL can be found on [GitHub](https://github.com/mathebuddy/mathebuddy-compiler.git).
 
 ## JSON Specification
+
+TODO: "extends", ...
 
 We use the following notation instead of JSON-schema (which is overkill!) to denote the structure of data.
 
@@ -142,10 +144,17 @@ LEVEL = {
 ```
 
 ```
-LEVEL_ITEM = {
-  "type": "exercise" | TODO,
-  "title": STRING,
-  "data": EXERCISE | TODO
+LEVEL_ITEM = SECTION | TEXT | EQUATION | DEFINITION | EXERCISE
+           | FIGURE | TABLE | NEWPAGE;
+```
+
+### SECTION
+
+```
+SECTION = {
+  "type": "title" | "section" | "subsection" | "subsubsection",
+  "text": STRING,
+  "label": IDENTIFIER
 };
 ```
 
@@ -153,19 +162,21 @@ LEVEL_ITEM = {
 
 ```
 TEXT = {
-  "type": "paragraph",
+  "type": "paragraph" | "inline-math" | "bold" | "italic" | "itemize"
+          | "enumerate" | "enumerate-alpha" | "span"
+          | "align-left" | "align-center" | "align-right",
   "items": TEXT[]
 } | {
   "type": "text",
   "value": STRING
 } | {
-  "type": "inline-math",
-  "items": TEXT[]
-} | {
-  "type": "variable",
-  "value": IDENTIFIER
-} | {
   "type": "linefeed"
+} | {
+  "type": "color",
+  "value": INTEGER
+} | {
+  "type": "reference",
+  "label": IDENTIFIER
 };
 ```
 
@@ -190,26 +201,123 @@ The following example represents a paragraph containing a bold text &nbsp;&nbsp;
 }
 ```
 
-### EXERCISE
+### BLOCK ITEM
 
 ```
-EXERCISE = {
-  "variables": { IDENTIFIER: VARIABLE },
-  "instances": INSTANCE[],
-  "text": PARAGRAPH
+BLOCK_ITEM = {
+  "type": IDENTIFIER,
+  "title": STRING,
+  "label": IDENTIFIER
+  "error": STRING
+};
+```
+
+### EQUATION
+
+```
+EQUATION extends BLOCK_ITEM = {
+  "type": "equation",
+  "value": STRING,
+  "options": EQUATION_OPTION[]
 };
 ```
 
 ```
+EQUATION_OPTION = "align_left" | "align_center" | "align_right" | "align_equals";
+```
+
+### DEFINITION
+
+TODO: hierarchical blocks!!
+
+```
+DEFINITION extends BLOCK_ITEM = {
+  "type": "definition" | "theorem" | "lemma" | "corollary" | "proposition"
+          | "conjecture" | "axiom" | "claim" | "identity" | "paradox",
+  "items": DEFINITION_ITEM[]
+};
+```
+
+```
+DEFINITION_ITEM = EQUATION | TEXT;
+```
+
+### EXERCISE
+
+```
+EXERCISE extends BLOCK_ITEM = {
+  "variables": { IDENTIFIER: VARIABLE },
+  "instances": INSTANCE[],
+  "text": EXERCISE_TEXT
+};
+```
+
+```
+EXERCISE_TEXT extends TEXT = {
+  "type": "variable",
+  "variable": IDENTIFIER
+} | {
+  "type": "integer_input",
+  "variable": IDENTIFIER,
+  "width": INTEGER
+}
+```
+
+```
 VARIABLE = {
-  "type": "INT" | "INT_SET" | "REAL" | "REAL_SET"
-          | "COMPLEX" | "COMPLEX_SET" | "VECTOR" | "MATRIX"
+  "type": "int" | "int_set" | "real" | "real_set"
+          | "complex" | "complex_set" | "vector" | "matrix"
 };
 ```
 
 ```
 INSTANCE = {
   IDENTIFIER: MATH_STRING
+};
+```
+
+### FIGURE
+
+```
+FIGURE extends BLOCK_ITEM = {
+  "path": STRING,
+  "options": FIGURE_OPTION[]
+};
+```
+
+```
+FIGURE_OPTION = "width-X";
+```
+
+with `X` the width as percentage of screen width
+
+### TABLE
+
+```
+TABLE extends BLOCK_ITEM = {
+  "options": TABLE_OPTION[],
+  "content": {
+    "head": TEXT[],
+    "rows": TABLE_ROW[]
+  }
+};
+```
+
+```
+TABLE_ROW = TEXT[];
+```
+
+TODO: must restrict `TEXT`
+
+```
+TABLE_OPTION = "align-left" | "align-center" | "align-right";
+```
+
+### NEW PAGE
+
+```
+NEWPAGE = {
+  "type": "new_page"
 };
 ```
 
