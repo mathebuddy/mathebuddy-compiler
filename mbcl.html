@@ -633,9 +633,21 @@ and games.</p>
   &quot;type&quot;: &quot;variable&quot;,
   &quot;variable&quot;: IDENTIFIER
 } | {
-  &quot;type&quot;: &quot;integer_input&quot;,
+  &quot;type&quot;: &quot;text-input&quot;,
+  &quot;input-type&quot;: &quot;int&quot;
+                | &quot;complex_normal&quot; | &quot;complex_polar&quot;
+                | &quot;int_set&quot; | &quot;int_set_n_args&quot;
+                | &quot;vector&quot; | &quot;vector_flex&quot;
+                | &quot;matrix&quot; | &quot;matrix_flex_rows&quot; | &quot;matrix_flex_cols&quot; | &quot;matrix_flex&quot;
+                | &quot;term&quot;,
+  &quot;input-require&quot;: IDENTIFIER[],
+  &quot;input-forbid&quot;: IDENTIFIER[],
   &quot;variable&quot;: IDENTIFIER,
   &quot;width&quot;: INTEGER
+} | {
+  &quot;type&quot;: &quot;choices-input&quot;,
+  &quot;variable&quot;: IDENTIFIER,
+  &quot;count&quot;: INTEGER
 }</code></pre>
 <pre><code>VARIABLE = {
   &quot;type&quot;: &quot;int&quot; | &quot;int_set&quot; | &quot;real&quot; | &quot;real_set&quot;
@@ -644,6 +656,7 @@ and games.</p>
 <pre><code>INSTANCE = {
   IDENTIFIER: MATH_STRING
 };</code></pre>
+<p>TODO: scoring</p>
 <h3 id="figure">FIGURE</h3>
 <pre><code>FIGURE extends BLOCK_ITEM = {
   &quot;path&quot;: STRING,
