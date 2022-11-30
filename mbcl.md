@@ -21,7 +21,7 @@ The reference compiler to translate MBL to MBCL can be found on [GitHub](https:/
 
 ## JSON Specification
 
-TODO: "extends", ...
+TODO: "extends", "<OBJECT.ATTR>", "abstract(..)"...
 
 We use the following notation instead of JSON-schema (which is overkill!) to denote the structure of data.
 
@@ -103,8 +103,8 @@ Each document defines a page, consisting of text, exercises and games.
 COURSE = {
   "id": STRING,
   "author": STRING,
-  "mbclVersion": INTEGER
-  "modifiedDate": UNIX_TIMESTAMP,
+  "mbcl_version": INTEGER,
+  "date_modified": UNIX_TIMESTAMP,
   "chapters": CHAPTER[]
 };
 ```
@@ -127,7 +127,7 @@ Example:
 CHAPTER = {
   "title": STRING,
   "alias": STRING,
-  "levels": LEVEL[];
+  "levels": LEVEL[]
 };
 ```
 
@@ -136,9 +136,9 @@ CHAPTER = {
 ```
 LEVEL = {
   "id": IDENTIFIER,
-  "posX": INTEGER,
-  "posY": INTEGER,
-  "requires": LEVEL[],
+  "pos_x": INTEGER,
+  "pos_y": INTEGER,
+  "requires": IDENTIFIER<LEVEL.id>[],
   "items": LEVEL_ITEM[]
 };
 ```
@@ -147,6 +147,8 @@ LEVEL = {
 LEVEL_ITEM = SECTION | TEXT | EQUATION | DEFINITION | EXERCISE
            | FIGURE | TABLE | NEWPAGE;
 ```
+
+TODO: units
 
 ### SECTION
 
@@ -163,8 +165,8 @@ SECTION = {
 ```
 TEXT = {
   "type": "paragraph" | "inline-math" | "bold" | "italic" | "itemize"
-          | "enumerate" | "enumerate-alpha" | "span"
-          | "align-left" | "align-center" | "align-right",
+        | "enumerate" | "enumerate-alpha" | "span"
+        | "align-left" | "align-center" | "align-right",
   "items": TEXT[]
 } | {
   "type": "text",
@@ -176,7 +178,7 @@ TEXT = {
   "value": INTEGER
 } | {
   "type": "reference",
-  "label": IDENTIFIER
+  "label": IDENTIFIER<SECTION.label|BLOCK_ITEM.label>
 };
 ```
 
@@ -205,7 +207,7 @@ The following example represents a paragraph containing a bold text &nbsp;&nbsp;
 
 ```
 BLOCK_ITEM = {
-  "type": IDENTIFIER,
+  abstract("type"): IDENTIFIER,
   "title": STRING,
   "label": IDENTIFIER
   "error": STRING
@@ -233,7 +235,7 @@ TODO: hierarchical blocks!!
 ```
 DEFINITION extends BLOCK_ITEM = {
   "type": "definition" | "theorem" | "lemma" | "corollary" | "proposition"
-          | "conjecture" | "axiom" | "claim" | "identity" | "paradox",
+        | "conjecture" | "axiom" | "claim" | "identity" | "paradox",
   "items": DEFINITION_ITEM[]
 };
 ```
@@ -255,40 +257,50 @@ EXERCISE extends BLOCK_ITEM = {
 ```
 EXERCISE_TEXT extends TEXT = {
   "type": "variable",
-  "variable": IDENTIFIER
+  "variable": IDENTIFIER<EXERCISE.VARIABLES>
 } | {
   "type": "text-input",
   "input-type": "int"
-                | "complex_normal" | "complex_polar"
-                | "int_set" | "int_set_n_args"
-                | "vector" | "vector_flex"
-                | "matrix" | "matrix_flex_rows" | "matrix_flex_cols" | "matrix_flex"
-                | "term",
+              | "complex_normal" | "complex_polar"
+              | "int_set" | "int_set_n_args"
+              | "vector" | "vector_flex"
+              | "matrix" | "matrix_flex_rows" | "matrix_flex_cols" | "matrix_flex"
+              | "term",
   "input-require": IDENTIFIER[],
   "input-forbid": IDENTIFIER[],
-  "variable": IDENTIFIER,
+  "variable": IDENTIFIER<EXERCISE.VARIABLES>,
   "width": INTEGER
 } | {
   "type": "choices-input",
-  "variable": IDENTIFIER,
+  "variable": IDENTIFIER<EXERCISE.VARIABLES>,
   "count": INTEGER
-}
+} | {
+  "type": "multi-choice-answer",
+  "variable": IDENTIFIER<EXERCISE.VARIABLES>,
+  "text": TEXT
+} | {
+  "type": "single-choice-answer",
+  "variable": IDENTIFIER<EXERCISE.VARIABLES>,
+  "text": TEXT
+};
 ```
 
 ```
 VARIABLE = {
   "type": "int" | "int_set" | "real" | "real_set"
-          | "complex" | "complex_set" | "vector" | "matrix"
+        | "complex" | "complex_set" | "vector" | "matrix"
 };
 ```
 
 ```
 INSTANCE = {
-  IDENTIFIER: MATH_STRING
+  IDENTIFIER<EXERCISE.VARIABLES>: MATH_STRING
 };
 ```
 
 TODO: scoring
+
+TODO: gap exercise, arrangement exercise, timed exercise
 
 ### FIGURE
 
@@ -318,7 +330,9 @@ TABLE extends BLOCK_ITEM = {
 ```
 
 ```
-TABLE_ROW = TEXT[];
+TABLE_ROW = {
+  "row": TEXT[];
+}
 ```
 
 TODO: must restrict `TEXT`
