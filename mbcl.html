@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content />
-  <meta name="dcterms.date" content="2022-11-29" />
+  <meta name="dcterms.date" content="2022-11-30" />
   <title>Mathe:Buddy Compiled Language (MBCL)</title>
   <style>
 code{white-space: pre-wrap;}
@@ -454,7 +454,7 @@ font-style: italic;
 <header id="title-block-header">
 [<a href="https://app.f07-its.fh-koeln.de">Home</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbl.html">MBL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-smpl.html">SMPL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbcl.html">MBCL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-sim.html">Installation</a>] <h1 class="title">Mathe:Buddy Compiled Language (MBCL)</h1>
 <p class="author"></p>
-<p class="date">2022-11-29</p>
+<p class="date">2022-11-30</p>
 </header>
 <hr />
 <p><strong>NOTE</strong> This reference is in work-in-progress state. We
@@ -464,11 +464,12 @@ are planning to release version 1.0 by end of 2022.</p>
 language (MBCL)</em>, which can be used to express mathematical based
 online courses technically.</p>
 <h2 id="introduction">Introduction</h2>
-<p>MBCL is a JSON-based format defined for the mathe:buddy App. Each MBL
-file stores a complete course, defined by the Mathe:Buddy Language
-(MBL).</p>
+<p>MBCL is a JSON-based format defined for the mathe:buddy App. Each
+MBCL-JSON file stores a complete course, defined by the Mathe:Buddy
+Language (MBL).</p>
 <p>The reference compiler to translate MBL to MBCL can be found on <a href="https://github.com/mathebuddy/mathebuddy-compiler.git">GitHub</a>.</p>
 <h2 id="json-specification">JSON Specification</h2>
+<p>TODO: “extends”, …</p>
 <p>We use the following notation instead of JSON-schema (which is
 overkill!) to denote the structure of data.</p>
 <ul>
@@ -555,58 +556,115 @@ and games.</p>
   &quot;requires&quot;: LEVEL[],
   &quot;items&quot;: LEVEL_ITEM[]
 };</code></pre>
-<pre><code>LEVEL_ITEM = {
-  &quot;type&quot;: &quot;exercise&quot; | TODO,
-  &quot;title&quot;: STRING,
-  &quot;data&quot;: EXERCISE | TODO
+<pre><code>LEVEL_ITEM = SECTION | TEXT | EQUATION | DEFINITION | EXERCISE
+           | FIGURE | TABLE | NEWPAGE;</code></pre>
+<h3 id="section">SECTION</h3>
+<pre><code>SECTION = {
+  &quot;type&quot;: &quot;title&quot; | &quot;section&quot; | &quot;subsection&quot; | &quot;subsubsection&quot;,
+  &quot;text&quot;: STRING,
+  &quot;label&quot;: IDENTIFIER
 };</code></pre>
 <h3 id="paragraph">PARAGRAPH</h3>
 <pre><code>TEXT = {
-  &quot;type&quot;: &quot;paragraph&quot;,
+  &quot;type&quot;: &quot;paragraph&quot; | &quot;inline-math&quot; | &quot;bold&quot; | &quot;italic&quot; | &quot;itemize&quot;
+          | &quot;enumerate&quot; | &quot;enumerate-alpha&quot; | &quot;span&quot;
+          | &quot;align-left&quot; | &quot;align-center&quot; | &quot;align-right&quot;,
   &quot;items&quot;: TEXT[]
 } | {
   &quot;type&quot;: &quot;text&quot;,
   &quot;value&quot;: STRING
 } | {
-  &quot;type&quot;: &quot;inline-math&quot;,
-  &quot;items&quot;: TEXT[]
-} | {
-  &quot;type&quot;: &quot;variable&quot;,
-  &quot;value&quot;: IDENTIFIER
-} | {
   &quot;type&quot;: &quot;linefeed&quot;
+} | {
+  &quot;type&quot;: &quot;color&quot;,
+  &quot;value&quot;: INTEGER
+} | {
+  &quot;type&quot;: &quot;reference&quot;,
+  &quot;label&quot;: IDENTIFIER
 };</code></pre>
 <p>The following example represents a paragraph containing a bold text
    <strong>Hello, world <span class="math inline"><em>x</em><sup>2</sup> + <em>y</em><sup>2</sup></span>!</strong>
    that ends with a line feed.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;paragraph&quot;</span><span class="fu">,</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;items&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;bold&quot;</span><span class="fu">,</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;items&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span> <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Hello, world&quot;</span> <span class="fu">}</span><span class="ot">,</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;inline-math&quot;</span><span class="fu">,</span> <span class="dt">&quot;items&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span><span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;text&quot;</span><span class="fu">,</span><span class="dt">&quot;value&quot;</span><span class="fu">:</span><span class="st">&quot;x^2+y^2&quot;</span><span class="fu">}</span><span class="ot">]</span><span class="fu">}</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span> <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;!&quot;</span> <span class="fu">}</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="ot">]</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;linefeed&quot;</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;paragraph&quot;</span><span class="fu">,</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;items&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;bold&quot;</span><span class="fu">,</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;items&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span> <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;Hello, world&quot;</span> <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;inline-math&quot;</span><span class="fu">,</span> <span class="dt">&quot;items&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="fu">{</span><span class="dt">&quot;type&quot;</span><span class="fu">:</span><span class="st">&quot;text&quot;</span><span class="fu">,</span><span class="dt">&quot;value&quot;</span><span class="fu">:</span><span class="st">&quot;x^2+y^2&quot;</span><span class="fu">}</span><span class="ot">]</span><span class="fu">}</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;text&quot;</span><span class="fu">,</span> <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="st">&quot;!&quot;</span> <span class="fu">}</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>      <span class="ot">]</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">{</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;linefeed&quot;</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="ot">]</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="block-item">BLOCK ITEM</h3>
+<pre><code>BLOCK_ITEM = {
+  &quot;type&quot;: IDENTIFIER,
+  &quot;title&quot;: STRING,
+  &quot;label&quot;: IDENTIFIER
+  &quot;error&quot;: STRING
+};</code></pre>
+<h3 id="equation">EQUATION</h3>
+<pre><code>EQUATION extends BLOCK_ITEM = {
+  &quot;type&quot;: &quot;equation&quot;,
+  &quot;value&quot;: STRING,
+  &quot;options&quot;: EQUATION_OPTION[]
+};</code></pre>
+<pre><code>EQUATION_OPTION = &quot;align_left&quot; | &quot;align_center&quot; | &quot;align_right&quot; | &quot;align_equals&quot;;</code></pre>
+<h3 id="definition">DEFINITION</h3>
+<p>TODO: hierarchical blocks!!</p>
+<pre><code>DEFINITION extends BLOCK_ITEM = {
+  &quot;type&quot;: &quot;definition&quot; | &quot;theorem&quot; | &quot;lemma&quot; | &quot;corollary&quot; | &quot;proposition&quot;
+          | &quot;conjecture&quot; | &quot;axiom&quot; | &quot;claim&quot; | &quot;identity&quot; | &quot;paradox&quot;,
+  &quot;items&quot;: DEFINITION_ITEM[]
+};</code></pre>
+<pre><code>DEFINITION_ITEM = EQUATION | TEXT;</code></pre>
 <h3 id="exercise">EXERCISE</h3>
-<pre><code>EXERCISE = {
+<pre><code>EXERCISE extends BLOCK_ITEM = {
   &quot;variables&quot;: { IDENTIFIER: VARIABLE },
   &quot;instances&quot;: INSTANCE[],
-  &quot;text&quot;: PARAGRAPH
+  &quot;text&quot;: EXERCISE_TEXT
 };</code></pre>
+<pre><code>EXERCISE_TEXT extends TEXT = {
+  &quot;type&quot;: &quot;variable&quot;,
+  &quot;variable&quot;: IDENTIFIER
+} | {
+  &quot;type&quot;: &quot;integer_input&quot;,
+  &quot;variable&quot;: IDENTIFIER,
+  &quot;width&quot;: INTEGER
+}</code></pre>
 <pre><code>VARIABLE = {
-  &quot;type&quot;: &quot;INT&quot; | &quot;INT_SET&quot; | &quot;REAL&quot; | &quot;REAL_SET&quot;
-          | &quot;COMPLEX&quot; | &quot;COMPLEX_SET&quot; | &quot;VECTOR&quot; | &quot;MATRIX&quot;
+  &quot;type&quot;: &quot;int&quot; | &quot;int_set&quot; | &quot;real&quot; | &quot;real_set&quot;
+          | &quot;complex&quot; | &quot;complex_set&quot; | &quot;vector&quot; | &quot;matrix&quot;
 };</code></pre>
 <pre><code>INSTANCE = {
   IDENTIFIER: MATH_STRING
+};</code></pre>
+<h3 id="figure">FIGURE</h3>
+<pre><code>FIGURE extends BLOCK_ITEM = {
+  &quot;path&quot;: STRING,
+  &quot;options&quot;: FIGURE_OPTION[]
+};</code></pre>
+<pre><code>FIGURE_OPTION = &quot;width-X&quot;;</code></pre>
+<p>with <code>X</code> the width as percentage of screen width</p>
+<h3 id="table">TABLE</h3>
+<pre><code>TABLE extends BLOCK_ITEM = {
+  &quot;options&quot;: TABLE_OPTION[],
+  &quot;content&quot;: {
+    &quot;head&quot;: TEXT[],
+    &quot;rows&quot;: TABLE_ROW[]
+  }
+};</code></pre>
+<pre><code>TABLE_ROW = TEXT[];</code></pre>
+<p>TODO: must restrict <code>TEXT</code></p>
+<pre><code>TABLE_OPTION = &quot;align-left&quot; | &quot;align-center&quot; | &quot;align-right&quot;;</code></pre>
+<h3 id="new-page">NEW PAGE</h3>
+<pre><code>NEWPAGE = {
+  &quot;type&quot;: &quot;new_page&quot;
 };</code></pre>
 <h2 id="compressed-courses">Compressed Courses</h2>
 <p>TODO: compression format, hex, …</p>
