@@ -257,9 +257,21 @@ EXERCISE_TEXT extends TEXT = {
   "type": "variable",
   "variable": IDENTIFIER
 } | {
-  "type": "integer_input",
+  "type": "text-input",
+  "input-type": "int"
+                | "complex_normal" | "complex_polar"
+                | "int_set" | "int_set_n_args"
+                | "vector" | "vector_flex"
+                | "matrix" | "matrix_flex_rows" | "matrix_flex_cols" | "matrix_flex"
+                | "term",
+  "input-require": IDENTIFIER[],
+  "input-forbid": IDENTIFIER[],
   "variable": IDENTIFIER,
   "width": INTEGER
+} | {
+  "type": "choices-input",
+  "variable": IDENTIFIER,
+  "count": INTEGER
 }
 ```
 
@@ -275,6 +287,8 @@ INSTANCE = {
   IDENTIFIER: MATH_STRING
 };
 ```
+
+TODO: scoring
 
 ### FIGURE
 
