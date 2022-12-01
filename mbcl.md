@@ -330,9 +330,9 @@ Randomized questions may have multiple (distinct) instances.
 EXERCISE extends BLOCK_ITEM = {
   "type": "exercise",
   "variables": {
-    IDENTIFIER: VARIABLE
+    IDENTIFIER: EXERCISE_VARIABLE
   },
-  "instances": INSTANCE[],
+  "instances": EXERCISE_INSTANCE[],
   "text": EXERCISE_TEXT
 };
 ```
@@ -354,7 +354,7 @@ EXERCISE_TEXT extends TEXT = {
   "variable": IDENTIFIER<EXERCISE.VARIABLES>
 } | {
   "type": "text_input",
-  "input_type": "int"
+  "input_type": "int" | "real"
               | "complex_normal" | "complex_polar"
               | "int_set" | "int_set_n_args"
               | "vector" | "vector_flex"
@@ -370,25 +370,25 @@ EXERCISE_TEXT extends TEXT = {
   "count": INTEGER
 } | {
   "type": "multiple_choice" | "single_choice",
-  "items": SINGLE_MULTIPLE_CHOICE_OPTION[]
+  "items": EXERCISE_SINGLE_MULTIPLE_CHOICE_OPTION[]
 };
 ```
 
 ```
-VARIABLE = {
+EXERCISE_VARIABLE = {
   "type": "int" | "int_set" | "real" | "real_set"
         | "complex" | "complex_set" | "vector" | "matrix"
 };
 ```
 
 ```
-INSTANCE = {
+EXERCISE_INSTANCE = {
   IDENTIFIER<EXERCISE.VARIABLES>: MATH_STRING
 };
 ```
 
 ```
-SINGLE_MULTIPLE_CHOICE_OPTION = {
+EXERCISE_SINGLE_MULTIPLE_CHOICE_OPTION = {
   "variable": IDENTIFIER<EXERCISE.VARIABLES>,
   "text": TEXT
 };
