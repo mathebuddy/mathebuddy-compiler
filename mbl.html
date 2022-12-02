@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content />
-  <meta name="dcterms.date" content="2022-11-30" />
+  <meta name="dcterms.date" content="2022-12-02" />
   <title>Mathe:Buddy Language (MBL)</title>
   <style>
 code{white-space: pre-wrap;}
@@ -391,7 +391,7 @@ font-style: italic;
 <header id="title-block-header">
 [<a href="https://app.f07-its.fh-koeln.de">Home</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbl.html">MBL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-smpl.html">SMPL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbcl.html">MBCL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-sim.html">Installation</a>] <h1 class="title">Mathe:Buddy Language (MBL)</h1>
 <p class="author"></p>
-<p class="date">2022-11-30</p>
+<p class="date">2022-12-02</p>
 </header>
 <hr />
 <p><strong>NOTE</strong> This reference guide is in work-in-progress
@@ -1176,22 +1176,19 @@ files and its dependencies.</p>
 </blockquote>
 <pre><code>% a comment line
 
-!TITLE
-Complex Numbers
+!TITLE Complex Numbers
+!AUTHOR TH Koeln
 
-!AUTHOR
-TH Koeln
+!UNIT Complex Basics
+(2,0) start
+(1,0) gauss       !start
+(3,1) normal      !start
+(3,2) conj        !normal
+(4,2) conj-props  !conj
+(3,3) abs         !conj
+(2,4) polar       !abs
 
-!UNIT
-(2,0) start.mbl -&gt; normal.mbl, gauss.mbl
-(1,0) gauss.mbl
-(3,1) normal.mbl -&gt; conj.mbl
-(3,2) conj.mbl -&gt; conj-props.mbl, abs.mbl
-(4,2) conj-props.mbl
-(3,3) abs.mbl -&gt; polar.mbl
-(2,4) polar.mbl
-
-!UNIT
+!UNIT Complex Functions, Sequences, Series
 ...</code></pre>
 <p>Each chapter consists of a set of units.</p>
 <p>Each unit consists of a set of levels. A unit can be represented by a
@@ -1201,18 +1198,32 @@ levels.</p>
 <p>Each level is described by an <code>*.mbl</code> file. A level is
 only playable, if all presuming levels have been passed successfully. At
 least one level must have no presuming level.</p>
-<p>All Levels of a unit are listed below the <code>!UNIT</code> entry.
-Each level is described in the form:
-<code>(X,Y) A -&gt; B, C, D, ...</code>.</p>
+<p>All Levels of a unit are listed below the
+<code>!UNIT UNIT_NAME</code> entry. Each level is described in the form:
+<code>(X,Y) A !B !C !D ...</code>.</p>
 <ul>
 <li><p>Coordinates <code>(X,Y)</code> describe the position of node
 <span class="math inline"><em>v</em> ∈ <em>V</em>(<em>G</em>)</span>,
 where <code>(0,0)</code> is interpreted as <em>top-left</em>.</p></li>
 <li><p>File <code>A</code> is the level.</p></li>
-<li><p>Files <code>B</code>, <code>C</code>, … represent the successor
-files of <code>A</code>, i.e. levels <code>B</code>, <code>C</code>, …
-depend on <code>A</code>.</p></li>
+<li><p>Files <code>!B</code>, <code>!C</code>, … (with
+<code>!</code>-prefix) represent the requirements of <code>A</code>,
+i.e. level <code>A</code> depends on levels <code>B</code>,
+<code>C</code>, ….</p></li>
 </ul>
+<p>Since all units are stored in the same file directory, prefixes to
+file names may be helpful.</p>
+<p>Example:</p>
+<pre><code>...
+!UNIT Complex Basics
+(2,0) basics-start
+(1,0) basics-gauss       !basics-start
+(3,1) basics-normal      !basics-start
+...
+
+!UNIT Complex Functions, Sequences, Series
+(0,0) fss-start
+...</code></pre>
 <p><em>Author: Andreas Schwenk, TH Köln</em></p>
 <!--
 # TODO
