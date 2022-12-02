@@ -1176,10 +1176,10 @@ files and its dependencies.</p>
 </blockquote>
 <pre><code>% a comment line
 
-!TITLE Complex Numbers
-!AUTHOR TH Koeln
+TITLE Complex Numbers
+AUTHOR TH Koeln
 
-!UNIT Complex Basics
+UNIT Complex Basics
 (2,0) start
 (1,0) gauss       !start
 (3,1) normal      !start
@@ -1188,7 +1188,7 @@ files and its dependencies.</p>
 (3,3) abs         !conj
 (2,4) polar       !abs
 
-!UNIT Complex Functions, Sequences, Series
+UNIT Complex Functions, Sequences, Series
 ...</code></pre>
 <p>Each chapter consists of a set of units.</p>
 <p>Each unit consists of a set of levels. A unit can be represented by a
@@ -1198,8 +1198,8 @@ levels.</p>
 <p>Each level is described by an <code>*.mbl</code> file. A level is
 only playable, if all presuming levels have been passed successfully. At
 least one level must have no presuming level.</p>
-<p>All Levels of a unit are listed below the
-<code>!UNIT UNIT_NAME</code> entry. Each level is described in the form:
+<p>All Levels of a unit are listed below the <code>UNIT UNIT_NAME</code>
+entry. Each level is described in the form:
 <code>(X,Y) A !B !C !D ...</code>.</p>
 <ul>
 <li><p>Coordinates <code>(X,Y)</code> describe the position of node
@@ -1215,13 +1215,13 @@ i.e. level <code>A</code> depends on levels <code>B</code>,
 file names may be helpful.</p>
 <p>Example:</p>
 <pre><code>...
-!UNIT Complex Basics
+UNIT Complex Basics
 (2,0) basics-start
 (1,0) basics-gauss       !basics-start
 (3,1) basics-normal      !basics-start
 ...
 
-!UNIT Complex Functions, Sequences, Series
+UNIT Complex Functions, Sequences, Series
 (0,0) fss-start
 ...</code></pre>
 <p><em>Author: Andreas Schwenk, TH Köln</em></p>
