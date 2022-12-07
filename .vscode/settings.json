@@ -40,5 +40,8 @@
     "xaxis",
     "yaxis"
   ],
-  "cSpell.language": "en,de-de"
+  "cSpell.language": "en,de-de",
+  "[xml]": {
+    "editor.defaultFormatter": "fabianlauer.vs-code-xml-format"
+  }
 }
