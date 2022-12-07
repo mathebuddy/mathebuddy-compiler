@@ -17,8 +17,8 @@ import {
   ParagraphItemType,
   TextLike,
   TextLikeType,
-} from './data';
-import { Compiler } from './compiler';
+} from './data___old';
+import { Compiler } from './compiler___old';
 
 export class BlockPart {
   name = '';
