@@ -1,0 +1,86 @@
+{
+  "single_level": true,
+  "title": "",
+  "author": "",
+  "mbcl_version": 1,
+  "date_modified": 1669712632,
+  "chapters": [
+    {
+      "title": "",
+      "label": "",
+      "levels": [
+        {
+          "title": "Definitions",
+          "pos_x": -1,
+          "pos_y": -1,
+          "requires": [],
+          "items": [
+            {
+              "type": "definition",
+              "title": "Positive",
+              "label": "def:positive",
+              "error": "",
+              "items": [
+                {
+                  "type": "paragraph",
+                  "items": [
+                    {
+                      "type": "text",
+                      "value": "For any integer "
+                    },
+                    {
+                      "type": "inline_math",
+                      "items": [
+                        {
+                          "type": "text",
+                          "value": "n"
+                        }
+                      ]
+                    },
+                    { "type": "text", "value": ", " },
+                    {
+                      "type": "inline_math",
+                      "items": [
+                        {
+                          "type": "text",
+                          "value": "n"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "value": " is "
+                    },
+                    {
+                      "type": "bold",
+                      "items": [
+                        {
+                          "type": "text",
+                          "value": "positive"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "value": " if "
+                    },
+                    {
+                      "type": "inline_math",
+                      "items": [
+                        {
+                          "type": "text",
+                          "value": "n>0"
+                        }
+                      ]
+                    },
+                    { "type": "text", "value": "." }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
