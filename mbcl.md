@@ -45,6 +45,10 @@ We use the following intrinsic data types.
 
   Example: `3.14159`
 
+- `BOOLEAN`
+
+  Examples: `true`, `false`
+
 - `UNIX_TIMESTAMP`
 
   (Time in seconds since 1.1.1970 00:00)
@@ -136,22 +140,26 @@ It contains a set of chapters.
 
 ```
 COURSE = {
-  "id": STRING,
+  "title": STRING,
   "author": STRING,
   "mbcl_version": INTEGER,
   "date_modified": UNIX_TIMESTAMP,
+  "single_level": BOOLEAN,
   "chapters": CHAPTER[]
 };
 ```
+
+- `single_level` is true, then the file does not contain a complete course, but only a single level for debugging
 
 Example:
 
 ```json
 {
-  "id": "higher math 1",
+  "title": "higher math 1",
   "author": "TH Koeln",
   "mbcl_version": 1,
   "date_modified": 1669712632,
+  "debug_level": false,
   "chapters": []
 }
 ```
@@ -163,7 +171,7 @@ A chapter consists of a set of levels.
 ```
 CHAPTER = {
   "title": STRING,
-  "alias": STRING,
+  "label": STRING,
   "levels": LEVEL[]
 };
 ```
@@ -173,7 +181,7 @@ Example:
 ```json
 {
   "title": "Complex Numbers",
-  "alias": "cmplx",
+  "label": "cmplx",
   "levels": []
 }
 ```
@@ -184,7 +192,7 @@ A level defines a part of course, consisting of e.g. text, exercises and games.
 
 ```
 LEVEL = {
-  "id": IDENTIFIER,
+  "title": IDENTIFIER,
   "pos_x": INTEGER,
   "pos_y": INTEGER,
   "requires": IDENTIFIER<LEVEL.id>[],
@@ -208,7 +216,7 @@ A _title_ is used as level title.
 
 ```
 SECTION = {
-  "type": "title" | "section" | "subsection" | "subsubsection",
+  "type": "section" | "subsection" | "subsubsection",
   "text": STRING,
   "label": IDENTIFIER
 };
