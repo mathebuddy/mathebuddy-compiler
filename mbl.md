@@ -194,7 +194,9 @@ This section describes the text structuring and text formatting features.
 
   References to other files should be avoided, if destination levels are possibly unplayable/locked (read section [course structure](#course-structure)).
 
-  A link to a labeled object in another file is denoted by `@PATH@PREFIX:LABEL`, where `PATH` is the absolute file path within the current course, without file extension (`.mbl`). _Example: To link to theorem `thm:taylor` in file `/hm1/diff/taylor.mbl`, write `@diff/intro@thm:taylor`._
+  A link to a labeled object in another file is denoted by `@PATH/PREFIX:LABEL`, where `PATH` is the relative file path within the current course, without file extension (`.mbl`). _Example: To link to theorem `thm:taylor` in file `../diff/taylor.mbl`, write `@../diff/intro/thm:taylor`._
+
+  It is also feasible to insert generic references with the asterisk operator (`*`). For example, `@ex:taylor*` links to the set of all exercises that have a label starting with `ex:taylor` (e.g. `ex:taylor-simple`, `ex:taylor2`, ...). The runtime environment inserts comma separated links.
 
 - `Comments`
 
@@ -881,6 +883,8 @@ Each level is described in the form: `(X,Y) A !B !C !D ...`.
 - File `A` is the level.
 
 - Files `!B`, `!C`, ... (with `!`-prefix) represent the requirements of `A`, i.e. level `A` depends on levels `B`, `C`, ....
+
+- Requirements for other course chapters can be denoted by relative paths, e.g. `!../basics/sets` requires level `sets.mbl` in chapter `basics`.
 
 Since all units are stored in the same file directory, prefixes to file names may be helpful.
 
