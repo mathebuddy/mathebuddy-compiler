@@ -6,19 +6,23 @@
  * License: GPL-3.0-or-later
  */
 
-import { Course, Exercise, ParagraphItem, ParagraphItemType } from './data';
-import { CourseDocument } from './data';
 import { Lexer } from '@multila/multila-lexer';
-
 import { LexerTokenType } from '@multila/multila-lexer/lib/token';
-import { Block, BlockPart } from './block';
-
-// TODO: use npm-package in future!
 import { BaseType } from '@mathebuddy/mathebuddy-smpl/src/symbol';
 
+import { Block, BlockPart } from './block';
+import {
+  MBL_Chapter,
+  MBL_Course,
+  MBL_Level,
+  MBL_Section,
+  MBL_SectionType,
+} from './data';
+
 export class Compiler {
-  private course: Course = null;
-  private document: CourseDocument = null;
+  private course: MBL_Course = null;
+  private chapter: MBL_Chapter = null;
+  private level: MBL_Level = null;
 
   private srcLines: string[] = [];
   private i = -1; // current line index (starting from 0)
@@ -26,15 +30,18 @@ export class Compiler {
   private line2 = ''; // next line
   private paragraph = '';
 
-  public getCourse(): Course {
+  public getCourse(): MBL_Course {
     return this.course;
   }
 
   public run(src: string): void {
-    // TODO: parse course vs document
-    this.course = new Course();
-    this.document = new CourseDocument();
-    this.course.documents.push(this.document);
+    // TODO: parse index files, i.e. complete courses
+    this.course = new MBL_Course();
+    this.chapter = new MBL_Chapter();
+    this.course.chapters.push(this.chapter);
+    this.level = new MBL_Level();
+    this.chapter.levels.push(this.level);
+
     // set source, split it into lines, trim these lines and
     // filter out comments of each line
     this.srcLines = src.split('\n');
@@ -52,7 +59,7 @@ export class Compiler {
         this.next();
       } else if (this.line2.startsWith('#####')) {
         this.pushParagraph();
-        this.parseDocumentTitle();
+        this.parseLevelTitle();
       } else if (this.line2.startsWith('=====')) {
         this.pushParagraph();
         this.parseSectionTitle();
@@ -68,12 +75,11 @@ export class Compiler {
       }
     }
     this.pushParagraph();
-    const bp = 1337;
   }
 
   private pushParagraph(): void {
     if (this.paragraph.trim().length > 0) {
-      this.document.items.push(this.parseParagraph(this.paragraph));
+      this.level.items.push(this.parseParagraph(this.paragraph));
       this.paragraph = '';
     }
   }
@@ -88,38 +94,33 @@ export class Compiler {
     } else this.line2 = '§END';
   }
 
-  //G documentTitle = { CHAR } "@" { ID } NEWLINE "#####.." { "#" } NEWLINE;
-  private parseDocumentTitle(): void {
+  //G levelTitle = { CHAR } "@" { ID } NEWLINE "#####.." { "#" } NEWLINE;
+  private parseLevelTitle(): void {
     const tokens = this.line.split('@');
-    this.document.title = tokens[0].trim();
+    this.level.title = tokens[0].trim();
     if (tokens.length > 1) {
-      this.document.alias = tokens[1].trim();
+      this.level.alias = tokens[1].trim();
     }
     this.next(); // skip document title
     this.next(); // skip '#####..'
-    /*return {
-      type: 'title',
-      value: this.document.title,
-    };*/
   }
 
   //G sectionTitle = { CHAR } "@" { ID } NEWLINE "=====.." { "#" } NEWLINE;
-  private parseSectionTitle(): any {
+  private parseSectionTitle(): MBL_Section {
+    const section = new MBL_Section(MBL_SectionType.Section);
     const tokens = this.line.split('@');
-    const secTitle = tokens[0].trim();
+    section.text = tokens[0].trim();
     if (tokens.length > 1) {
-      const secAlias = tokens[1].trim();
+      section.label = tokens[1].trim();
     }
     this.next(); // skip section title
     this.next(); // skip '=====..'
-    return {
-      type: 'section',
-      value: secTitle,
-    };
+    return section;
   }
 
   //G subSectionTitle = { CHAR } "@" { ID } NEWLINE "-----.." { "#" } NEWLINE;
   private parseSubSectionTitle(): void {
+    TODO;
     const tokens = this.line.split('@');
     const subSecTitle = tokens[0].trim();
     if (tokens.length > 1) {
@@ -168,19 +169,19 @@ export class Compiler {
   }
 
   /*G
-    paragraphCore =
-       { paragraphPart };
-    paragraphPart =
-     | "**" paragraphCore "**"
-     | "*" paragraphCore "*"
-     | "[" paragraphCore "]" "@" ID
-     | "$" inlineMath "$"
-     | "#" ID
-     | <START>"-" paragraphCore "\n"
-     | <START>"-)" paragraphCore "\n"
-     | ID
-     | DEL;
-  */
+     paragraphCore =
+        { paragraphPart };
+     paragraphPart =
+      | "**" paragraphCore "**"
+      | "*" paragraphCore "*"
+      | "[" paragraphCore "]" "@" ID
+      | "$" inlineMath "$"
+      | "#" ID
+      | <START>"-" paragraphCore "\n"
+      | <START>"-)" paragraphCore "\n"
+      | ID
+      | DEL;
+   */
   public parseParagraph(raw: string, ex: Exercise = null): ParagraphItem {
     // TODO: this method should NOT be visible at API-side...
 
