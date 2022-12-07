@@ -194,7 +194,9 @@ This section describes the text structuring and text formatting features.
 
   References to other files should be avoided, if destination levels are possibly unplayable/locked (read section [course structure](#course-structure)).
 
-  A link to a labeled object in another file is denoted by `@PATH@PREFIX:LABEL`, where `PATH` is the absolute file path within the current course, without file extension (`.mbl`). _Example: To link to theorem `thm:taylor` in file `/hm1/diff/taylor.mbl`, write `@diff/intro@thm:taylor`._
+  A link to a labeled object in another file is denoted by `@PATH/PREFIX:LABEL`, where `PATH` is the relative file path within the current course, without file extension (`.mbl`). _Example: To link to theorem `thm:taylor` in file `../diff/taylor.mbl`, write `@../diff/intro/thm:taylor`._
+
+  It is also feasible to insert generic references with the asterisk operator (`*`). For example, `@ex:taylor*` links to the set of all exercises that have a label starting with `ex:taylor` (e.g. `ex:taylor-simple`, `ex:taylor2`, ...). The runtime environment inserts comma separated links.
 
 - `Comments`
 
@@ -848,22 +850,19 @@ An index file defines meta data for a chapter. It also lists all files and its d
 ```
 % a comment line
 
-!TITLE
-Complex Numbers
+TITLE Complex Numbers
+AUTHOR TH Koeln
 
-!AUTHOR
-TH Koeln
+UNIT Complex Basics
+(2,0) start
+(1,0) gauss       !start
+(3,1) normal      !start
+(3,2) conj        !normal
+(4,2) conj-props  !conj
+(3,3) abs         !conj
+(2,4) polar       !abs
 
-!UNIT
-(2,0) start.mbl -> normal.mbl, gauss.mbl
-(1,0) gauss.mbl
-(3,1) normal.mbl -> conj.mbl
-(3,2) conj.mbl -> conj-props.mbl, abs.mbl
-(4,2) conj-props.mbl
-(3,3) abs.mbl -> polar.mbl
-(2,4) polar.mbl
-
-!UNIT
+UNIT Complex Functions, Sequences, Series
 ...
 ```
 
@@ -876,14 +875,33 @@ Each level is described by an `*.mbl` file.
 A level is only playable, if all presuming levels have been passed successfully.
 At least one level must have no presuming level.
 
-All Levels of a unit are listed below the `!UNIT` entry.
-Each level is described in the form: `(X,Y) A -> B, C, D, ...`.
+All Levels of a unit are listed below the `UNIT UNIT_NAME` entry.
+Each level is described in the form: `(X,Y) A !B !C !D ...`.
 
 - Coordinates `(X,Y)` describe the position of node $v \in V(G)$, where `(0,0)` is interpreted as _top-left_.
 
 - File `A` is the level.
 
-- Files `B`, `C`, ... represent the successor files of `A`, i.e. levels `B`, `C`, ... depend on `A`.
+- Files `!B`, `!C`, ... (with `!`-prefix) represent the requirements of `A`, i.e. level `A` depends on levels `B`, `C`, ....
+
+- Requirements for other course chapters can be denoted by relative paths, e.g. `!../basics/sets` requires level `sets.mbl` in chapter `basics`.
+
+Since all units are stored in the same file directory, prefixes to file names may be helpful.
+
+Example:
+
+```
+...
+UNIT Complex Basics
+(2,0) basics-start
+(1,0) basics-gauss       !basics-start
+(3,1) basics-normal      !basics-start
+...
+
+UNIT Complex Functions, Sequences, Series
+(0,0) fss-start
+...
+```
 
 _Author: Andreas Schwenk, TH Köln_
 

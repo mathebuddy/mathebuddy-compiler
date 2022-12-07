@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content />
-  <meta name="dcterms.date" content="2022-11-30" />
+  <meta name="dcterms.date" content="2022-12-07" />
   <title>Mathe:Buddy Compiled Language (MBCL)</title>
   <style>
 code{white-space: pre-wrap;}
@@ -454,7 +454,7 @@ font-style: italic;
 <header id="title-block-header">
 [<a href="https://app.f07-its.fh-koeln.de">Home</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbl.html">MBL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-smpl.html">SMPL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbcl.html">MBCL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-sim.html">Installation</a>] <h1 class="title">Mathe:Buddy Compiled Language (MBCL)</h1>
 <p class="author"></p>
-<p class="date">2022-11-30</p>
+<p class="date">2022-12-07</p>
 </header>
 <hr />
 <p><strong>NOTE</strong> This reference is in work-in-progress state. We
@@ -704,9 +704,9 @@ instances.</p>
 <pre><code>EXERCISE extends BLOCK_ITEM = {
   &quot;type&quot;: &quot;exercise&quot;,
   &quot;variables&quot;: {
-    IDENTIFIER: VARIABLE
+    IDENTIFIER: EXERCISE_VARIABLE
   },
-  &quot;instances&quot;: INSTANCE[],
+  &quot;instances&quot;: EXERCISE_INSTANCE[],
   &quot;text&quot;: EXERCISE_TEXT
 };</code></pre>
 <p>Exercise text is extended to the following types:</p>
@@ -737,7 +737,7 @@ single-choice question</li>
   &quot;variable&quot;: IDENTIFIER&lt;EXERCISE.VARIABLES&gt;
 } | {
   &quot;type&quot;: &quot;text_input&quot;,
-  &quot;input_type&quot;: &quot;int&quot;
+  &quot;input_type&quot;: &quot;int&quot; | &quot;real&quot;
               | &quot;complex_normal&quot; | &quot;complex_polar&quot;
               | &quot;int_set&quot; | &quot;int_set_n_args&quot;
               | &quot;vector&quot; | &quot;vector_flex&quot;
@@ -753,16 +753,16 @@ single-choice question</li>
   &quot;count&quot;: INTEGER
 } | {
   &quot;type&quot;: &quot;multiple_choice&quot; | &quot;single_choice&quot;,
-  &quot;items&quot;: SINGLE_MULTIPLE_CHOICE_OPTION[]
+  &quot;items&quot;: EXERCISE_SINGLE_MULTIPLE_CHOICE_OPTION[]
 };</code></pre>
-<pre><code>VARIABLE = {
+<pre><code>EXERCISE_VARIABLE = {
   &quot;type&quot;: &quot;int&quot; | &quot;int_set&quot; | &quot;real&quot; | &quot;real_set&quot;
         | &quot;complex&quot; | &quot;complex_set&quot; | &quot;vector&quot; | &quot;matrix&quot;
 };</code></pre>
-<pre><code>INSTANCE = {
+<pre><code>EXERCISE_INSTANCE = {
   IDENTIFIER&lt;EXERCISE.VARIABLES&gt;: MATH_STRING
 };</code></pre>
-<pre><code>SINGLE_MULTIPLE_CHOICE_OPTION = {
+<pre><code>EXERCISE_SINGLE_MULTIPLE_CHOICE_OPTION = {
   &quot;variable&quot;: IDENTIFIER&lt;EXERCISE.VARIABLES&gt;,
   &quot;text&quot;: TEXT
 };</code></pre>
