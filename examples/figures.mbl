@@ -1,0 +1,29 @@
+Figures
+#######
+
+Function Plots
+==============
+
+---
+PLOT2D My plot title @fig:myPlot
+xaxis "x" from -3 to 3
+yaxis "y" from -3 to 3
+color1
+plot f(x) = x^2
+color2
+plot g(x) = 2*x
+color0
+coord -1 1
+coord 2 4
+---
+
+Figures
+=======
+
+---
+FIGURE My figure title @fig:myFigure
+@options
+width-75
+@path
+images/myImage.svg
+---

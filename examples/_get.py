@@ -11,7 +11,9 @@
 # we assume that the above mentioned repository is located next to the present
 # repository (mathebuddy-smpl)
 
-import glob
+import glob, os
+
+os.system('cp ../mathebuddy-public-courses/demo-basic/*.mbl examples/')
 
 path = '../mathebuddy-public-courses/demo-ma1/*.mbl'
 files = sorted(glob.glob(path))
@@ -41,6 +43,6 @@ for i, listing in enumerate(listings):
   listing = 'Exercise ' + str(i) + '\n################\n\n' + listing + '---\n'
   print('===== ' + str(i) + ' =====')
   print(listing)
-  f = open('examples/exercise_' + str(i).zfill(3) + '.mbl', 'w')
+  f = open('examples/zzz_exercise_' + str(i).zfill(3) + '.mbl', 'w')
   f.write(listing)
   f.close()
