@@ -14,9 +14,23 @@ import { Block, BlockPart } from './block';
 import {
   MBL_Chapter,
   MBL_Course,
+  MBL_Exercise,
   MBL_Level,
+  MBL_LevelItem,
   MBL_Section,
   MBL_SectionType,
+  MBL_Text,
+  MBL_Text_Bold,
+  MBL_Text_Color,
+  MBL_Text_Error,
+  MBL_Text_InlineMath,
+  MBL_Text_Italic,
+  MBL_Text_Itemize,
+  MBL_Text_Linefeed,
+  MBL_Text_Paragraph,
+  MBL_Text_Reference,
+  MBL_Text_Span,
+  MBL_Text_Text,
 } from './data';
 
 export class Compiler {
@@ -62,19 +76,21 @@ export class Compiler {
         this.parseLevelTitle();
       } else if (this.line2.startsWith('=====')) {
         this.pushParagraph();
-        this.parseSectionTitle();
+        this.level.items.push(this.parseSectionTitle());
       } else if (this.line2.startsWith('-----')) {
         this.pushParagraph();
-        this.parseSubSectionTitle();
+        this.level.items.push(this.parseSubSectionTitle());
       } else if (this.line === '---') {
         this.pushParagraph();
-        this.parseBlock();
+        this.level.items.push(this.parseBlock(false));
       } else {
         this.paragraph += this.line + '\n';
         this.next();
       }
     }
     this.pushParagraph();
+
+    this.course.postProcess();
   }
 
   private pushParagraph(): void {
@@ -99,7 +115,7 @@ export class Compiler {
     const tokens = this.line.split('@');
     this.level.title = tokens[0].trim();
     if (tokens.length > 1) {
-      this.level.alias = tokens[1].trim();
+      this.level.label = tokens[1].trim();
     }
     this.next(); // skip document title
     this.next(); // skip '#####..'
@@ -119,22 +135,24 @@ export class Compiler {
   }
 
   //G subSectionTitle = { CHAR } "@" { ID } NEWLINE "-----.." { "#" } NEWLINE;
-  private parseSubSectionTitle(): void {
-    TODO;
+  private parseSubSectionTitle(): MBL_Section {
+    const subSection = new MBL_Section(MBL_SectionType.SubSection);
     const tokens = this.line.split('@');
-    const subSecTitle = tokens[0].trim();
+    subSection.text = tokens[0].trim();
     if (tokens.length > 1) {
-      const subSecAlias = tokens[1].trim();
+      subSection.label = tokens[1].trim();
     }
-    this.next(); // skip section title
+    this.next(); // skip subSection title
     this.next(); // skip '-----..'
+    return subSection;
   }
 
   //G block = "---" NEWLINE { "@" ID NEWLINE | LINE } "---" NEWLINE;
-  private parseBlock(): void {
+  // TODO: grammar for subblocks
+  private parseBlock(parseSubBlock: boolean): MBL_LevelItem {
     const block = new Block(this);
     block.srcLine = this.i;
-    this.next(); // skip "---"
+    if (!parseSubBlock) this.next(); // skip "---"
     const tokens = this.line.split(' ');
     for (let k = 0; k < tokens.length; k++) {
       if (k == 0) block.type = tokens[k];
@@ -142,8 +160,6 @@ export class Compiler {
       else block.title += tokens[k] + ' ';
     }
     block.title = block.title.trim();
-    //block.type = tokens[0];
-    //if (tokens.length > 1) block.label = tokens[1];
     this.next();
     let part: BlockPart = new BlockPart();
     part.name = 'global';
@@ -154,18 +170,25 @@ export class Compiler {
         block.parts.push(part);
         part.name = this.line.substring(1).trim();
         this.next();
+      } else if (
+        this.line.length >= 3 &&
+        this.line.substring(0, 3) === this.line.toUpperCase().substring(0, 3)
+      ) {
+        if (parseSubBlock) break;
+        else block.parts.push(this.parseBlock(true));
       } else {
         part.lines.push(this.line);
         this.next();
       }
     }
-    if (this.line === '---') this.next();
-    else
-      this.error(
-        'block started in line ' + block.srcLine + ' must end with ---',
-      );
-    const docItem = block.process();
-    if (docItem != null) this.document.items.push(docItem);
+    if (!parseSubBlock) {
+      if (this.line === '---') this.next();
+      else
+        this.error(
+          'block started in line ' + block.srcLine + ' must end with ---',
+        );
+    }
+    return block.process();
   }
 
   /*G
@@ -182,111 +205,92 @@ export class Compiler {
       | ID
       | DEL;
    */
-  public parseParagraph(raw: string, ex: Exercise = null): ParagraphItem {
+  public parseParagraph(raw: string, ex: MBL_Exercise = null): MBL_Text {
     // TODO: this method should NOT be visible at API-side...
 
     // skip empty paragraphs
     if (raw.trim().length == 0)
-      return new ParagraphItem(ParagraphItemType.Text);
+      //return new ParagraphItem(ParagraphItemType.Text);
+      return new MBL_Text_Text(); // TODO: OK??
     // create lexer
     const lexer = new Lexer();
     lexer.enableEmitNewlines(true);
     lexer.pushSource('', raw);
-    lexer.setTerminals(['**', '-)', '#.']);
-    const paragraph = new ParagraphItem(ParagraphItemType.Paragraph);
+    lexer.setTerminals(['**', '-)']);
+    const paragraph = new MBL_Text_Paragraph();
     while (lexer.isNotEND()) {
-      paragraph.subItems.push(this.parseParagraph_part(lexer, ex));
+      paragraph.items.push(this.parseParagraph_part(lexer, ex));
     }
-    paragraph.simplify();
-    //console.log(JSON.stringify(paragraph.toJSON(), null, 2));
-    //this.document.items.push(paragraph);
+    //paragraph.simplify(); TODO!!!!!
     return paragraph;
   }
 
-  private parseParagraph_part(lexer: Lexer, ex: Exercise): ParagraphItem {
-    //let part: any = '';
-    let part: ParagraphItem = null;
-    if (lexer.getToken().col == 1 && lexer.isTER('-')) {
-      // itemize
-      part = new ParagraphItem(ParagraphItemType.Itemize);
-      while (lexer.getToken().col == 1 && lexer.isTER('-')) {
+  private parseParagraph_part(lexer: Lexer, ex: MBL_Exercise): MBL_Text {
+    if (lexer.getToken().col == 1 && (lexer.isTER('-') || lexer.isTER('#'))) {
+      // itemize or enumerate
+      const type = lexer.getToken().token; // '-' for itemize; '#' for enumerate
+      const itemize = new MBL_Text_Itemize();
+      while (lexer.getToken().col == 1 && lexer.isTER(type)) {
         lexer.next();
-        const item = new ParagraphItem(ParagraphItemType.Span);
-        part.subItems.push(item);
-        while (lexer.isNotNEWLINE()) {
-          item.subItems.push(this.parseParagraph_part(lexer, ex));
-        }
+        const span = new MBL_Text_Span();
+        itemize.items.push(span);
+        while (lexer.isNotNEWLINE())
+          span.items.push(this.parseParagraph_part(lexer, ex));
         lexer.NEWLINE();
       }
-    } else if (lexer.getToken().col == 1 && lexer.isTER('#.')) {
-      // enumerate
-      part = new ParagraphItem(ParagraphItemType.Enumerate);
-      while (lexer.getToken().col == 1 && lexer.isTER('#.')) {
-        lexer.next();
-        const item = new ParagraphItem(ParagraphItemType.Paragraph);
-        part.subItems.push(item);
-        while (lexer.isNotNEWLINE()) {
-          item.subItems.push(this.parseParagraph_part(lexer, ex));
-        }
-        lexer.NEWLINE();
-      }
+      return itemize;
     } else if (lexer.isTER('**')) {
       // bold text
       lexer.next();
-      const items: ParagraphItem[] = [];
-      while (lexer.isNotTER('**')) {
-        items.push(this.parseParagraph_part(lexer, ex));
-      }
+      const bold = new MBL_Text_Bold();
+      while (lexer.isNotTER('**'))
+        bold.items.push(this.parseParagraph_part(lexer, ex));
       if (lexer.isTER('**')) lexer.next();
-      part = new ParagraphItem(ParagraphItemType.Bold);
-      part.subItems = items;
+      return bold;
     } else if (lexer.isTER('*')) {
       // italic text
       lexer.next();
-      const items: ParagraphItem[] = [];
-      while (lexer.isNotTER('*')) {
-        items.push(this.parseParagraph_part(lexer, ex));
-      }
+      const italic = new MBL_Text_Italic();
+      while (lexer.isNotTER('*'))
+        italic.items.push(this.parseParagraph_part(lexer, ex));
       if (lexer.isTER('*')) lexer.next();
-      part = new ParagraphItem(ParagraphItemType.Italic);
-      part.subItems = items;
+      return italic;
     } else if (lexer.isTER('$')) {
       // inline equation
       lexer.next();
-      const items: ParagraphItem[] = [];
+      const inlineMath = new MBL_Text_InlineMath();
       while (lexer.isNotTER('$')) {
         const tk = lexer.getToken().token;
         const isId = lexer.getToken().type === LexerTokenType.ID;
         lexer.next();
-        let item: ParagraphItem = null;
-        if (isId && ex != null && ex.getVariable(tk) != null) {
+        // TODO: exercise variable IDs!!
+        /*if (isId && ex != null && ex.getVariable(tk) != null) {
           // TODO: handle ALL types!
           if (ex.getVariable(tk).type.base === BaseType.MATRIX)
             item = new ParagraphItem(ParagraphItemType.MatrixVariable);
           else item = new ParagraphItem(ParagraphItemType.Variable);
-        } else {
-          item = new ParagraphItem(ParagraphItemType.Text);
-        }
-        item.value = tk;
-        items.push(item);
+        } else {*/
+        const text = new MBL_Text_Text();
+        text.value = tk;
+        inlineMath.items.push(text);
+        /*}*/
       }
       if (lexer.isTER('$')) lexer.next();
-      part = new ParagraphItem(ParagraphItemType.InlineMath);
-      part.subItems = items;
+      return inlineMath;
     } else if (lexer.isTER('@')) {
       // reference
       lexer.next();
-      let link = '';
+      const ref = new MBL_Text_Reference();
       if (lexer.isID()) {
-        link = lexer.getToken().token;
+        ref.label = lexer.getToken().token;
         lexer.next();
       }
-      part = new ParagraphItem(ParagraphItemType.Reference);
-      part.value = link;
+      return ref;
     } else if (lexer.isTER('#')) {
       // input element(s)
+      // TODO!!!!!
       lexer.next();
-      let id = '';
+      /*let id = '';
       let error = '';
       if (lexer.isID()) {
         id = lexer.ID();
@@ -313,45 +317,51 @@ export class Compiler {
       if (error.length > 0) {
         part = new ParagraphItem(ParagraphItemType.Error);
         part.value = 'unknown variable for input field: "' + id + '"';
-      }
+      }*/
+      throw new Error('unimplemented!');
     } else if (lexer.isTER('\n')) {
       // line feed
       lexer.next();
-      part = new ParagraphItem(ParagraphItemType.Linefeed);
+      return new MBL_Text_Linefeed();
     } else if (lexer.isTER('[')) {
       // text properties: e.g. "[text in red color]@color1"
+      // TODO: make sure, that errors are not too annoying...
       lexer.next();
-      const items: ParagraphItem[] = [];
-      while (lexer.isNotTER(']')) {
+      const items: MBL_Text[] = [];
+      while (lexer.isNotTER(']'))
         items.push(this.parseParagraph_part(lexer, ex));
-      }
       if (lexer.isTER(']')) lexer.next();
+      else return new MBL_Text_Error('expected ]');
       if (lexer.isTER('@')) lexer.next();
-      let type = ParagraphItemType.Unknown;
-      let color = '';
+      else return new MBL_Text_Error('expected @');
       if (lexer.isID()) {
         const id = lexer.ID();
         lexer.next();
-        switch (id) {
-          case 'color1':
-          case 'color2':
-          case 'color3':
-            type = ParagraphItemType.Color;
-            color = id.substring(5);
-            break;
+        if (id === 'bold') {
+          const bold = new MBL_Text_Bold();
+          bold.items = items;
+          return bold;
+        } else if (id === 'italic') {
+          const italic = new MBL_Text_Italic();
+          italic.items = items;
+          return italic;
+        } else if (id.startsWith('color')) {
+          const color = new MBL_Text_Color();
+          color.key = parseInt(id.substring(5)); // TODO: check if INT
+          color.items = items;
+          return color;
+        } else {
+          return new MBL_Text_Error('unknown property ' + id);
         }
       }
-      part = new ParagraphItem(type);
-      part.value = color;
-      part.subItems = items;
     } else {
       // text tokens (... or yet unimplemented paragraph items)
-      const tk = lexer.getToken().token;
+      const text = new MBL_Text_Text();
+      text.value = lexer.getToken().token;
       lexer.next();
-      part = new ParagraphItem(ParagraphItemType.Text);
-      part.value = tk;
+      return text;
     }
-    return part;
+    throw new Error('this should never happen!');
   }
 
   private error(message: string): void {
