@@ -19,6 +19,9 @@ import {
   MBL_Exercise,
   MBL_Exercise_Text_Input,
   MBL_Exercise_Text_Input_Type,
+  MBL_Exercise_Text_Multiple_Choice,
+  MBL_Exercise_Text_Single_or_Multi_Choice_Option,
+  MBL_Exercise_Text_Variable,
   MBL_Exercise_VariableType,
   MBL_Level,
   MBL_LevelItem,
@@ -206,7 +209,8 @@ export class Compiler {
       | "*" paragraphCore "*"
       | "[" paragraphCore "]" "@" ID
       | "$" inlineMath "$"
-      | "#" ID
+      | "#" ID                                   (exercise only)
+      | <START>"[" ["x"] "]" paragraphCore "\n"  (exercise only)
       | <START>"#" paragraphCore "\n"
       | <START>"-" paragraphCore "\n"
       | <START>"-)" paragraphCore "\n"
@@ -271,17 +275,15 @@ export class Compiler {
         const tk = lexer.getToken().token;
         const isId = lexer.getToken().type === LexerTokenType.ID;
         lexer.next();
-        // TODO: exercise variable IDs!!
-        /*if (isId && ex != null && ex.getVariable(tk) != null) {
-          // TODO: handle ALL types!
-          if (ex.getVariable(tk).type.base === BaseType.MATRIX)
-            item = new ParagraphItem(ParagraphItemType.MatrixVariable);
-          else item = new ParagraphItem(ParagraphItemType.Variable);
-        } else {*/
-        const text = new MBL_Text_Text();
-        text.value = tk;
-        inlineMath.items.push(text);
-        /*}*/
+        if (isId && ex != null && tk in ex.variables) {
+          const v = new MBL_Exercise_Text_Variable();
+          v.variableId = tk;
+          inlineMath.items.push(v);
+        } else {
+          const text = new MBL_Text_Text();
+          text.value = tk;
+          inlineMath.items.push(text);
+        }
       }
       if (lexer.isTER('$')) lexer.next();
       return inlineMath;
@@ -327,6 +329,22 @@ export class Compiler {
       if (error.length > 0)
         ex.error = 'unknown variable for input field: "' + id + '"';
       return input;
+    } else if (ex != null && lexer.isTER('[')) {
+      // multiple choice answer
+      lexer.next();
+      let correct = false;
+      if (lexer.isTER('x')) {
+        lexer.next();
+        correct = true;
+      }
+      if (lexer.isTER(']')) lexer.next();
+      else ex.error = 'expected ]';
+      // TODO: do combine multi-choice in postprocessing
+      const mc = new MBL_Exercise_Text_Multiple_Choice();
+      const option = new MBL_Exercise_Text_Single_or_Multi_Choice_Option();
+      mc.items.push(option);
+      option.text = this.parseParagraph_part(lexer, ex);
+      return mc;
     } else if (lexer.isTER('\n')) {
       // line feed
       lexer.next();
