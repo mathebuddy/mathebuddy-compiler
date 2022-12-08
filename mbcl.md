@@ -239,10 +239,13 @@ TEXT = {
   "type": "linefeed"
 } | {
   "type": "color",
-  "value": INTEGER
+  "key": INTEGER
 } | {
   "type": "reference",
   "label": IDENTIFIER<SECTION.label|BLOCK_ITEM.label>
+} | {
+  "type": "error",
+  "message": STRING
 };
 ```
 
@@ -459,6 +462,18 @@ TABLE_OPTION = "align_left" | "align_center" | "align_right";
 ```
 NEWPAGE = {
   "type": "new_page"
+};
+```
+
+## Errors
+
+An error block is used for development purposes only.
+It is used, if a course developer defined a block type that is unknown (or unimplemented).
+
+```
+ERROR extends BLOCK_ITEM = {
+  "type": "error",
+  "message": STRING
 };
 ```
 
