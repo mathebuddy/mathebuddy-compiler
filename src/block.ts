@@ -14,13 +14,13 @@ import {
   MBL_Definition,
   MBL_DefinitionType,
   MBL_Equation,
+  MBL_EquationOption,
   MBL_Error,
   MBL_LevelItem,
   MBL_Text,
   MBL_Text_AlignCenter,
   MBL_Text_AlignLeft,
   MBL_Text_AlignRight,
-  MBL_Text_Paragraph,
 } from './data';
 
 export class BlockPart {
@@ -70,10 +70,12 @@ export class Block {
         return this.processTextAlign(this.type);
 
       case 'EQUATION':
-        return this.processEquation();
+        return this.processEquation(true);
+      case 'EQUATION*':
+        return this.processEquation(false);
 
-      /*case 'EXERCISE':
-        return this.processExercise();*/
+      case 'TEXT':
+        return this.processText();
 
       default: {
         const err = new MBL_Error();
@@ -83,16 +85,48 @@ export class Block {
     }
   }
 
-  private processEquation(): MBL_Equation {
+  private processText(): MBL_Text {
+    // this block has no parts
+    return this.parser.parseParagraph(
+      (this.parts[0] as BlockPart).lines.join('\n'),
+    );
+  }
+
+  private processEquation(numbering: boolean): MBL_Equation {
     const equation = new MBL_Equation();
+    equation.numbering = numbering ? 888 : -1; // TODO: number
     equation.title = this.title;
     equation.label = this.label;
     for (const p of this.parts) {
       if (p instanceof BlockPart) {
         const part = <BlockPart>p;
         switch (part.name) {
+          case 'options':
+            for (let line of part.lines) {
+              line = line.trim();
+              if (line.length == 0) continue;
+              switch (line) {
+                case 'align-left':
+                  equation.options.push(MBL_EquationOption.AlignLeft);
+                  break;
+                case 'align-center':
+                  equation.options.push(MBL_EquationOption.AlignCenter);
+                  break;
+                case 'align-right':
+                  equation.options.push(MBL_EquationOption.AlignRight);
+                  break;
+                case 'align-equals':
+                  // TODO: do NOT store. create LaTeX-code instead!
+                  equation.options.push(MBL_EquationOption.AlignEquals);
+                  break;
+                default:
+                  equation.error += 'unknown option "' + line + '"';
+              }
+            }
+            break;
           case 'global':
-            equation.value = part.lines.join('\\\\');
+          case 'text':
+            equation.value += part.lines.join('\\\\');
             break;
           default:
             equation.error += 'unexpected part "' + part.name + '"';
