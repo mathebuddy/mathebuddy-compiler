@@ -317,13 +317,13 @@ Equations are encoded in `TeX` notation.
   We introduce some abbreviations for a shorter notation.
   The following table lists all implemented abbreviations:
 
-  | type         | plain tex                                                                                    | short notation                    |     |
-  | ------------ | -------------------------------------------------------------------------------------------- | --------------------------------- | --- |
-  | $\mathbb{R}$ | `\mathbb{R}`                                                                                 | `\R`                              |     |
-  | $\mathbb{N}$ | `\mathbb{N}`                                                                                 | `\N`                              |     |
-  | $\mathbb{Z}$ | `\mathbb{Z}`                                                                                 | `\Z`                              |     |
-  | $\mathbb{C}$ | `\mathbb{C}`                                                                                 | `\C`                              |     |
-  | matrix       | `\begin{pmatrix}` <br> &nbsp;&nbsp;`A & B\\` <br> &nbsp;&nbsp;`C & D\\` <br> `\end{pmatrix}` | `\MAT(A, B; C, D)` <br> <br> <br> |     |
+  | type         | plain tex                                                                                    | short notation                  |     |
+  | ------------ | -------------------------------------------------------------------------------------------- | ------------------------------- | --- |
+  | $\mathbb{R}$ | `\mathbb{R}`                                                                                 | `\R`                            |     |
+  | $\mathbb{N}$ | `\mathbb{N}`                                                                                 | `\N`                            |     |
+  | $\mathbb{Z}$ | `\mathbb{Z}`                                                                                 | `\Z`                            |     |
+  | $\mathbb{C}$ | `\mathbb{C}`                                                                                 | `\C`                            |     |
+  | matrix       | `\begin{pmatrix}` <br> &nbsp;&nbsp;`A & B\\` <br> &nbsp;&nbsp;`C & D\\` <br> `\end{pmatrix}` | `\mat{A&B\\C&D}` <br> <br> <br> |     |
 
   Using abbreviations is optional.
 
