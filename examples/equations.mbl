@@ -4,14 +4,7 @@ Equations
 Inline Equations
 ================
 
-% variant 1
-
-An inline equation $x^2+y^2+\sqrt(z)$.         
-
-% variant 2
-
-An inline equation [x^2+y^2+\sqrt(z)]@equation.
-
+An inline equation $x^2+y^2+\sqrt(z)$.
 
 Equations
 =========
@@ -60,10 +53,10 @@ Equations may be written in plain TeX code. We introduce some (optional) abbrevi
 Numbers
 -------
 
-- $\mathbb{R}$
-- $\mathbb{N}$
-- $\mathbb{Z}$
-- $\mathbb{C}$
+- $\R$
+- $\N$
+- $\Z$
+- $\C$
 
 Matrices
 --------
