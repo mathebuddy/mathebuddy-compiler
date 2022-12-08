@@ -8,6 +8,7 @@
 
 // TODO: use npm-package in future!
 import * as SMPL from '@mathebuddy/mathebuddy-smpl/src';
+import { BaseType } from '@mathebuddy/mathebuddy-smpl/src/symbol';
 
 import { Compiler } from './compiler';
 import {
@@ -16,6 +17,11 @@ import {
   MBL_Equation,
   MBL_EquationOption,
   MBL_Error,
+  MBL_Example,
+  MBL_Exercise,
+  MBL_Exercise_Instance,
+  MBL_Exercise_Variable,
+  MBL_Exercise_VariableType,
   MBL_LevelItem,
   MBL_Text,
   MBL_Text_AlignCenter,
@@ -73,6 +79,12 @@ export class Block {
         return this.processEquation(true);
       case 'EQUATION*':
         return this.processEquation(false);
+
+      case 'EXAMPLE':
+        return this.processExample();
+
+      case 'EXERCISE':
+        return this.processExercise();
 
       case 'TEXT':
         return this.processText();
@@ -139,6 +151,31 @@ export class Block {
     return equation;
   }
 
+  private processExample(): MBL_Example {
+    const example = new MBL_Example();
+    example.title = this.title;
+    example.label = this.label;
+    for (const p of this.parts) {
+      if (p instanceof BlockPart) {
+        const part = <BlockPart>p;
+        switch (part.name) {
+          case 'global':
+            example.items.push(
+              this.parser.parseParagraph(part.lines.join('\n')),
+            );
+            break;
+          default:
+            example.error += 'unexpected part "' + part.name + '"';
+            break;
+        }
+      } else {
+        // TODO: check if allowed here!!
+        example.items.push(p);
+      }
+    }
+    return example;
+  }
+
   private processTextAlign(type: string): MBL_Text {
     let align: MBL_Text_AlignLeft | MBL_Text_AlignCenter | MBL_Text_AlignRight;
     switch (type) {
@@ -191,41 +228,91 @@ export class Block {
     return def;
   }
 
-  /*private processExercise(): Exercise {
-    const exercise = new Exercise();
+  private processExercise(): MBL_Exercise {
+    const exercise = new MBL_Exercise();
     exercise.title = this.title;
-    for (const part of this.parts) {
-      switch (part.name) {
-        case 'global':
-          if (part.lines.join('\n').trim().length > 0)
-            exercise.error =
-              'Some of your code is not inside a tag (e.g. "@code" or "@text")';
-          break;
-        case 'code':
-          exercise.code_raw = part.lines.join('\n');
-          break;
-        case 'text':
-          exercise.text_raw = part.lines.join('\n');
-          break;
-        default:
-          exercise.error = 'unknown part "' + part.name + '"';
-          break;
+    for (const p of this.parts) {
+      if (p instanceof BlockPart) {
+        const part = <BlockPart>p;
+        switch (part.name) {
+          case 'global':
+            if (part.lines.join('\n').trim().length > 0)
+              exercise.error =
+                'Some of your code is not inside a tag (e.g. "@code" or "@text")';
+            break;
+          case 'code':
+            exercise.code = part.lines.join('\n');
+            break;
+          case 'text':
+            exercise.text = this.parser.parseParagraph(
+              part.lines.join('\n'),
+              exercise,
+            );
+            break;
+          default:
+            exercise.error = 'unknown part "' + part.name + '"';
+            break;
+        }
+      } else {
+        // TODO: check if allowed here!!
+        //TODO: exercise.items.push(p);
       }
     }
     try {
       for (let i = 0; i < 3; i++) {
         // TODO: configure number of instances!
-        // TODO: repeat if same instance is already drawn (must check for endless loops in case that search space is restricted!)
-        const instance = new ExerciseInstance();
-        instance.variables = SMPL.interpret(exercise.code_raw);
+        // TODO: repeat if same instance is already drawn
+        // TODO: must check for endless loops, e.g. happens if search space is restricted!
+        const instance = new MBL_Exercise_Instance();
+        const variables = SMPL.interpret(exercise.code);
+        for (const v of variables) {
+          const ev = new MBL_Exercise_Variable();
+          switch (v.type.base) {
+            case BaseType.BOOL:
+              ev.type = MBL_Exercise_VariableType.Bool;
+              break;
+            case BaseType.INT:
+              ev.type = MBL_Exercise_VariableType.Int;
+              break;
+            case BaseType.REAL:
+              ev.type = MBL_Exercise_VariableType.Real;
+              break;
+            case BaseType.COMPLEX:
+              ev.type = MBL_Exercise_VariableType.Complex;
+              break;
+            case BaseType.TERM:
+              ev.type = MBL_Exercise_VariableType.Term;
+              break;
+            case BaseType.VECTOR:
+              ev.type = MBL_Exercise_VariableType.Vector;
+              break;
+            case BaseType.MATRIX:
+              ev.type = MBL_Exercise_VariableType.Matrix;
+              break;
+            case BaseType.INT_SET:
+              ev.type = MBL_Exercise_VariableType.IntSet;
+              break;
+            case BaseType.REAL_SET:
+              ev.type = MBL_Exercise_VariableType.RealSet;
+              break;
+            case BaseType.COMPLEX_SET:
+              ev.type = MBL_Exercise_VariableType.ComplexSet;
+              break;
+            default:
+              throw Error(
+                'unimplemented: processExercise(..) type ' + v.type.base,
+              );
+          }
+          exercise.variables[v.id] = ev;
+          instance.values[v.id] = v.value.toString();
+        }
         exercise.instances.push(instance);
       }
     } catch (e) {
       exercise.error = e.toString();
     }
-    exercise.text = this.parser.parseParagraph(exercise.text_raw, exercise);
     return exercise;
-  }*/
+  }
 
   private error(message: string): void {
     console.error('' + (this.srcLine + 1) + ': ' + message);
