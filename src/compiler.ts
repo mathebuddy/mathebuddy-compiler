@@ -323,7 +323,8 @@ export class Compiler {
         part = new ParagraphItem(ParagraphItemType.Error);
         part.value = 'unknown variable for input field: "' + id + '"';
       }*/
-      throw new Error('unimplemented!');
+      //throw new Error('unimplemented!');
+      return new MBL_Text_Text(); // TODO
     } else if (lexer.isTER('\n')) {
       // line feed
       lexer.next();
