@@ -17,6 +17,9 @@ import {
   MBL_Chapter,
   MBL_Course,
   MBL_Exercise,
+  MBL_Exercise_Text_Input,
+  MBL_Exercise_Text_Input_Type,
+  MBL_Exercise_VariableType,
   MBL_Level,
   MBL_LevelItem,
   MBL_Section,
@@ -291,27 +294,29 @@ export class Compiler {
         lexer.next();
       }
       return ref;
-    } else if (lexer.isTER('#')) {
-      // input element(s)
-      // TODO!!!!!
+    } else if (ex != null && lexer.isTER('#')) {
       lexer.next();
-      /*let id = '';
+      // input element(s)
+      let id = '';
       let error = '';
+      const input = new MBL_Exercise_Text_Input();
       if (lexer.isID()) {
         id = lexer.ID();
-        const v = ex.getVariable(id);
-        if (v != null) {
-          switch (v.type.base) {
-            case BaseType.INT:
-              part = new ParagraphItem(ParagraphItemType.IntegerInput);
-              part.value = id;
+        if (id in ex.variables) {
+          const v = ex.variables[id];
+          input.variable = id;
+          switch (v.type) {
+            case MBL_Exercise_VariableType.Int:
+              input.type = MBL_Exercise_Text_Input_Type.Int;
               break;
-            case BaseType.MATRIX:
-              part = new ParagraphItem(ParagraphItemType.MatrixInput);
-              part.value = id;
+            case MBL_Exercise_VariableType.Real:
+              input.type = MBL_Exercise_Text_Input_Type.Real;
+              break;
+            case MBL_Exercise_VariableType.Matrix:
+              input.type = MBL_Exercise_Text_Input_Type.Matrix;
               break;
             default:
-              error = 'UNIMPLEMENTED input type ' + v.type.base;
+              error = 'UNIMPLEMENTED input type ' + v.type;
           }
         } else {
           error = 'there is no variable "' + id + '"';
@@ -319,12 +324,9 @@ export class Compiler {
       } else {
         error = 'no variable for input field given';
       }
-      if (error.length > 0) {
-        part = new ParagraphItem(ParagraphItemType.Error);
-        part.value = 'unknown variable for input field: "' + id + '"';
-      }*/
-      //throw new Error('unimplemented!');
-      return new MBL_Text_Text(); // TODO
+      if (error.length > 0)
+        ex.error = 'unknown variable for input field: "' + id + '"';
+      return input;
     } else if (lexer.isTER('\n')) {
       // line feed
       lexer.next();
