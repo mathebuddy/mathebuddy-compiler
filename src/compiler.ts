@@ -6,6 +6,8 @@
  * License: GPL-3.0-or-later
  */
 
+// refer to the specification at https://app.f07-its.fh-koeln.de/docs-mbl.html
+
 import { Lexer } from '@multila/multila-lexer';
 import { LexerTokenType } from '@multila/multila-lexer/lib/token';
 import { BaseType } from '@mathebuddy/mathebuddy-smpl/src/symbol';
@@ -172,6 +174,8 @@ export class Compiler {
         this.next();
       } else if (
         this.line.length >= 3 &&
+        this.line[0] >= 'A' &&
+        this.line[0] <= 'Z' &&
         this.line.substring(0, 3) === this.line.toUpperCase().substring(0, 3)
       ) {
         if (parseSubBlock) break;
