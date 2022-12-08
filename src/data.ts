@@ -583,11 +583,11 @@ export class MBL_Exercise_Text_Multiple_Choice extends MBL_Exercise_Text {
 
 export class MBL_Exercise_Text_Single_or_Multi_Choice_Option {
   variable = '';
-  text = '';
+  text: MBL_Text;
   toJSON(): JSONValue {
     return {
       variable: this.variable,
-      text: this.text,
+      text: this.text.toJSON(),
     };
   }
 }
