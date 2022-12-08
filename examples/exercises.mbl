@@ -1,6 +1,16 @@
 Simple Exercise
 ###############
 
+---
+EXERCISE TEMP_TEST @ex:add
+@code
+let x/y = rand(1, 5);
+let z = x + y;
+@text
+Calculate $ x + y = $ #z.
+---
+
+
 Multiple Choice
 ===============
 
