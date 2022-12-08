@@ -134,7 +134,7 @@ export class Compiler {
 
   //G block = "---" NEWLINE { "@" ID NEWLINE | LINE } "---" NEWLINE;
   private parseBlock(): void {
-    const block = new Block(this);
+    const block = new Block(null /*TODO:this*/);
     block.srcLine = this.i;
     this.next(); // skip "---"
     const tokens = this.line.split(' ');
