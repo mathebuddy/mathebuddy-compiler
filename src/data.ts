@@ -557,7 +557,7 @@ export class MBL_Exercise_Text_Input extends MBL_Exercise_Text {
   toJSON(): JSONValue {
     return {
       type: 'text_input',
-      input_type: this.type.toString(),
+      input_type: this.type,
       input_require: this.inputRequire.map((i) => i.toString()),
       input_forbid: this.inputForbid.map((i) => i.toString()),
       variable: this.variable,
