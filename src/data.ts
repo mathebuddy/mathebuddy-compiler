@@ -458,7 +458,7 @@ export class MBL_Definition extends MBL_BlockItem {
 // -------- EXAMPLE --------
 
 export class MBL_Example extends MBL_BlockItem {
-  items: MBL_BlockItem[] = [];
+  items: (MBL_Equation | MBL_Text)[] = [];
   postProcess(): void {
     for (const i of this.items) i.postProcess();
   }
@@ -478,6 +478,7 @@ export class MBL_Example extends MBL_BlockItem {
 export class MBL_Exercise extends MBL_BlockItem {
   variables: { [id: string]: MBL_Exercise_Variable } = {};
   instances: MBL_Exercise_Instance[] = [];
+  code = '';
   text: MBL_Exercise_Text = new MBL_Text_Paragraph();
   postProcess(): void {
     /* empty */
@@ -487,11 +488,13 @@ export class MBL_Exercise extends MBL_BlockItem {
     for (const v in this.variables) {
       variablesJSON[v] = this.variables[v].toJSON();
     }
+    // TODO: do NOT output code when "single_level" == false
     return {
       type: 'exercise',
       title: this.title,
       label: this.label,
       error: this.error,
+      code: this.code,
       variables: variablesJSON,
       instances: this.instances.map((instance) => instance.toJSON()),
       text: this.text.toJSON(),
@@ -500,6 +503,7 @@ export class MBL_Exercise extends MBL_BlockItem {
 }
 
 export enum MBL_Exercise_VariableType {
+  Bool = 'bool',
   Int = 'int',
   IntSet = 'int_set',
   Real = 'real',
@@ -508,6 +512,7 @@ export enum MBL_Exercise_VariableType {
   ComplexSet = 'complex_set',
   Vector = 'vector',
   Matrix = 'matrix',
+  Term = 'term',
 }
 
 export class MBL_Exercise_Variable {
@@ -520,9 +525,9 @@ export class MBL_Exercise_Variable {
 }
 
 export class MBL_Exercise_Instance {
-  value: { [id: string]: string } = {};
+  values: { [id: string]: string } = {};
   toJSON(): JSONValue {
-    return this.value;
+    return this.values;
   }
 }
 
