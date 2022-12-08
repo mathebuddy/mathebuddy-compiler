@@ -18,13 +18,18 @@ export type JSONValue =
 // -------- COURSE --------
 
 export class MBL_Course {
+  single_level = true;
   title = '';
   author = '';
   mbcl_version = 1;
-  date_modified = Date.now();
+  date_modified = Math.floor(Date.now() / 1000);
   chapters: MBL_Chapter[] = [];
+  postProcess(): void {
+    for (const ch of this.chapters) ch.postProcess();
+  }
   toJSON(): JSONValue {
     return {
+      single_level: this.single_level,
       title: this.title,
       author: this.author,
       mbcl_version: this.mbcl_version,
@@ -38,12 +43,15 @@ export class MBL_Course {
 
 export class MBL_Chapter {
   title = '';
-  alias = '';
+  label = '';
   levels: MBL_Level[] = [];
+  postProcess(): void {
+    for (const l of this.levels) l.postProcess();
+  }
   toJSON(): JSONValue {
     return {
       title: this.title,
-      alias: this.alias,
+      label: this.label,
       levels: this.levels.map((level) => level.toJSON()),
     };
   }
@@ -53,15 +61,18 @@ export class MBL_Chapter {
 
 export class MBL_Level {
   title = '';
-  alias = '';
+  label = '';
   pos_x = -1;
   pos_y = -1;
   requires: MBL_Level[] = [];
   items: MBL_LevelItem[] = [];
+  postProcess(): void {
+    for (const i of this.items) i.postProcess();
+  }
   toJSON(): JSONValue {
     return {
       title: this.title,
-      alias: this.alias,
+      label: this.label,
       pos_x: this.pos_x,
       pos_y: this.pos_y,
       requires: this.requires.map((req) => req.title),
@@ -71,6 +82,7 @@ export class MBL_Level {
 }
 
 export abstract class MBL_LevelItem {
+  abstract postProcess(): void;
   abstract toJSON(): JSONValue;
 }
 
@@ -86,6 +98,9 @@ export class MBL_Section extends MBL_LevelItem {
   type: MBL_SectionType;
   text = '';
   label = '';
+  postProcess(): void {
+    /* empty */
+  }
   constructor(type: MBL_SectionType) {
     super();
     this.type = type;
@@ -103,8 +118,32 @@ export class MBL_Section extends MBL_LevelItem {
 
 export abstract class MBL_Text extends MBL_LevelItem {}
 
+function simplifyText(items: MBL_Text[]): void {
+  for (let i = 0; i < items.length; i++) {
+    if (
+      i > 0 &&
+      items[i - 1] instanceof MBL_Text_Text &&
+      items[i] instanceof MBL_Text_Text
+    ) {
+      let text = (<MBL_Text_Text>items[i]).value;
+      if ('.,:!?'.includes(text) == false) text = ' ' + text;
+      (<MBL_Text_Text>items[i - 1]).value += text;
+      // TODO: next line is an ugly hack for TeX..
+      (<MBL_Text_Text>items[i - 1]).value = (<MBL_Text_Text>(
+        items[i - 1]
+      )).value.replace(/\\ /g, '\\');
+      items.splice(i, 1);
+      i--;
+    }
+  }
+}
+
 export class MBL_Text_Paragraph extends MBL_Text {
   items: MBL_Text[] = [];
+  postProcess(): void {
+    for (const i of this.items) i.postProcess();
+    simplifyText(this.items);
+  }
   toJSON(): JSONValue {
     return {
       type: 'paragraph',
@@ -115,6 +154,10 @@ export class MBL_Text_Paragraph extends MBL_Text {
 
 export class MBL_Text_InlineMath extends MBL_Text {
   items: MBL_Text[] = [];
+  postProcess(): void {
+    for (const i of this.items) i.postProcess();
+    simplifyText(this.items);
+  }
   toJSON(): JSONValue {
     return {
       type: 'inline_math',
@@ -125,6 +168,10 @@ export class MBL_Text_InlineMath extends MBL_Text {
 
 export class MBL_Text_Bold extends MBL_Text {
   items: MBL_Text[] = [];
+  postProcess(): void {
+    for (const i of this.items) i.postProcess();
+    simplifyText(this.items);
+  }
   toJSON(): JSONValue {
     return {
       type: 'bold',
@@ -135,6 +182,10 @@ export class MBL_Text_Bold extends MBL_Text {
 
 export class MBL_Text_Italic extends MBL_Text {
   items: MBL_Text[] = [];
+  postProcess(): void {
+    for (const i of this.items) i.postProcess();
+    simplifyText(this.items);
+  }
   toJSON(): JSONValue {
     return {
       type: 'italic',
@@ -145,6 +196,10 @@ export class MBL_Text_Italic extends MBL_Text {
 
 export class MBL_Text_Itemize extends MBL_Text {
   items: MBL_Text[] = [];
+  postProcess(): void {
+    for (const i of this.items) i.postProcess();
+    simplifyText(this.items);
+  }
   toJSON(): JSONValue {
     return {
       type: 'itemize',
@@ -155,6 +210,10 @@ export class MBL_Text_Itemize extends MBL_Text {
 
 export class MBL_Text_Enumerate extends MBL_Text {
   items: MBL_Text[] = [];
+  postProcess(): void {
+    for (const i of this.items) i.postProcess();
+    simplifyText(this.items);
+  }
   toJSON(): JSONValue {
     return {
       type: 'enumerate',
@@ -165,6 +224,10 @@ export class MBL_Text_Enumerate extends MBL_Text {
 
 export class MBL_Text_EnumerateAlpha extends MBL_Text {
   items: MBL_Text[] = [];
+  postProcess(): void {
+    for (const i of this.items) i.postProcess();
+    simplifyText(this.items);
+  }
   toJSON(): JSONValue {
     return {
       type: 'enumerate_alpha',
@@ -175,6 +238,10 @@ export class MBL_Text_EnumerateAlpha extends MBL_Text {
 
 export class MBL_Text_Span extends MBL_Text {
   items: MBL_Text[] = [];
+  postProcess(): void {
+    for (const i of this.items) i.postProcess();
+    simplifyText(this.items);
+  }
   toJSON(): JSONValue {
     return {
       type: 'span',
@@ -185,6 +252,10 @@ export class MBL_Text_Span extends MBL_Text {
 
 export class MBL_Text_AlignLeft extends MBL_Text {
   items: MBL_Text[] = [];
+  postProcess(): void {
+    for (const i of this.items) i.postProcess();
+    simplifyText(this.items);
+  }
   toJSON(): JSONValue {
     return {
       type: 'align_left',
@@ -195,6 +266,10 @@ export class MBL_Text_AlignLeft extends MBL_Text {
 
 export class MBL_Text_AlignCenter extends MBL_Text {
   items: MBL_Text[] = [];
+  postProcess(): void {
+    for (const i of this.items) i.postProcess();
+    simplifyText(this.items);
+  }
   toJSON(): JSONValue {
     return {
       type: 'align_center',
@@ -205,6 +280,10 @@ export class MBL_Text_AlignCenter extends MBL_Text {
 
 export class MBL_Text_AlignRight extends MBL_Text {
   items: MBL_Text[] = [];
+  postProcess(): void {
+    for (const i of this.items) i.postProcess();
+    simplifyText(this.items);
+  }
   toJSON(): JSONValue {
     return {
       type: 'align_right',
@@ -215,6 +294,9 @@ export class MBL_Text_AlignRight extends MBL_Text {
 
 export class MBL_Text_Text extends MBL_Text {
   value = '';
+  postProcess(): void {
+    /* empty */
+  }
   toJSON(): JSONValue {
     return {
       type: 'text',
@@ -224,6 +306,9 @@ export class MBL_Text_Text extends MBL_Text {
 }
 
 export class MBL_Text_Linefeed extends MBL_Text {
+  postProcess(): void {
+    /* empty */
+  }
   toJSON(): JSONValue {
     return {
       type: 'linefeed',
@@ -232,17 +317,24 @@ export class MBL_Text_Linefeed extends MBL_Text {
 }
 
 export class MBL_Text_Color extends MBL_Text {
-  value = 0;
+  key = 0;
+  items: MBL_Text[] = [];
+  postProcess(): void {
+    simplifyText(this.items);
+  }
   toJSON(): JSONValue {
     return {
       type: 'color',
-      value: this.value,
+      key: this.key,
     };
   }
 }
 
 export class MBL_Text_Reference extends MBL_Text {
   label = '';
+  postProcess(): void {
+    /* empty */
+  }
   toJSON(): JSONValue {
     return {
       type: 'reference',
@@ -251,13 +343,30 @@ export class MBL_Text_Reference extends MBL_Text {
   }
 }
 
+export class MBL_Text_Error extends MBL_Text {
+  message = '';
+  constructor(message: string) {
+    super();
+    this.message = message;
+  }
+  postProcess(): void {
+    /* empty */
+  }
+  toJSON(): JSONValue {
+    return {
+      type: 'error',
+      message: this.message,
+    };
+  }
+}
+
 // -------- BLOCK ITEM --------
 
 export abstract class MBL_BlockItem extends MBL_LevelItem {
   type: string;
-  title: string;
-  label: string;
-  error: string;
+  title = '';
+  label = '';
+  error = '';
 }
 
 // -------- EQUATION --------
@@ -273,6 +382,9 @@ export class MBL_Equation extends MBL_BlockItem {
   value = '';
   numbering = -1;
   options: MBL_EquationOption[] = [];
+  postProcess(): void {
+    // TODO
+  }
   toJSON(): JSONValue {
     return {
       type: 'equation',
@@ -282,6 +394,27 @@ export class MBL_Equation extends MBL_BlockItem {
       value: this.value,
       numbering: this.numbering,
       options: this.options.map((option) => option.toString()),
+    };
+  }
+}
+
+// -------- ERROR --------
+
+export class MBL_Error extends MBL_BlockItem {
+  message = '';
+  constructor() {
+    super();
+  }
+  postProcess(): void {
+    /* empty */
+  }
+  toJSON(): JSONValue {
+    return {
+      type: 'error',
+      title: this.title,
+      label: this.label,
+      error: this.error,
+      message: this.message,
     };
   }
 }
@@ -303,10 +436,13 @@ export enum MBL_DefinitionType {
 
 export class MBL_Definition extends MBL_BlockItem {
   type: MBL_DefinitionType;
-  items: MBL_BlockItem[] = [];
+  items: (MBL_Equation | MBL_Text)[] = [];
   constructor(type: MBL_DefinitionType) {
     super();
     this.type = type;
+  }
+  postProcess(): void {
+    for (const i of this.items) i.postProcess();
   }
   toJSON(): JSONValue {
     return {
@@ -323,6 +459,9 @@ export class MBL_Definition extends MBL_BlockItem {
 
 export class MBL_Example extends MBL_BlockItem {
   items: MBL_BlockItem[] = [];
+  postProcess(): void {
+    for (const i of this.items) i.postProcess();
+  }
   toJSON(): JSONValue {
     return {
       type: 'example',
@@ -340,6 +479,9 @@ export class MBL_Exercise extends MBL_BlockItem {
   variables: { [id: string]: MBL_Exercise_Variable } = {};
   instances: MBL_Exercise_Instance[] = [];
   text: MBL_Exercise_Text = new MBL_Text_Paragraph();
+  postProcess(): void {
+    /* empty */
+  }
   toJSON(): JSONValue {
     const variablesJSON: { [id: string]: JSONValue } = {};
     for (const v in this.variables) {
@@ -388,6 +530,9 @@ export abstract class MBL_Exercise_Text extends MBL_Text {}
 
 export class MBL_Exercise_Text_Variable extends MBL_Exercise_Text {
   variableId = '';
+  postProcess(): void {
+    /* empty */
+  }
   toJSON(): JSONValue {
     return {
       variable: this.variableId,
@@ -401,6 +546,9 @@ export class MBL_Exercise_Text_Input extends MBL_Exercise_Text {
   inputRequire: string[] = [];
   inputForbid: string[] = [];
   width = 0;
+  postProcess(): void {
+    /* empty */
+  }
   toJSON(): JSONValue {
     return {
       type: 'text_input',
@@ -417,6 +565,9 @@ export class MBL_Exercise_Text_Input extends MBL_Exercise_Text {
 
 export class MBL_Exercise_Text_Multiple_Choice extends MBL_Exercise_Text {
   items: MBL_Exercise_Text_Single_or_Multi_Choice_Option[] = [];
+  postProcess(): void {
+    // TODO
+  }
   toJSON(): JSONValue {
     return {
       type: 'multiple_choice',
@@ -458,6 +609,9 @@ export class MBL_Figure extends MBL_BlockItem {
   path = '';
   caption = '';
   options: MBL_Figure_Option[] = [];
+  postProcess(): void {
+    // TODO
+  }
   toJSON(): JSONValue {
     return {
       type: 'figure',
@@ -482,6 +636,9 @@ export class MBL_Table extends MBL_BlockItem {
   head: string[] = [];
   rows: MBL_Table_Row[] = [];
   options: MBL_Table_Option[] = [];
+  postProcess(): void {
+    // TODO
+  }
   toJSON(): JSONValue {
     return {
       type: 'table',
@@ -513,6 +670,9 @@ export enum MBL_Table_Option {
 // -------- NEWPAGE --------
 
 export class MBL_NewPage extends MBL_LevelItem {
+  postProcess(): void {
+    /* empty */
+  }
   toJSON(): JSONValue {
     return {
       type: 'new_page',
