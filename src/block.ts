@@ -242,6 +242,60 @@ export class Block {
             break;
           case 'code':
             exercise.code = part.lines.join('\n');
+            try {
+              for (let i = 0; i < 3; i++) {
+                // TODO: configure number of instances!
+                // TODO: repeat if same instance is already drawn
+                // TODO: must check for endless loops, e.g. happens if search space is restricted!
+                const instance = new MBL_Exercise_Instance();
+                const variables = SMPL.interpret(exercise.code);
+                for (const v of variables) {
+                  const ev = new MBL_Exercise_Variable();
+                  switch (v.type.base) {
+                    case BaseType.BOOL:
+                      ev.type = MBL_Exercise_VariableType.Bool;
+                      break;
+                    case BaseType.INT:
+                      ev.type = MBL_Exercise_VariableType.Int;
+                      break;
+                    case BaseType.REAL:
+                      ev.type = MBL_Exercise_VariableType.Real;
+                      break;
+                    case BaseType.COMPLEX:
+                      ev.type = MBL_Exercise_VariableType.Complex;
+                      break;
+                    case BaseType.TERM:
+                      ev.type = MBL_Exercise_VariableType.Term;
+                      break;
+                    case BaseType.VECTOR:
+                      ev.type = MBL_Exercise_VariableType.Vector;
+                      break;
+                    case BaseType.MATRIX:
+                      ev.type = MBL_Exercise_VariableType.Matrix;
+                      break;
+                    case BaseType.INT_SET:
+                      ev.type = MBL_Exercise_VariableType.IntSet;
+                      break;
+                    case BaseType.REAL_SET:
+                      ev.type = MBL_Exercise_VariableType.RealSet;
+                      break;
+                    case BaseType.COMPLEX_SET:
+                      ev.type = MBL_Exercise_VariableType.ComplexSet;
+                      break;
+                    default:
+                      throw Error(
+                        'unimplemented: processExercise(..) type ' +
+                          v.type.base,
+                      );
+                  }
+                  exercise.variables[v.id] = ev;
+                  instance.values[v.id] = v.value.toString();
+                }
+                exercise.instances.push(instance);
+              }
+            } catch (e) {
+              exercise.error = e.toString();
+            }
             break;
           case 'text':
             exercise.text = this.parser.parseParagraph(
@@ -257,59 +311,6 @@ export class Block {
         // TODO: check if allowed here!!
         //TODO: exercise.items.push(p);
       }
-    }
-    try {
-      for (let i = 0; i < 3; i++) {
-        // TODO: configure number of instances!
-        // TODO: repeat if same instance is already drawn
-        // TODO: must check for endless loops, e.g. happens if search space is restricted!
-        const instance = new MBL_Exercise_Instance();
-        const variables = SMPL.interpret(exercise.code);
-        for (const v of variables) {
-          const ev = new MBL_Exercise_Variable();
-          switch (v.type.base) {
-            case BaseType.BOOL:
-              ev.type = MBL_Exercise_VariableType.Bool;
-              break;
-            case BaseType.INT:
-              ev.type = MBL_Exercise_VariableType.Int;
-              break;
-            case BaseType.REAL:
-              ev.type = MBL_Exercise_VariableType.Real;
-              break;
-            case BaseType.COMPLEX:
-              ev.type = MBL_Exercise_VariableType.Complex;
-              break;
-            case BaseType.TERM:
-              ev.type = MBL_Exercise_VariableType.Term;
-              break;
-            case BaseType.VECTOR:
-              ev.type = MBL_Exercise_VariableType.Vector;
-              break;
-            case BaseType.MATRIX:
-              ev.type = MBL_Exercise_VariableType.Matrix;
-              break;
-            case BaseType.INT_SET:
-              ev.type = MBL_Exercise_VariableType.IntSet;
-              break;
-            case BaseType.REAL_SET:
-              ev.type = MBL_Exercise_VariableType.RealSet;
-              break;
-            case BaseType.COMPLEX_SET:
-              ev.type = MBL_Exercise_VariableType.ComplexSet;
-              break;
-            default:
-              throw Error(
-                'unimplemented: processExercise(..) type ' + v.type.base,
-              );
-          }
-          exercise.variables[v.id] = ev;
-          instance.values[v.id] = v.value.toString();
-        }
-        exercise.instances.push(instance);
-      }
-    } catch (e) {
-      exercise.error = e.toString();
     }
     return exercise;
   }
