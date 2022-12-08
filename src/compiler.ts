@@ -204,6 +204,7 @@ export class Compiler {
       | "[" paragraphCore "]" "@" ID
       | "$" inlineMath "$"
       | "#" ID
+      | <START>"#" paragraphCore "\n"
       | <START>"-" paragraphCore "\n"
       | <START>"-)" paragraphCore "\n"
       | ID
