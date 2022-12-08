@@ -14,7 +14,7 @@ console.log('mathe:buddy Compiler (c) 2022 by TH Koeln');
 
 // for all demo files
 const inputPath = 'examples/';
-const files = fs.readdirSync(inputPath);
+const files = fs.readdirSync(inputPath).sort();
 for (const file of files) {
   const path = inputPath + file;
   if (path.endsWith('.mbl') == false) continue;
@@ -33,7 +33,7 @@ for (const file of files) {
   const outputPathCompressed =
     inputPath + file.substring(0, file.length - 4) + '_COMPILED.hex';
   fs.writeFileSync(outputPathCompressed, outputCompressed, 'base64');*/
-  break; // TODO
+  if (file.endsWith('equations.mbl')) break; // TODO
 }
 
 const bp = 1337;
