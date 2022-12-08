@@ -387,8 +387,8 @@ EXERCISE_TEXT extends TEXT = {
 
 ```
 EXERCISE_VARIABLE = {
-  "type": "int" | "int_set" | "real" | "real_set"
-        | "complex" | "complex_set" | "vector" | "matrix"
+  "type": "bool" | "int" | "int_set" | "real" | "real_set"
+        | "complex" | "complex_set" | "vector" | "matrix" | "term"
 };
 ```
 
