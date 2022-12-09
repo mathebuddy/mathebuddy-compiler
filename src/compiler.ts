@@ -20,6 +20,7 @@ import {
   MBL_Exercise_Text_Input,
   MBL_Exercise_Text_Input_Type,
   MBL_Exercise_Text_Multiple_Choice,
+  MBL_Exercise_Text_Single_Choice,
   MBL_Exercise_Text_Single_or_Multi_Choice_Option,
   MBL_Exercise_Text_Variable,
   MBL_Exercise_VariableType,
@@ -205,15 +206,16 @@ export class Compiler {
      paragraphCore =
         { paragraphPart };
      paragraphPart =
-      | "**" paragraphCore "**"
-      | "*" paragraphCore "*"
-      | "[" paragraphCore "]" "@" ID
+      | "**" {paragraphPart} "**"
+      | "*" {paragraphPart} "*"
+      | "[" {paragraphPart} "]" "@" ID
       | "$" inlineMath "$"
-      | "#" ID                                   (exercise only)
-      | <START>"[" ["x"] "]" paragraphCore "\n"  (exercise only)
-      | <START>"#" paragraphCore "\n"
-      | <START>"-" paragraphCore "\n"
-      | <START>"-)" paragraphCore "\n"
+      | "#" ID                                     (exercise only)
+      | <START>"[" [ ("x"|":"ID) ] "]" {paragraphPart} "\n"  (exercise only)
+      | <START>"(" [ ("x"|":"ID) ] ")" {paragraphPart} "\n"  (exercise only)
+      | <START>"#" {paragraphPart} "\n"
+      | <START>"-" {paragraphPart} "\n"
+      | <START>"-)" {paragraphPart} "\n"
       | ID
       | DEL;
    */
@@ -246,7 +248,7 @@ export class Compiler {
         lexer.next();
         const span = new MBL_Text_Span();
         itemize.items.push(span);
-        while (lexer.isNotNEWLINE())
+        while (lexer.isNotNEWLINE() && lexer.isNotEND())
           span.items.push(this.parseParagraph_part(lexer, ex));
         lexer.NEWLINE();
       }
@@ -255,7 +257,7 @@ export class Compiler {
       // bold text
       lexer.next();
       const bold = new MBL_Text_Bold();
-      while (lexer.isNotTER('**'))
+      while (lexer.isNotTER('**') && lexer.isNotEND())
         bold.items.push(this.parseParagraph_part(lexer, ex));
       if (lexer.isTER('**')) lexer.next();
       return bold;
@@ -263,7 +265,7 @@ export class Compiler {
       // italic text
       lexer.next();
       const italic = new MBL_Text_Italic();
-      while (lexer.isNotTER('*'))
+      while (lexer.isNotTER('*') && lexer.isNotEND())
         italic.items.push(this.parseParagraph_part(lexer, ex));
       if (lexer.isTER('*')) lexer.next();
       return italic;
@@ -271,7 +273,7 @@ export class Compiler {
       // inline equation
       lexer.next();
       const inlineMath = new MBL_Text_InlineMath();
-      while (lexer.isNotTER('$')) {
+      while (lexer.isNotTER('$') && lexer.isNotEND()) {
         const tk = lexer.getToken().token;
         const isId = lexer.getToken().type === LexerTokenType.ID;
         lexer.next();
@@ -329,22 +331,48 @@ export class Compiler {
       if (error.length > 0)
         ex.error = 'unknown variable for input field: "' + id + '"';
       return input;
-    } else if (ex != null && lexer.isTER('[')) {
-      // multiple choice answer
+    } else if (ex != null && (lexer.isTER('[') || lexer.isTER('('))) {
+      const isMultipleChoice = lexer.isTER('[');
+      // single or multiple choice answer
       lexer.next();
-      let correct = false;
+      let staticallyCorrect = false;
+      let varId = '';
       if (lexer.isTER('x')) {
         lexer.next();
-        correct = true;
+        staticallyCorrect = true;
+      } else if (lexer.isTER(':')) {
+        lexer.next();
+        if (lexer.isID) {
+          varId = lexer.ID();
+          if (varId in ex.variables == false)
+            ex.error = 'unknown variable ' + varId;
+        } else {
+          ex.error = 'expected ID after :';
+        }
       }
-      if (lexer.isTER(']')) lexer.next();
-      else ex.error = 'expected ]';
-      // TODO: do combine multi-choice in postprocessing
-      const mc = new MBL_Exercise_Text_Multiple_Choice();
+      let element:
+        | MBL_Exercise_Text_Multiple_Choice
+        | MBL_Exercise_Text_Single_Choice = null;
+      if (varId.length == 0)
+        varId = ex.addStaticBooleanVariable(staticallyCorrect);
+      if (isMultipleChoice) {
+        if (lexer.isTER(']')) lexer.next();
+        else ex.error = 'expected ]';
+        element = new MBL_Exercise_Text_Multiple_Choice();
+      } else {
+        if (lexer.isTER(')')) lexer.next();
+        else ex.error = 'expected )';
+        element = new MBL_Exercise_Text_Multiple_Choice();
+      }
       const option = new MBL_Exercise_Text_Single_or_Multi_Choice_Option();
-      mc.items.push(option);
-      option.text = this.parseParagraph_part(lexer, ex);
-      return mc;
+      option.variable = varId;
+      element.items.push(option);
+      const span = new MBL_Text_Span();
+      option.text = span;
+      while (lexer.isNotNEWLINE() && lexer.isNotEND())
+        span.items.push(this.parseParagraph_part(lexer, ex));
+      if (lexer.isTER('\n')) lexer.next();
+      return element;
     } else if (lexer.isTER('\n')) {
       // line feed
       lexer.next();
@@ -354,7 +382,7 @@ export class Compiler {
       // TODO: make sure, that errors are not too annoying...
       lexer.next();
       const items: MBL_Text[] = [];
-      while (lexer.isNotTER(']'))
+      while (lexer.isNotTER(']') && lexer.isNotEND())
         items.push(this.parseParagraph_part(lexer, ex));
       if (lexer.isTER(']')) lexer.next();
       else return new MBL_Text_Error('expected ]');
