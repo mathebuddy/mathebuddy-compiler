@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content />
-  <meta name="dcterms.date" content="2022-12-08" />
+  <meta name="dcterms.date" content="2022-12-09" />
   <title>Mathe:Buddy Language (MBL)</title>
   <style>
 code{white-space: pre-wrap;}
@@ -391,7 +391,7 @@ font-style: italic;
 <header id="title-block-header">
 [<a href="https://app.f07-its.fh-koeln.de">Home</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbl.html">MBL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-smpl.html">SMPL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbcl.html">MBCL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-sim.html">Installation</a>] <h1 class="title">Mathe:Buddy Language (MBL)</h1>
 <p class="author"></p>
-<p class="date">2022-12-08</p>
+<p class="date">2022-12-09</p>
 </header>
 <hr />
 <p><strong>NOTE</strong> This reference guide is in work-in-progress
@@ -1039,17 +1039,20 @@ answers at runtime. Example:</p>
 EXERCISE My dynamic Multiple Choice Exercise @ex:myMultiChoice
 @code
 let x/y/z/w = rand(10,20);    % no pair of x, y, z, w is equal
-let b = z&gt;w;
+let c1 = x &gt; w;
+let c2 = y &gt; w;
+let c3 = z &gt; w;
 @text
-[$x&gt;w$] $x &gt; w$
-[$y&gt;w$] $y &gt; w$
-[$b$]   $z &gt; w$
-[ ]     $1 &lt; 0$    % statically false
+[:c1] $x &gt; w$
+[:c2] $y &gt; w$
+[:c3] $z &gt; w$
+[x]   $1 &gt; 0$    % statically true
+[ ]   $1 &lt; 0$    % statically false
 ---</code></pre>
-<p>Correctness of an answer is determined by a boolean condition or
-variable, which is embedded into brackets <code>[ ]</code>.</p>
-<p>You are allowed to mix static and dynamic answers. If variable
-<code>x</code> is a boolean variable, then <code>[$x$]</code> is correct
+<p>Correctness of an answer is determined by a boolean variable
+<code>V</code>, in the form <code>[:V]</code>.</p>
+<p>You are allowed to mix static and dynamic answers: If variable
+<code>x</code> is a boolean variable, then <code>[:x]</code> is correct
 (incorrect) if <span class="math inline"><em>x</em></span> is true
 (false). The notation <code>[x]</code> indicates that the answer is
 <em>always</em> true.</p></li>
