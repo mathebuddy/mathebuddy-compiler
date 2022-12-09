@@ -38,7 +38,7 @@ Single Choice
 =============
 
 ---
-EXERCISE My Multiple Choice Exercise @ex:myMultiChoice
+EXERCISE My Single Choice Exercise @ex:mySingleChoice
 @text
 (x) This answer is correct.
 ( ) This answer is incorrect.
