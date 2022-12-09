@@ -687,19 +687,22 @@ The following paragraphs describe all implemented exercise types.
   EXERCISE My dynamic Multiple Choice Exercise @ex:myMultiChoice
   @code
   let x/y/z/w = rand(10,20);    % no pair of x, y, z, w is equal
-  let b = z>w;
+  let c1 = x > w;
+  let c2 = y > w;
+  let c3 = z > w;
   @text
-  [$x>w$] $x > w$
-  [$y>w$] $y > w$
-  [$b$]   $z > w$
-  [ ]     $1 < 0$    % statically false
+  [:c1] $x > w$
+  [:c2] $y > w$
+  [:c3] $z > w$
+  [x]   $1 > 0$    % statically true
+  [ ]   $1 < 0$    % statically false
   ---
   ```
 
-  Correctness of an answer is determined by a boolean condition or variable, which is embedded into brackets `[ ]`.
+  Correctness of an answer is determined by a boolean variable `V`, in the form `[:V]`.
 
-  You are allowed to mix static and dynamic answers.
-  If variable `x` is a boolean variable, then `[$x$]` is correct (incorrect) if $x$ is true (false).
+  You are allowed to mix static and dynamic answers:
+  If variable `x` is a boolean variable, then `[:x]` is correct (incorrect) if $x$ is true (false).
   The notation `[x]` indicates that the answer is _always_ true.
 
 - `Single Choice Exercise`
