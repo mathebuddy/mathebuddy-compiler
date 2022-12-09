@@ -138,11 +138,45 @@ function simplifyText(items: MBL_Text[]): void {
   }
 }
 
+function aggregateMultipleChoice(items: MBL_Text[]): void {
+  for (let i = 0; i < items.length; i++) {
+    if (
+      i > 0 &&
+      items[i - 1] instanceof MBL_Exercise_Text_Multiple_Choice &&
+      items[i] instanceof MBL_Exercise_Text_Multiple_Choice
+    ) {
+      const u = <MBL_Exercise_Text_Multiple_Choice>items[i - 1];
+      const v = <MBL_Exercise_Text_Multiple_Choice>items[i];
+      u.items = u.items.concat(v.items);
+      items.splice(i, 1);
+      i--;
+    }
+  }
+}
+
+function aggregateSingleChoice(items: MBL_Text[]): void {
+  for (let i = 0; i < items.length; i++) {
+    if (
+      i > 0 &&
+      items[i - 1] instanceof MBL_Exercise_Text_Single_Choice &&
+      items[i] instanceof MBL_Exercise_Text_Single_Choice
+    ) {
+      const u = <MBL_Exercise_Text_Multiple_Choice>items[i - 1];
+      const v = <MBL_Exercise_Text_Multiple_Choice>items[i];
+      u.items = u.items.concat(v.items);
+      items.splice(i, 1);
+      i--;
+    }
+  }
+}
+
 export class MBL_Text_Paragraph extends MBL_Text {
   items: MBL_Text[] = [];
   postProcess(): void {
     for (const i of this.items) i.postProcess();
     simplifyText(this.items);
+    aggregateMultipleChoice(this.items);
+    aggregateSingleChoice(this.items);
   }
   toJSON(): JSONValue {
     return {
@@ -480,8 +514,22 @@ export class MBL_Exercise extends MBL_BlockItem {
   instances: MBL_Exercise_Instance[] = [];
   code = '';
   text: MBL_Exercise_Text = new MBL_Text_Paragraph();
+  staticVariableCounter = 0;
+  addStaticBooleanVariable(value: boolean): string {
+    const varId = '__bool__' + this.staticVariableCounter++;
+    const v = new MBL_Exercise_Variable();
+    v.type = MBL_Exercise_VariableType.Bool;
+    this.variables[varId] = v;
+    const NUM_INST = 3; // TODO!!
+    if (this.instances.length == 0)
+      for (let i = 0; i < NUM_INST; i++)
+        this.instances.push(new MBL_Exercise_Instance());
+    for (let i = 0; i < NUM_INST; i++)
+      this.instances[i].values[varId] = value ? 'true' : 'false';
+    return varId;
+  }
   postProcess(): void {
-    /* empty */
+    this.text.postProcess();
   }
   toJSON(): JSONValue {
     const variablesJSON: { [id: string]: JSONValue } = {};
@@ -571,7 +619,7 @@ export class MBL_Exercise_Text_Input extends MBL_Exercise_Text {
 export class MBL_Exercise_Text_Multiple_Choice extends MBL_Exercise_Text {
   items: MBL_Exercise_Text_Single_or_Multi_Choice_Option[] = [];
   postProcess(): void {
-    // TODO
+    for (const i of this.items) i.postProcess();
   }
   toJSON(): JSONValue {
     return {
@@ -581,9 +629,25 @@ export class MBL_Exercise_Text_Multiple_Choice extends MBL_Exercise_Text {
   }
 }
 
+export class MBL_Exercise_Text_Single_Choice extends MBL_Exercise_Text {
+  items: MBL_Exercise_Text_Single_or_Multi_Choice_Option[] = [];
+  postProcess(): void {
+    for (const i of this.items) i.postProcess();
+  }
+  toJSON(): JSONValue {
+    return {
+      type: 'single_choice',
+      items: this.items.map((i) => i.toJSON()),
+    };
+  }
+}
+
 export class MBL_Exercise_Text_Single_or_Multi_Choice_Option {
   variable = '';
   text: MBL_Text;
+  postProcess(): void {
+    this.text.postProcess();
+  }
   toJSON(): JSONValue {
     return {
       variable: this.variable,
