@@ -228,43 +228,26 @@ export class MBL_Text_Italic extends MBL_Text {
   }
 }
 
+export enum MBL_Text_Itemize_Type {
+  Itemize = 'itemize',
+  Enumerate = 'enumerate',
+  EnumerateAlpha = 'enumerate_alpha',
+}
+
 export class MBL_Text_Itemize extends MBL_Text {
+  type: MBL_Text_Itemize_Type;
   items: MBL_Text[] = [];
+  constructor(type: MBL_Text_Itemize_Type) {
+    super();
+    this.type = type;
+  }
   postProcess(): void {
     for (const i of this.items) i.postProcess();
     simplifyText(this.items);
   }
   toJSON(): JSONValue {
     return {
-      type: 'itemize',
-      items: this.items.map((item) => item.toJSON()),
-    };
-  }
-}
-
-export class MBL_Text_Enumerate extends MBL_Text {
-  items: MBL_Text[] = [];
-  postProcess(): void {
-    for (const i of this.items) i.postProcess();
-    simplifyText(this.items);
-  }
-  toJSON(): JSONValue {
-    return {
-      type: 'enumerate',
-      items: this.items.map((item) => item.toJSON()),
-    };
-  }
-}
-
-export class MBL_Text_EnumerateAlpha extends MBL_Text {
-  items: MBL_Text[] = [];
-  postProcess(): void {
-    for (const i of this.items) i.postProcess();
-    simplifyText(this.items);
-  }
-  toJSON(): JSONValue {
-    return {
-      type: 'enumerate_alpha',
+      type: this.type,
       items: this.items.map((item) => item.toJSON()),
     };
   }
@@ -360,6 +343,7 @@ export class MBL_Text_Color extends MBL_Text {
     return {
       type: 'color',
       key: this.key,
+      items: this.items.map((item) => item.toJSON()),
     };
   }
 }
@@ -702,11 +686,12 @@ export enum MBL_Figure_Option {
 // -------- TABLE --------
 
 export class MBL_Table extends MBL_BlockItem {
-  head: string[] = [];
+  head: MBL_Table_Row = new MBL_Table_Row();
   rows: MBL_Table_Row[] = [];
   options: MBL_Table_Option[] = [];
   postProcess(): void {
-    // TODO
+    this.head.postProcess();
+    for (const row of this.rows) row.postProcess();
   }
   toJSON(): JSONValue {
     return {
@@ -714,7 +699,7 @@ export class MBL_Table extends MBL_BlockItem {
       title: this.title,
       label: this.label,
       error: this.error,
-      head: this.head,
+      head: this.head.toJSON(),
       rows: this.rows.map((row) => row.toJSON()),
       options: this.options.map((option) => option.toString()),
     };
@@ -722,10 +707,13 @@ export class MBL_Table extends MBL_BlockItem {
 }
 
 export class MBL_Table_Row {
-  text: string[] = [];
+  columns: MBL_Text[] = [];
+  postProcess(): void {
+    for (const column of this.columns) column.postProcess();
+  }
   toJSON(): JSONValue {
     return {
-      row: this.text,
+      columns: this.columns.map((column) => column.toJSON()),
     };
   }
 }
