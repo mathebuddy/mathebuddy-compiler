@@ -11,27 +11,25 @@ import * as SMPL from '@mathebuddy/mathebuddy-smpl/src';
 import { BaseType } from '@mathebuddy/mathebuddy-smpl/src/symbol';
 
 import { Compiler } from './compiler';
+import { MBL_NewPage } from './data';
+import { MBL_Definition, MBL_DefinitionType } from './dataDefinition';
+import { MBL_Equation, MBL_EquationOption } from './dataEquation';
+import { MBL_Error } from './dataError';
+import { MBL_Example } from './dataExample';
 import {
-  MBL_Definition,
-  MBL_DefinitionType,
-  MBL_Equation,
-  MBL_EquationOption,
-  MBL_Error,
-  MBL_Example,
   MBL_Exercise,
   MBL_Exercise_Instance,
   MBL_Exercise_Variable,
   MBL_Exercise_VariableType,
-  MBL_LevelItem,
-  MBL_NewPage,
-  MBL_Table,
-  MBL_Table_Option,
-  MBL_Table_Row,
+} from './dataExercise';
+import { MBL_LevelItem } from './dataLevel';
+import { MBL_Table, MBL_Table_Option, MBL_Table_Row } from './dataTable';
+import {
   MBL_Text,
   MBL_Text_AlignCenter,
   MBL_Text_AlignLeft,
   MBL_Text_AlignRight,
-} from './data';
+} from './dataText';
 
 export class BlockPart {
   name = '';
