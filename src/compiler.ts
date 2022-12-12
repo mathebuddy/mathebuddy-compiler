@@ -35,6 +35,7 @@ import {
   MBL_Text_InlineMath,
   MBL_Text_Italic,
   MBL_Text_Itemize,
+  MBL_Text_Itemize_Type,
   MBL_Text_Linefeed,
   MBL_Text_Paragraph,
   MBL_Text_Reference,
@@ -240,11 +241,27 @@ export class Compiler {
   }
 
   private parseParagraph_part(lexer: Lexer, ex: MBL_Exercise): MBL_Text {
-    if (lexer.getToken().col == 1 && (lexer.isTER('-') || lexer.isTER('#'))) {
+    if (
+      lexer.getToken().col == 1 &&
+      (lexer.isTER('-') || lexer.isTER('#') || lexer.isTER('-)'))
+    ) {
       // itemize or enumerate
-      const type = lexer.getToken().token; // '-' for itemize; '#' for enumerate
-      const itemize = new MBL_Text_Itemize();
-      while (lexer.getToken().col == 1 && lexer.isTER(type)) {
+      // '-' for itemize; '#' for enumerate
+      const typeStr = lexer.getToken().token;
+      let type: MBL_Text_Itemize_Type;
+      switch (typeStr) {
+        case '-':
+          type = MBL_Text_Itemize_Type.Itemize;
+          break;
+        case '#':
+          type = MBL_Text_Itemize_Type.Enumerate;
+          break;
+        case '-)':
+          type = MBL_Text_Itemize_Type.EnumerateAlpha;
+          break;
+      }
+      const itemize = new MBL_Text_Itemize(type);
+      while (lexer.getToken().col == 1 && lexer.isTER(typeStr)) {
         lexer.next();
         const span = new MBL_Text_Span();
         itemize.items.push(span);
