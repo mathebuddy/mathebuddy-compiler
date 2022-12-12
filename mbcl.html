@@ -785,10 +785,15 @@ TODO: gap exercise, arrangement exercise, timed exercise
 <h2 id="figures">Figures</h2>
 <p>A figure renders a graphics file, as well as an optional caption.</p>
 <pre><code>FIGURE extends BLOCK_ITEM = {
-  &quot;path&quot;: STRING,
-  &quot;caption&quot;: STRING,
+  &quot;file_path&quot;: STRING,
+  &quot;data&quot;: STRING,
+  &quot;caption&quot;: MBL_TEXT,
   &quot;options&quot;: FIGURE_OPTION[]
 };</code></pre>
+<ul>
+<li>either <code>file_path</code> or <code>data</code> must be set.</li>
+<li><code>data</code> represents an image in base64 encoding.</li>
+</ul>
 <pre><code>FIGURE_OPTION = &quot;width_X&quot;;</code></pre>
 <ul>
 <li><code>X</code> denotes the width as percentage of screen width.</li>
