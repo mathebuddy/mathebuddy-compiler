@@ -8,14 +8,16 @@
 
 import { MBL_BlockItem } from './dataBlock';
 import { JSONValue } from './dataJSON';
+import { MBL_Text, MBL_Text_Text } from './dataText';
 
 // refer to the specification at https://app.f07-its.fh-koeln.de/docs-mbcl.html
 
 // -------- FIGURE --------
 
 export class MBL_Figure extends MBL_BlockItem {
-  path = '';
-  caption = '';
+  filePath = '';
+  data = '';
+  caption: MBL_Text = new MBL_Text_Text();
   options: MBL_Figure_Option[] = [];
   postProcess(): void {
     // TODO
@@ -26,6 +28,10 @@ export class MBL_Figure extends MBL_BlockItem {
       title: this.title,
       label: this.label,
       error: this.error,
+      file_path: this.filePath,
+      data: this.data,
+      caption: this.caption.toJSON(),
+      options: this.options.map((option) => '' + option),
     };
   }
 }
@@ -35,5 +41,6 @@ export enum MBL_Figure_Option {
   Width33 = 'width-33',
   Width50 = 'width-50',
   Width66 = 'width-66',
+  Width75 = 'width-75',
   Width100 = 'width-100',
 }
