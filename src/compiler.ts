@@ -240,191 +240,38 @@ export class Compiler {
     return paragraph;
   }
 
-  private parseParagraph_part(lexer: Lexer, ex: MBL_Exercise): MBL_Text {
+  private parseParagraph_part(lexer: Lexer, exercise: MBL_Exercise): MBL_Text {
     if (
       lexer.getToken().col == 1 &&
       (lexer.isTER('-') || lexer.isTER('#') || lexer.isTER('-)'))
     ) {
       // itemize or enumerate
-      // '-' for itemize; '#' for enumerate
-      const typeStr = lexer.getToken().token;
-      let type: MBL_Text_Itemize_Type;
-      switch (typeStr) {
-        case '-':
-          type = MBL_Text_Itemize_Type.Itemize;
-          break;
-        case '#':
-          type = MBL_Text_Itemize_Type.Enumerate;
-          break;
-        case '-)':
-          type = MBL_Text_Itemize_Type.EnumerateAlpha;
-          break;
-      }
-      const itemize = new MBL_Text_Itemize(type);
-      while (lexer.getToken().col == 1 && lexer.isTER(typeStr)) {
-        lexer.next();
-        const span = new MBL_Text_Span();
-        itemize.items.push(span);
-        while (lexer.isNotNEWLINE() && lexer.isNotEND())
-          span.items.push(this.parseParagraph_part(lexer, ex));
-        lexer.NEWLINE();
-      }
-      return itemize;
+      return this.parseItemize(lexer, exercise);
     } else if (lexer.isTER('**')) {
       // bold text
-      lexer.next();
-      const bold = new MBL_Text_Bold();
-      while (lexer.isNotTER('**') && lexer.isNotEND())
-        bold.items.push(this.parseParagraph_part(lexer, ex));
-      if (lexer.isTER('**')) lexer.next();
-      return bold;
+      return this.parseBoldText(lexer, exercise);
     } else if (lexer.isTER('*')) {
       // italic text
-      lexer.next();
-      const italic = new MBL_Text_Italic();
-      while (lexer.isNotTER('*') && lexer.isNotEND())
-        italic.items.push(this.parseParagraph_part(lexer, ex));
-      if (lexer.isTER('*')) lexer.next();
-      return italic;
+      return this.parseItalicText(lexer, exercise);
     } else if (lexer.isTER('$')) {
-      // inline equation
-      lexer.next();
-      const inlineMath = new MBL_Text_InlineMath();
-      while (lexer.isNotTER('$') && lexer.isNotEND()) {
-        const tk = lexer.getToken().token;
-        const isId = lexer.getToken().type === LexerTokenType.ID;
-        lexer.next();
-        if (isId && ex != null && tk in ex.variables) {
-          const v = new MBL_Exercise_Text_Variable();
-          v.variableId = tk;
-          inlineMath.items.push(v);
-        } else {
-          const text = new MBL_Text_Text();
-          text.value = tk;
-          inlineMath.items.push(text);
-        }
-      }
-      if (lexer.isTER('$')) lexer.next();
-      return inlineMath;
+      // inline math
+      return this.parseInlineMath(lexer, exercise);
     } else if (lexer.isTER('@')) {
       // reference
-      lexer.next();
-      const ref = new MBL_Text_Reference();
-      if (lexer.isID()) {
-        ref.label = lexer.getToken().token;
-        lexer.next();
-      }
-      return ref;
-    } else if (ex != null && lexer.isTER('#')) {
-      lexer.next();
+      return this.parseReference(lexer);
+    } else if (exercise != null && lexer.isTER('#')) {
       // input element(s)
-      let id = '';
-      let error = '';
-      const input = new MBL_Exercise_Text_Input();
-      if (lexer.isID()) {
-        id = lexer.ID();
-        if (id in ex.variables) {
-          const v = ex.variables[id];
-          input.variable = id;
-          switch (v.type) {
-            case MBL_Exercise_VariableType.Int:
-              input.type = MBL_Exercise_Text_Input_Type.Int;
-              break;
-            case MBL_Exercise_VariableType.Real:
-              input.type = MBL_Exercise_Text_Input_Type.Real;
-              break;
-            case MBL_Exercise_VariableType.Matrix:
-              input.type = MBL_Exercise_Text_Input_Type.Matrix;
-              break;
-            default:
-              error = 'UNIMPLEMENTED input type ' + v.type;
-          }
-        } else {
-          error = 'there is no variable "' + id + '"';
-        }
-      } else {
-        error = 'no variable for input field given';
-      }
-      if (error.length > 0)
-        ex.error = 'unknown variable for input field: "' + id + '"';
-      return input;
-    } else if (ex != null && (lexer.isTER('[') || lexer.isTER('('))) {
-      const isMultipleChoice = lexer.isTER('[');
+      return this.parseInputElements(lexer, exercise);
+    } else if (exercise != null && (lexer.isTER('[') || lexer.isTER('('))) {
       // single or multiple choice answer
-      lexer.next();
-      let staticallyCorrect = false;
-      let varId = '';
-      if (lexer.isTER('x')) {
-        lexer.next();
-        staticallyCorrect = true;
-      } else if (lexer.isTER(':')) {
-        lexer.next();
-        if (lexer.isID) {
-          varId = lexer.ID();
-          if (varId in ex.variables == false)
-            ex.error = 'unknown variable ' + varId;
-        } else {
-          ex.error = 'expected ID after :';
-        }
-      }
-      let element:
-        | MBL_Exercise_Text_Multiple_Choice
-        | MBL_Exercise_Text_Single_Choice = null;
-      if (varId.length == 0)
-        varId = ex.addStaticBooleanVariable(staticallyCorrect);
-      if (isMultipleChoice) {
-        if (lexer.isTER(']')) lexer.next();
-        else ex.error = 'expected ]';
-        element = new MBL_Exercise_Text_Multiple_Choice();
-      } else {
-        if (lexer.isTER(')')) lexer.next();
-        else ex.error = 'expected )';
-        element = new MBL_Exercise_Text_Multiple_Choice();
-      }
-      const option = new MBL_Exercise_Text_Single_or_Multi_Choice_Option();
-      option.variable = varId;
-      element.items.push(option);
-      const span = new MBL_Text_Span();
-      option.text = span;
-      while (lexer.isNotNEWLINE() && lexer.isNotEND())
-        span.items.push(this.parseParagraph_part(lexer, ex));
-      if (lexer.isTER('\n')) lexer.next();
-      return element;
+      return this.parseSingleOrMultipleChoice(lexer, exercise);
     } else if (lexer.isTER('\n')) {
       // line feed
       lexer.next();
       return new MBL_Text_Linefeed();
     } else if (lexer.isTER('[')) {
       // text properties: e.g. "[text in red color]@color1"
-      // TODO: make sure, that errors are not too annoying...
-      lexer.next();
-      const items: MBL_Text[] = [];
-      while (lexer.isNotTER(']') && lexer.isNotEND())
-        items.push(this.parseParagraph_part(lexer, ex));
-      if (lexer.isTER(']')) lexer.next();
-      else return new MBL_Text_Error('expected ]');
-      if (lexer.isTER('@')) lexer.next();
-      else return new MBL_Text_Error('expected @');
-      if (lexer.isID()) {
-        const id = lexer.ID();
-        lexer.next();
-        if (id === 'bold') {
-          const bold = new MBL_Text_Bold();
-          bold.items = items;
-          return bold;
-        } else if (id === 'italic') {
-          const italic = new MBL_Text_Italic();
-          italic.items = items;
-          return italic;
-        } else if (id.startsWith('color')) {
-          const color = new MBL_Text_Color();
-          color.key = parseInt(id.substring(5)); // TODO: check if INT
-          color.items = items;
-          return color;
-        } else {
-          return new MBL_Text_Error('unknown property ' + id);
-        }
-      }
+      return this.parseTextProperty(lexer, exercise);
     } else {
       // text tokens (... or yet unimplemented paragraph items)
       const text = new MBL_Text_Text();
@@ -433,6 +280,193 @@ export class Compiler {
       return text;
     }
     throw new Error('this should never happen!');
+  }
+
+  private parseItemize(lexer: Lexer, exercise: MBL_Exercise): MBL_Text {
+    // '-' for itemize; '#' for enumerate
+    const typeStr = lexer.getToken().token;
+    let type: MBL_Text_Itemize_Type;
+    switch (typeStr) {
+      case '-':
+        type = MBL_Text_Itemize_Type.Itemize;
+        break;
+      case '#':
+        type = MBL_Text_Itemize_Type.Enumerate;
+        break;
+      case '-)':
+        type = MBL_Text_Itemize_Type.EnumerateAlpha;
+        break;
+    }
+    const itemize = new MBL_Text_Itemize(type);
+    while (lexer.getToken().col == 1 && lexer.isTER(typeStr)) {
+      lexer.next();
+      const span = new MBL_Text_Span();
+      itemize.items.push(span);
+      while (lexer.isNotNEWLINE() && lexer.isNotEND())
+        span.items.push(this.parseParagraph_part(lexer, exercise));
+      lexer.NEWLINE();
+    }
+    return itemize;
+  }
+
+  private parseBoldText(lexer: Lexer, exercise: MBL_Exercise): MBL_Text {
+    lexer.next();
+    const bold = new MBL_Text_Bold();
+    while (lexer.isNotTER('**') && lexer.isNotEND())
+      bold.items.push(this.parseParagraph_part(lexer, exercise));
+    if (lexer.isTER('**')) lexer.next();
+    return bold;
+  }
+
+  private parseItalicText(lexer: Lexer, exercise: MBL_Exercise): MBL_Text {
+    lexer.next();
+    const italic = new MBL_Text_Italic();
+    while (lexer.isNotTER('*') && lexer.isNotEND())
+      italic.items.push(this.parseParagraph_part(lexer, exercise));
+    if (lexer.isTER('*')) lexer.next();
+    return italic;
+  }
+
+  private parseInlineMath(lexer: Lexer, exercise: MBL_Exercise): MBL_Text {
+    lexer.next();
+    const inlineMath = new MBL_Text_InlineMath();
+    while (lexer.isNotTER('$') && lexer.isNotEND()) {
+      const tk = lexer.getToken().token;
+      const isId = lexer.getToken().type === LexerTokenType.ID;
+      lexer.next();
+      if (isId && exercise != null && tk in exercise.variables) {
+        const v = new MBL_Exercise_Text_Variable();
+        v.variableId = tk;
+        inlineMath.items.push(v);
+      } else {
+        const text = new MBL_Text_Text();
+        text.value = tk;
+        inlineMath.items.push(text);
+      }
+    }
+    if (lexer.isTER('$')) lexer.next();
+    return inlineMath;
+  }
+
+  private parseReference(lexer: Lexer): MBL_Text {
+    lexer.next();
+    const ref = new MBL_Text_Reference();
+    if (lexer.isID()) {
+      ref.label = lexer.getToken().token;
+      lexer.next();
+    }
+    return ref;
+  }
+
+  private parseInputElements(lexer: Lexer, exercise: MBL_Exercise): MBL_Text {
+    lexer.next();
+    let id = '';
+    let error = '';
+    const input = new MBL_Exercise_Text_Input();
+    if (lexer.isID()) {
+      id = lexer.ID();
+      if (id in exercise.variables) {
+        const v = exercise.variables[id];
+        input.variable = id;
+        switch (v.type) {
+          case MBL_Exercise_VariableType.Int:
+            input.type = MBL_Exercise_Text_Input_Type.Int;
+            break;
+          case MBL_Exercise_VariableType.Real:
+            input.type = MBL_Exercise_Text_Input_Type.Real;
+            break;
+          case MBL_Exercise_VariableType.Matrix:
+            input.type = MBL_Exercise_Text_Input_Type.Matrix;
+            break;
+          default:
+            error = 'UNIMPLEMENTED input type ' + v.type;
+        }
+      } else {
+        error = 'there is no variable "' + id + '"';
+      }
+    } else {
+      error = 'no variable for input field given';
+    }
+    if (error.length > 0)
+      exercise.error = 'unknown variable for input field: "' + id + '"';
+    return input;
+  }
+
+  private parseSingleOrMultipleChoice(
+    lexer: Lexer,
+    exercise: MBL_Exercise,
+  ): MBL_Text {
+    const isMultipleChoice = lexer.isTER('[');
+    lexer.next();
+    let staticallyCorrect = false;
+    let varId = '';
+    if (lexer.isTER('x')) {
+      lexer.next();
+      staticallyCorrect = true;
+    } else if (lexer.isTER(':')) {
+      lexer.next();
+      if (lexer.isID) {
+        varId = lexer.ID();
+        if (varId in exercise.variables == false)
+          exercise.error = 'unknown variable ' + varId;
+      } else {
+        exercise.error = 'expected ID after :';
+      }
+    }
+    let element:
+      | MBL_Exercise_Text_Multiple_Choice
+      | MBL_Exercise_Text_Single_Choice = null;
+    if (varId.length == 0)
+      varId = exercise.addStaticBooleanVariable(staticallyCorrect);
+    if (isMultipleChoice) {
+      if (lexer.isTER(']')) lexer.next();
+      else exercise.error = 'expected ]';
+      element = new MBL_Exercise_Text_Multiple_Choice();
+    } else {
+      if (lexer.isTER(')')) lexer.next();
+      else exercise.error = 'expected )';
+      element = new MBL_Exercise_Text_Multiple_Choice();
+    }
+    const option = new MBL_Exercise_Text_Single_or_Multi_Choice_Option();
+    option.variable = varId;
+    element.items.push(option);
+    const span = new MBL_Text_Span();
+    option.text = span;
+    while (lexer.isNotNEWLINE() && lexer.isNotEND())
+      span.items.push(this.parseParagraph_part(lexer, exercise));
+    if (lexer.isTER('\n')) lexer.next();
+    return element;
+  }
+
+  private parseTextProperty(lexer: Lexer, exercise: MBL_Exercise): MBL_Text {
+    // TODO: make sure, that errors are not too annoying...
+    lexer.next();
+    const items: MBL_Text[] = [];
+    while (lexer.isNotTER(']') && lexer.isNotEND())
+      items.push(this.parseParagraph_part(lexer, exercise));
+    if (lexer.isTER(']')) lexer.next();
+    else return new MBL_Text_Error('expected ]');
+    if (lexer.isTER('@')) lexer.next();
+    else return new MBL_Text_Error('expected @');
+    if (lexer.isID()) {
+      const id = lexer.ID();
+      if (id === 'bold') {
+        const bold = new MBL_Text_Bold();
+        bold.items = items;
+        return bold;
+      } else if (id === 'italic') {
+        const italic = new MBL_Text_Italic();
+        italic.items = items;
+        return italic;
+      } else if (id.startsWith('color')) {
+        const color = new MBL_Text_Color();
+        color.key = parseInt(id.substring(5)); // TODO: check if INT
+        color.items = items;
+        return color;
+      } else {
+        return new MBL_Text_Error('unknown property ' + id);
+      }
+    } else return new MBL_Text_Error('missing property name');
   }
 
   private error(message: string): void {
