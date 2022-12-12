@@ -14,8 +14,6 @@ import { BaseType } from '@mathebuddy/mathebuddy-smpl/src/symbol';
 
 import { Block, BlockPart } from './block';
 import {
-  MBL_Chapter,
-  MBL_Course,
   MBL_Exercise,
   MBL_Exercise_Text_Input,
   MBL_Exercise_Text_Input_Type,
@@ -24,10 +22,12 @@ import {
   MBL_Exercise_Text_Single_or_Multi_Choice_Option,
   MBL_Exercise_Text_Variable,
   MBL_Exercise_VariableType,
-  MBL_Level,
-  MBL_LevelItem,
-  MBL_Section,
-  MBL_SectionType,
+} from './dataExercise';
+import { MBL_Course } from './dataCourse';
+import { MBL_Chapter } from './dataChapter';
+import { MBL_Level, MBL_LevelItem } from './dataLevel';
+import { MBL_Section, MBL_SectionType } from './dataSection';
+import {
   MBL_Text,
   MBL_Text_Bold,
   MBL_Text_Color,
@@ -41,7 +41,7 @@ import {
   MBL_Text_Reference,
   MBL_Text_Span,
   MBL_Text_Text,
-} from './data';
+} from './dataText';
 
 export class Compiler {
   private course: MBL_Course = null;
@@ -79,9 +79,9 @@ export class Compiler {
     this.next();
     // parse
     while (this.line !== '§END') {
-      if (this.line.length == 0) {
+      /*if (this.line.length == 0) {
         this.next();
-      } else if (this.line2.startsWith('#####')) {
+      } else*/ if (this.line2.startsWith('#####')) {
         this.pushParagraph();
         this.parseLevelTitle();
       } else if (this.line2.startsWith('=====')) {
@@ -267,8 +267,12 @@ export class Compiler {
       return this.parseSingleOrMultipleChoice(lexer, exercise);
     } else if (lexer.isTER('\n')) {
       // line feed
+      const isNewParagraph = lexer.getToken().col == 1;
+      console.log('isNewParagraph=' + isNewParagraph);
+      console.log(lexer.getToken().col);
       lexer.next();
-      return new MBL_Text_Linefeed();
+      if (isNewParagraph) return new MBL_Text_Linefeed();
+      else return new MBL_Text_Text();
     } else if (lexer.isTER('[')) {
       // text properties: e.g. "[text in red color]@color1"
       return this.parseTextProperty(lexer, exercise);
