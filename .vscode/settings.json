@@ -41,7 +41,9 @@
     "testcourse",
     "UNITX",
     "xaxis",
-    "yaxis"
+    "xlabel",
+    "yaxis",
+    "ylabel"
   ],
   "cSpell.language": "en,de-de",
   "[xml]": {
