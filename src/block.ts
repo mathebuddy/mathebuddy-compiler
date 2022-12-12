@@ -23,6 +23,10 @@ import {
   MBL_Exercise_Variable,
   MBL_Exercise_VariableType,
   MBL_LevelItem,
+  MBL_NewPage,
+  MBL_Table,
+  MBL_Table_Option,
+  MBL_Table_Row,
   MBL_Text,
   MBL_Text_AlignCenter,
   MBL_Text_AlignLeft,
@@ -89,6 +93,12 @@ export class Block {
       case 'TEXT':
         return this.processText();
 
+      case 'TABLE':
+        return this.processTable();
+
+      case 'NEWPAGE':
+        return new MBL_NewPage();
+
       default: {
         const err = new MBL_Error();
         err.message = 'unknown block type "' + this.type + '"';
@@ -102,6 +112,60 @@ export class Block {
     return this.parser.parseParagraph(
       (this.parts[0] as BlockPart).lines.join('\n'),
     );
+  }
+
+  private processTable(): MBL_Table {
+    let i: number;
+    const table = new MBL_Table();
+    for (const p of this.parts) {
+      if (p instanceof BlockPart) {
+        const part = <BlockPart>p;
+        switch (part.name) {
+          case 'global':
+            // skip
+            break;
+          case 'options':
+            for (let line of part.lines) {
+              line = line.trim();
+              if (line.length == 0) continue;
+              switch (line) {
+                case 'align-left':
+                  table.options.push(MBL_Table_Option.AlignLeft);
+                  break;
+                case 'align-center':
+                  table.options.push(MBL_Table_Option.AlignCenter);
+                  break;
+                case 'align-right':
+                  table.options.push(MBL_Table_Option.AlignRight);
+                  break;
+                default:
+                  table.error += 'unknown option "' + line + '"';
+              }
+            }
+            break;
+          case 'text':
+            i = 0;
+            for (let line of part.lines) {
+              line = line.trim();
+              // TODO: "&" may also be used in math-mode!!
+              const columnStrings = line.split('&');
+              const row = new MBL_Table_Row();
+              if (i == 0) table.head = row;
+              else table.rows.push(row);
+              for (const columnString of columnStrings) {
+                const column = this.parser.parseParagraph(columnString);
+                row.columns.push(column);
+              }
+              i++;
+            }
+            break;
+          default:
+            table.error += 'unexpected part "' + part.name + '"';
+            break;
+        }
+      }
+    }
+    return table;
   }
 
   private processEquation(numbering: boolean): MBL_Equation {
