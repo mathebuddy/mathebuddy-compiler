@@ -268,8 +268,6 @@ export class Compiler {
     } else if (lexer.isTER('\n')) {
       // line feed
       const isNewParagraph = lexer.getToken().col == 1;
-      console.log('isNewParagraph=' + isNewParagraph);
-      console.log(lexer.getToken().col);
       lexer.next();
       if (isNewParagraph) return new MBL_Text_Linefeed();
       else return new MBL_Text_Text();
