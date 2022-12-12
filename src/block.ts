@@ -22,6 +22,7 @@ import {
   MBL_Exercise_Variable,
   MBL_Exercise_VariableType,
 } from './dataExercise';
+import { MBL_Figure, MBL_Figure_Option } from './dataFigure';
 import { MBL_LevelItem } from './dataLevel';
 import { MBL_Table, MBL_Table_Option, MBL_Table_Row } from './dataTable';
 import {
@@ -94,6 +95,9 @@ export class Block {
       case 'TABLE':
         return this.processTable();
 
+      case 'FIGURE':
+        return this.processFigure();
+
       case 'NEWPAGE':
         return new MBL_NewPage();
 
@@ -120,7 +124,9 @@ export class Block {
         const part = <BlockPart>p;
         switch (part.name) {
           case 'global':
-            // skip
+            if (part.lines.join('\n').trim().length > 0)
+              table.error +=
+                'Some of your code is not inside a tag (e.g. "@code" or "@text")';
             break;
           case 'options':
             for (let line of part.lines) {
@@ -164,6 +170,92 @@ export class Block {
       }
     }
     return table;
+  }
+
+  private processFigure(): MBL_Figure {
+    const figure = new MBL_Figure();
+    const plotData: { [id: string]: string } = {};
+    for (const p of this.parts) {
+      if (p instanceof BlockPart) {
+        const part = <BlockPart>p;
+        switch (part.name) {
+          case 'global':
+            if (part.lines.join('\n').trim().length > 0)
+              figure.error +=
+                'Some of your code is not inside a tag (e.g. "@code")';
+            break;
+          case 'caption':
+            figure.caption = this.parser.parseParagraph(part.lines.join('\n'));
+            break;
+          case 'code':
+            {
+              // TODO: stop in case of infinite loops after some seconds!
+              const code = part.lines.join('\n');
+              try {
+                const variables = SMPL.interpret(code);
+                for (const v of variables) {
+                  if (v.type.base === BaseType.FIGURE_2D) {
+                    plotData[v.id] = v.value.toString();
+                  }
+                }
+              } catch (e) {
+                figure.error += e.toString();
+              }
+            }
+            break;
+          case 'path':
+            if (part.lines.length != 1) {
+              figure.error += 'invalid path';
+            } else {
+              // TODO: check if path exists!
+              const line = part.lines[0].trim();
+              if (line.startsWith('#')) {
+                const variableId = line.substring(1);
+                if (variableId in plotData) {
+                  figure.data = plotData[variableId];
+                } else {
+                  figure.error += 'non-existing variable ' + line;
+                }
+              } else {
+                figure.filePath = line;
+              }
+            }
+            break;
+          case 'options':
+            for (let line of part.lines) {
+              line = line.trim();
+              if (line.length == 0) continue;
+              switch (line) {
+                case 'width-100':
+                  figure.options.push(MBL_Figure_Option.Width100);
+                  break;
+                case 'width-75':
+                  figure.options.push(MBL_Figure_Option.Width75);
+                  break;
+                case 'width-66':
+                  figure.options.push(MBL_Figure_Option.Width66);
+                  break;
+                case 'width-50':
+                  figure.options.push(MBL_Figure_Option.Width50);
+                  break;
+                case 'width-33':
+                  figure.options.push(MBL_Figure_Option.Width33);
+                  break;
+                case 'width-25':
+                  figure.options.push(MBL_Figure_Option.Width25);
+                  break;
+                default:
+                  figure.error += 'unknown option "' + line + '"';
+              }
+            }
+            break;
+          default:
+            figure.error += 'unexpected part "' + part.name + '"';
+            break;
+        }
+      }
+    }
+    return figure;
   }
 
   private processEquation(numbering: boolean): MBL_Equation {
