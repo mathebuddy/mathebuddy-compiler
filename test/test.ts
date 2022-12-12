@@ -18,6 +18,7 @@ const files = fs.readdirSync(inputPath).sort();
 for (const file of files) {
   const path = inputPath + file;
   if (path.endsWith('.mbl') == false) continue;
+  console.log('=== TESTING FILE ' + path + ' ===');
   // read MBL file
   const src = fs.readFileSync(path, 'utf-8');
   // compile file
