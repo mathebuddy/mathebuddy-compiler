@@ -723,37 +723,45 @@ abbreviations:</p>
 </ul>
 <!-- (TODO: extend table) -->
 <h2 id="figures">Figures</h2>
-<p>MBL provides syntax to plot function graphs. All other figures must
-be generated with external tools. We highly recommend to generate files
-in the <code>SVG</code> (Scalable Vector Graphics) format using <a href="https://inkscape.org">Inkscape</a>).</p>
+<p>SMPL provides syntax to plot function graphs.</p>
+<p>All other figures must be generated with external tools. We highly
+recommend to generate files in the <code>SVG</code> (Scalable Vector
+Graphics) format using <a href="https://inkscape.org">Inkscape</a>).</p>
 <ul>
 <li><p><code>Function Plots</code></p>
 <p>Functions graphs are described in a <em>block</em> with keyword
-<code>PLOT2D</code>. Example:</p>
+<code>FIGURE</code>.</p>
+<p>Example:</p>
 <pre><code>---
-PLOT2D My plot title @fig:myPlot
-xaxis &quot;x&quot; from -3 to 3
-yaxis &quot;y&quot; from -3 to 3
-color1
-plot f(x) = x^2
-color2
-plot g(x) = 2*x
-color0
-coord -1 1
-coord 2 4
+FIGURE My Plot @fig:polynomials
+@options
+width-75
+@code
+let f(x) = x^2;
+let g(x) = 2*x;
+let fig = figure2d();
+xaxis(-3,3); yaxis(-3,3);
+xlabel(&quot;x&quot;); ylabel(&quot;y&quot;);
+color(1); plot(f);
+color(2); plot(g);
+color(0); plot([-1,1]); plot([2,4]);
+@path
+#fig
+@caption
+Some functions
 ---</code></pre>
-<p>Axis definition is done by   
-<code>xaxis LABEL from MIN to MAX</code>    for the x-axis and   
-<code>yaxis LABEL from MIN to MAX</code>    for the y-axis.</p>
-<p><code>colorX</code> changes the current color. All subsequent plots
-are drawn in that color. <code>X</code> is an integer value for the
-color key.</p>
-<p><code>plot F</code> renders a function curve <code>F</code> that is
-specified as term. An exact definition is essential. In particular, all
-multiplication operators (<code>*</code>) must be denoted explicitly.
-The exact syntax is described in the SMPL documentation.</p>
-<p>Keyword <code>coord X Y</code> renders a small circle at position
-<span class="math inline">(<em>X</em>,<em>Y</em>)</span>.</p></li>
+<p>Part <code>@code</code> defines two functions <span class="math inline"><em>f</em>(<em>x</em>)</span> anf <span class="math inline"><em>g</em>(<em>x</em>)</span>. Function
+<code>figures2d()</code> generates a new plot variable.</p>
+<!-- TODO: write more text -->
+<!--  OLD
+Axis definition is done by &nbsp;&nbsp; `xaxis LABEL from MIN to MAX` &nbsp;&nbsp; for the x-axis and &nbsp;&nbsp; `yaxis LABEL from MIN to MAX` &nbsp;&nbsp; for the y-axis.
+
+`colorX` changes the current color. All subsequent plots are drawn in that color. `X` is an integer value for the color key.
+
+`plot F` renders a function curve `F` that is specified as term. An exact definition is essential. In particular, all multiplication operators (`*`) must be denoted explicitly. The exact syntax is described in the SMPL documentation.
+
+Keyword `coord X Y` renders a small circle at position $(X,Y)$.
+--></li>
 <li><p><code>Figures</code></p>
 <p>A figure displays an image file. It is highly recommended to use
 <code>*.svg</code> as file format (scalable vector graphics).
