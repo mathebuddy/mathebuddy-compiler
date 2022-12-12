@@ -436,16 +436,14 @@ A table renders tabular data.
 ```
 TABLE extends BLOCK_ITEM = {
   "options": TABLE_OPTION[],
-  "content": {
-    "head": TEXT[],
-    "rows": TABLE_ROW[]
-  }
+  "head": TABLE_ROW,
+  "rows": TABLE_ROW[]
 };
 ```
 
 ```
 TABLE_ROW = {
-  "row": TEXT[];
+  "columns": MBL_TEXT[];
 }
 ```
 
