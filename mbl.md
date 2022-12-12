@@ -331,29 +331,44 @@ Equations are encoded in `TeX` notation.
 
 ## Figures
 
-MBL provides syntax to plot function graphs.
+SMPL provides syntax to plot function graphs.
+
 All other figures must be generated with external tools.
 We highly recommend to generate files in the `SVG` (Scalable Vector Graphics) format using [Inkscape](https://inkscape.org)).
 
 - `Function Plots`
 
-  Functions graphs are described in a _block_ with keyword `PLOT2D`. Example:
+  Functions graphs are described in a _block_ with keyword `FIGURE`.
+
+  Example:
 
   ```
   ---
-  PLOT2D My plot title @fig:myPlot
-  xaxis "x" from -3 to 3
-  yaxis "y" from -3 to 3
-  color1
-  plot f(x) = x^2
-  color2
-  plot g(x) = 2*x
-  color0
-  coord -1 1
-  coord 2 4
+  FIGURE My Plot @fig:polynomials
+  @options
+  width-75
+  @code
+  let f(x) = x^2;
+  let g(x) = 2*x;
+  let fig = figure2d();
+  xaxis(-3,3); yaxis(-3,3);
+  xlabel("x"); ylabel("y");
+  color(1); plot(f);
+  color(2); plot(g);
+  color(0); plot([-1,1]); plot([2,4]);
+  @path
+  #fig
+  @caption
+  Some functions
   ---
   ```
 
+  Part `@code` defines two functions $f(x)$ anf $g(x)$.
+  Function `figures2d()` generates a new plot variable.
+
+  <!-- TODO: write more text -->
+
+  <!--  OLD
   Axis definition is done by &nbsp;&nbsp; `xaxis LABEL from MIN to MAX` &nbsp;&nbsp; for the x-axis and &nbsp;&nbsp; `yaxis LABEL from MIN to MAX` &nbsp;&nbsp; for the y-axis.
 
   `colorX` changes the current color. All subsequent plots are drawn in that color. `X` is an integer value for the color key.
@@ -361,6 +376,7 @@ We highly recommend to generate files in the `SVG` (Scalable Vector Graphics) fo
   `plot F` renders a function curve `F` that is specified as term. An exact definition is essential. In particular, all multiplication operators (`*`) must be denoted explicitly. The exact syntax is described in the SMPL documentation.
 
   Keyword `coord X Y` renders a small circle at position $(X,Y)$.
+  -->
 
 - `Figures`
 
