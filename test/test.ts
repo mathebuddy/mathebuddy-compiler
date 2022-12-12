@@ -33,7 +33,7 @@ for (const file of files) {
   const outputPathCompressed =
     inputPath + file.substring(0, file.length - 4) + '_COMPILED.hex';
   fs.writeFileSync(outputPathCompressed, outputCompressed, 'base64');*/
-  if (file.endsWith('exercises.mbl')) break; // TODO
+  if (file.endsWith('typography.mbl')) break; // TODO
 }
 
 const bp = 1337;
