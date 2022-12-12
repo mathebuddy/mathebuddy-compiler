@@ -417,11 +417,15 @@ A figure renders a graphics file, as well as an optional caption.
 
 ```
 FIGURE extends BLOCK_ITEM = {
-  "path": STRING,
-  "caption": STRING,
+  "file_path": STRING,
+  "data": STRING,
+  "caption": MBL_TEXT,
   "options": FIGURE_OPTION[]
 };
 ```
+
+- either `file_path` or `data` must be set.
+- `data` represents an image in base64 encoding.
 
 ```
 FIGURE_OPTION = "width_X";
