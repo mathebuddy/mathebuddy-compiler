@@ -13,9 +13,14 @@ import { JSONValue } from './dataJSON';
 
 // -------- COURSE --------
 
+export enum MBL_Course_Debug {
+  No = 'no',
+  Chapter = 'chapter',
+  Level = 'level',
+}
+
 export class MBL_Course {
-  single_chapter = true;
-  single_level = true;
+  debug = MBL_Course_Debug.No;
   title = '';
   author = '';
   mbcl_version = 1;
@@ -26,8 +31,7 @@ export class MBL_Course {
   }
   toJSON(): JSONValue {
     return {
-      single_chapter: this.single_chapter,
-      single_level: this.single_level,
+      debug: this.debug,
       title: this.title,
       author: this.author,
       mbcl_version: this.mbcl_version,
