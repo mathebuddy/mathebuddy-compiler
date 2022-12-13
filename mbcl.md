@@ -170,11 +170,11 @@ A chapter consists of a set of levels.
 
 ```
 CHAPTER = {
+  "file_id": STRING,
   "title": STRING,
-  "label": STRING,
   "pos_x": INTEGER,
   "pos_y": INTEGER,
-  "requires": IDENTIFIER<CHAPTER.id>[],
+  "requires": IDENTIFIER<CHAPTER.file_id>[],
   "levels": LEVEL[]
 };
 ```
@@ -183,8 +183,12 @@ Example:
 
 ```json
 {
+  "file_id": "cmplx",
   "title": "Complex Numbers",
   "label": "cmplx",
+  "pos_x": 0,
+  "pos_y": 0,
+  "requires": [],
   "levels": []
 }
 ```
@@ -195,11 +199,11 @@ A level defines a part of course, consisting of e.g. text, exercises and games.
 
 ```
 LEVEL = {
+  "file_id": STRING,
   "title": IDENTIFIER,
-  "label": STRING,
   "pos_x": INTEGER,
   "pos_y": INTEGER,
-  "requires": IDENTIFIER<LEVEL.id>[],
+  "requires": IDENTIFIER<LEVEL.file_id>[],
   "items": LEVEL_ITEM[]
 };
 ```
