@@ -28,7 +28,7 @@ export class MBL_Level {
       label: this.label,
       pos_x: this.pos_x,
       pos_y: this.pos_y,
-      requires: this.requires.map((req) => req.title),
+      requires: this.requires.map((req) => req.label),
       items: this.items.map((item) => item.toJSON()),
     };
   }
