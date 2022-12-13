@@ -13,11 +13,14 @@ import { Compiler } from '../src';
 
 console.log('mathe:buddy Compiler (c) 2022 by TH Koeln');
 
-// demo course
+// load function
 function load(path: string): string {
   if (fs.existsSync(path) == false) return '';
   return fs.readFileSync(path, 'utf-8');
 }
+
+// demo course
+console.log('=== TESTING DEMO COURSE ===');
 const compiler = new Compiler();
 compiler.compile('examples/demo-course/course.mbl', load);
 const output = JSON.stringify(compiler.getCourse().toJSON(), null, 2);
@@ -30,8 +33,6 @@ for (const file of files) {
   const path = inputPath + file;
   if (path.endsWith('.mbl') == false) continue;
   console.log('=== TESTING FILE ' + path + ' ===');
-  // read MBL file
-  //const src = fs.readFileSync(path, 'utf-8');
   // compile file
   const compiler = new Compiler();
   compiler.compile(path, load);
