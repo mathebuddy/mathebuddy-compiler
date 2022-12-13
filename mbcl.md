@@ -175,6 +175,7 @@ CHAPTER = {
   "pos_x": INTEGER,
   "pos_y": INTEGER,
   "requires": IDENTIFIER<CHAPTER.file_id>[],
+  "units": UNIT[],
   "levels": LEVEL[]
 };
 ```
@@ -189,6 +190,7 @@ Example:
   "pos_x": 0,
   "pos_y": 0,
   "requires": [],
+  "units": [],
   "levels": []
 }
 ```
@@ -200,7 +202,7 @@ A level defines a part of course, consisting of e.g. text, exercises and games.
 ```
 LEVEL = {
   "file_id": STRING,
-  "title": IDENTIFIER,
+  "title": STRING,
   "pos_x": INTEGER,
   "pos_y": INTEGER,
   "requires": IDENTIFIER<LEVEL.file_id>[],
@@ -213,9 +215,12 @@ LEVEL_ITEM = SECTION | TEXT | EQUATION | DEFINITION | EXERCISE
            | FIGURE | TABLE | NEWPAGE;
 ```
 
-<!--
-TODO: units
--->
+```
+UNIT = {
+  "title": STRING,
+  "levels": IDENTIFIER<LEVEL.file_id>[]
+};
+```
 
 ## Sectioning
 
