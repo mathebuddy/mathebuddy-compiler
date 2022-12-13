@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@mathebuddy/mathebuddy-smpl": "file:../mathebuddy-smpl",
-    "@multila/multila-lexer": "^0.9.3",
+    "@multila/multila-lexer": "^0.9.4",
     "lz-string": "^1.4.4",
     "mathjs": "^11.0.1"
   }
