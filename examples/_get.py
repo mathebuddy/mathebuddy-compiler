@@ -13,6 +13,7 @@
 
 import glob, os
 
+os.system('cp -r ../mathebuddy-public-courses/demo-course examples/')
 os.system('cp ../mathebuddy-public-courses/demo-basic/*.mbl examples/')
 
 path = '../mathebuddy-public-courses/demo-ma1/*.mbl'
