@@ -8,6 +8,7 @@
 
 import { JSONValue } from './dataJSON';
 import { MBL_Level } from './dataLevel';
+import { MBL_Unit } from './dataUnit';
 
 // refer to the specification at https://app.f07-its.fh-koeln.de/docs-mbcl.html
 
@@ -22,6 +23,7 @@ export class MBL_Chapter {
   pos_y = -1;
   requires: MBL_Chapter[] = [];
   requires_tmp: string[] = []; // only used while compiling
+  units: MBL_Unit[] = [];
   levels: MBL_Level[] = [];
 
   getLevelByLabel(label: string): MBL_Level {
@@ -47,6 +49,7 @@ export class MBL_Chapter {
       pos_x: this.pos_x,
       pos_y: this.pos_y,
       requires: this.requires.map((req) => req.file_id),
+      units: this.units.map((unit) => unit.toJSON()),
       levels: this.levels.map((level) => level.toJSON()),
     };
   }
