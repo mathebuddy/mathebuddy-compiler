@@ -16,6 +16,9 @@ import { MBL_Level } from './dataLevel';
 export class MBL_Chapter {
   title = '';
   label = '';
+  pos_x = -1;
+  pos_y = -1;
+  requires: MBL_Chapter[] = [];
   levels: MBL_Level[] = [];
   postProcess(): void {
     for (const l of this.levels) l.postProcess();
@@ -24,6 +27,9 @@ export class MBL_Chapter {
     return {
       title: this.title,
       label: this.label,
+      pos_x: this.pos_x,
+      pos_y: this.pos_y,
+      requires: this.requires.map((req) => req.label),
       levels: this.levels.map((level) => level.toJSON()),
     };
   }
