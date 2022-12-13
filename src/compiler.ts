@@ -41,12 +41,21 @@ import {
   MBL_Text_Span,
   MBL_Text_Text,
 } from './dataText';
+import { MBL_Unit } from './dataUnit';
+
+export class MBL_Compile_Error extends Error {
+  constructor(msg: string) {
+    super(msg);
+    this.name = 'MBL_Compile_Error';
+  }
+}
 
 export class Compiler {
   private loadFile: (path: string) => string = null;
 
   private course: MBL_Course = null;
   private chapter: MBL_Chapter = null;
+  private unit: MBL_Unit = null;
   private level: MBL_Level = null;
 
   private srcLines: string[] = [];
@@ -117,8 +126,7 @@ export class Compiler {
       } else if (state === 'chapter') {
         const lexer = new Lexer();
         lexer.enableHyphenInID(true);
-        lexer.pushSource(path, line);
-        lexer.setTokenRow(rowIdx);
+        lexer.pushSource(path, line, rowIdx);
         lexer.TER('(');
         const posX = lexer.INT();
         lexer.TER(',');
@@ -184,12 +192,14 @@ export class Compiler {
           // TODO: handle units!!
           const unitTitle = line.substring('UNIT'.length).trim();
           state = 'unit';
+          this.unit = new MBL_Unit();
+          this.unit.title = unitTitle;
+          this.chapter.units.push(this.unit);
         } else this.error('unexpected line ' + line);
       } else if (state === 'unit') {
         const lexer = new Lexer();
         lexer.enableHyphenInID(true);
-        lexer.pushSource(path, line);
-        lexer.setTokenRow(rowIdx);
+        lexer.pushSource(path, line, rowIdx);
         lexer.TER('(');
         const posX = lexer.INT();
         lexer.TER(',');
@@ -206,6 +216,7 @@ export class Compiler {
         const dirname = path.match(/.*\//);
         const levelPath = dirname + fileName + '.mbl';
         this.compileLevel(levelPath);
+        this.unit.levels.push(this.level);
         // set chapter meta data
         this.level.file_id = fileName;
         this.level.pos_x = posX;
@@ -636,8 +647,6 @@ export class Compiler {
 
   private error(message: string): void {
     // TODO: include file path!
-    // TODO: process is not available in browser -> throw exception instead
-    console.error('ERROR:' + (this.i + 1) + ': ' + message);
-    process.exit(-1);
+    throw new MBL_Compile_Error('ERROR:' + (this.i + 1) + ': ' + message);
   }
 }
