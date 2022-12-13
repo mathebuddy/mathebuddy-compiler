@@ -8,7 +8,7 @@
 
 import * as fs from 'fs';
 import { Compiler } from '../src';
-//import * as lz_string from 'lz-string';
+import * as lz_string from 'lz-string';
 
 console.log('mathe:buddy Compiler (c) 2022 by TH Koeln');
 
@@ -23,18 +23,17 @@ for (const file of files) {
   const src = fs.readFileSync(path, 'utf-8');
   // compile file
   const compiler = new Compiler();
-  compiler.run(src);
+  compiler.compile(src);
   // write output as JSON
   const output = JSON.stringify(compiler.getCourse().toJSON(), null, 2);
   const outputPath =
     inputPath + file.substring(0, file.length - 4) + '_COMPILED.json';
   fs.writeFileSync(outputPath, output);
   // write output as compressed HEX file
-  /*const outputCompressed = lz_string.compressToBase64(output);
+  const outputCompressed = lz_string.compressToBase64(output);
   const outputPathCompressed =
     inputPath + file.substring(0, file.length - 4) + '_COMPILED.hex';
-  fs.writeFileSync(outputPathCompressed, outputCompressed, 'base64');*/
-  if (file.endsWith('typography.mbl')) break; // TODO
+  fs.writeFileSync(outputPathCompressed, outputCompressed, 'base64');
 }
 
 const bp = 1337;
