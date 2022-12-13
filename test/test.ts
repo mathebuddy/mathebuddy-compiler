@@ -23,8 +23,17 @@ function load(path: string): string {
 console.log('=== TESTING DEMO COURSE ===');
 const compiler = new Compiler();
 compiler.compile('examples/demo-course/course.mbl', load);
-const output = JSON.stringify(compiler.getCourse().toJSON(), null, 2);
-fs.writeFileSync('examples/demo-course/course_COMPILED.json', output);
+fs.writeFileSync(
+  'examples/demo-course/course_COMPILED.json',
+  JSON.stringify(compiler.getCourse().toJSON(), null, 2),
+);
+fs.writeFileSync(
+  'examples/demo-course/course_COMPILED.hex',
+  lz_string.compressToBase64(
+    JSON.stringify(compiler.getCourse().toJSON(), null, 0),
+  ),
+  'base64',
+);
 
 // demo files
 const inputPath = 'examples/';
@@ -37,12 +46,16 @@ for (const file of files) {
   const compiler = new Compiler();
   compiler.compile(path, load);
   // write output as JSON
-  const output = JSON.stringify(compiler.getCourse().toJSON(), null, 2);
   const outputPath =
     inputPath + file.substring(0, file.length - 4) + '_COMPILED.json';
-  fs.writeFileSync(outputPath, output);
+  fs.writeFileSync(
+    outputPath,
+    JSON.stringify(compiler.getCourse().toJSON(), null, 2),
+  );
   // write output as compressed HEX file
-  const outputCompressed = lz_string.compressToBase64(output);
+  const outputCompressed = lz_string.compressToBase64(
+    JSON.stringify(compiler.getCourse().toJSON(), null, 0),
+  );
   const outputPathCompressed =
     inputPath + file.substring(0, file.length - 4) + '_COMPILED.hex';
   fs.writeFileSync(outputPathCompressed, outputCompressed, 'base64');
