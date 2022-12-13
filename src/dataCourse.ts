@@ -26,9 +26,23 @@ export class MBL_Course {
   mbcl_version = 1;
   date_modified = Math.floor(Date.now() / 1000);
   chapters: MBL_Chapter[] = [];
+
+  getChapterByLabel(label: string): MBL_Chapter {
+    for (const chapter of this.chapters)
+      if (chapter.label === label) return chapter;
+    return null;
+  }
+
+  getChapterByFileID(fileID: string): MBL_Chapter {
+    for (const chapter of this.chapters)
+      if (chapter.file_id === fileID) return chapter;
+    return null;
+  }
+
   postProcess(): void {
     for (const ch of this.chapters) ch.postProcess();
   }
+
   toJSON(): JSONValue {
     return {
       debug: this.debug,
