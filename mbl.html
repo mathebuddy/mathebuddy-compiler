@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content />
-  <meta name="dcterms.date" content="2022-12-12" />
+  <meta name="dcterms.date" content="2022-12-13" />
   <title>Mathe:Buddy Language (MBL)</title>
   <style>
 code{white-space: pre-wrap;}
@@ -391,7 +391,7 @@ font-style: italic;
 <header id="title-block-header">
 [<a href="https://app.f07-its.fh-koeln.de">Home</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbl.html">MBL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-smpl.html">SMPL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbcl.html">MBCL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-sim.html">Installation</a>] <h1 class="title">Mathe:Buddy Language (MBL)</h1>
 <p class="author"></p>
-<p class="date">2022-12-12</p>
+<p class="date">2022-12-13</p>
 </header>
 <hr />
 <p><strong>NOTE</strong> This reference guide is in work-in-progress
@@ -757,7 +757,8 @@ figure_plot(fig0, [2, 4]);
 Some functions
 ---</code></pre>
 <p>Part <code>@code</code> defines two functions <span class="math inline"><em>f</em>(<em>x</em>)</span> anf <span class="math inline"><em>g</em>(<em>x</em>)</span>. Function
-<code>figures2d()</code> generates a new plot variable.</p>
+<code>figures2d()</code> generates a new plot variable.</p></li>
+</ul>
 <!-- TODO: write more text -->
 <!--  OLD
 Axis definition is done by &nbsp;&nbsp; `xaxis LABEL from MIN to MAX` &nbsp;&nbsp; for the x-axis and &nbsp;&nbsp; `yaxis LABEL from MIN to MAX` &nbsp;&nbsp; for the y-axis.
@@ -767,7 +768,8 @@ Axis definition is done by &nbsp;&nbsp; `xaxis LABEL from MIN to MAX` &nbsp;&nbs
 `plot F` renders a function curve `F` that is specified as term. An exact definition is essential. In particular, all multiplication operators (`*`) must be denoted explicitly. The exact syntax is described in the SMPL documentation.
 
 Keyword `coord X Y` renders a small circle at position $(X,Y)$.
---></li>
+-->
+<ul>
 <li><p><code>Figures</code></p>
 <p>A figure displays an image file. It is highly recommended to use
 <code>*.svg</code> as file format (scalable vector graphics).
@@ -1176,7 +1178,9 @@ file represents a level of the course. Units are defined in index files
 (see below).</p>
 <p>Example folder hierarchy for a course <em>higher math 1</em>
 (<code>hm1</code>):</p>
-<pre><code>hm1/cmplx/index.mbl
+<pre><code>hm1/course.mbl
+...
+hm1/cmplx/index.mbl
 hm1/cmplx/start.mbl
 hm1/cmplx/intro.mbl
 hm1/cmplx/normal.mbl
@@ -1188,10 +1192,13 @@ hm1/cmplx/polar.mbl
 hm1/diff/index.mbl
 hm1/diff/...
 ...</code></pre>
+<p>File <code>course.mbl</code> contains general meta data for the
+course and lists all chapters.</p>
 <p>Each chapter directory is organized by an index file, named
 <code>index.mbl</code>. The format of index files is described in the
 next section.</p>
-<h2 id="index-files">Index Files</h2>
+<h2 id="level-index-files-index.mbl">Level Index Files
+(<code>index.mbl</code>)</h2>
 <p>An index file defines meta data for a chapter. It also lists all
 files and its dependencies.</p>
 <blockquote>
@@ -1250,6 +1257,20 @@ UNIT Complex Basics
 UNIT Complex Functions, Sequences, Series
 (0,0) fss-start
 ...</code></pre>
+<h2 id="course-description-file-course.mbl">Course Description File
+(<code>course.mbl</code>)</h2>
+<p>The course description file <code>course.mbl</code> is similar
+organized to level index files.</p>
+<p>It mainly lists all chapters and its dependencies.</p>
+<p>Example:</p>
+<pre><code>TITLE A Short Demo Course
+
+AUTHOR TH Koeln
+
+CHAPTERS
+(0,0) basics
+(2,0) essentials  !basics
+(1,1) advanced    !basics !essentials</code></pre>
 <p><em>Author: Andreas Schwenk, TH Köln</em></p>
 <!--
 # TODO
