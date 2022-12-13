@@ -575,16 +575,13 @@ chapters.</p>
   &quot;author&quot;: STRING,
   &quot;mbcl_version&quot;: INTEGER,
   &quot;date_modified&quot;: UNIX_TIMESTAMP,
-  &quot;single_level&quot;: BOOLEAN,
-  &quot;single_chapter&quot;: BOOLEAN,
+  &quot;debug&quot;: &quot;no&quot; | &quot;chapter&quot; | &quot;level&quot;,
   &quot;chapters&quot;: CHAPTER[]
 };</code></pre>
 <ul>
-<li>if <code>single_chapter</code> is true, then the file does not
-contain a complete course, but only a single chapter (including its
-levels) for debugging</li>
-<li>if <code>single_level</code> is true, then the file does not contain
-a complete course, but only a single level for debugging</li>
+<li>if <code>debug</code> is not <code>no</code>, then only one
+<code>chapter</code> or one <code>level</code> is provided for debugging
+purposes</li>
 </ul>
 <p>Example:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
