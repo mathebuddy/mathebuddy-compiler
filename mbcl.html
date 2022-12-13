@@ -576,11 +576,15 @@ chapters.</p>
   &quot;mbcl_version&quot;: INTEGER,
   &quot;date_modified&quot;: UNIX_TIMESTAMP,
   &quot;single_level&quot;: BOOLEAN,
+  &quot;single_chapter&quot;: BOOLEAN,
   &quot;chapters&quot;: CHAPTER[]
 };</code></pre>
 <ul>
-<li><code>single_level</code> is true, then the file does not contain a
-complete course, but only a single level for debugging</li>
+<li>if <code>single_chapter</code> is true, then the file does not
+contain a complete course, but only a single chapter (including its
+levels) for debugging</li>
+<li>if <code>single_level</code> is true, then the file does not contain
+a complete course, but only a single level for debugging</li>
 </ul>
 <p>Example:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
@@ -596,6 +600,9 @@ complete course, but only a single level for debugging</li>
 <pre><code>CHAPTER = {
   &quot;title&quot;: STRING,
   &quot;label&quot;: STRING,
+  &quot;pos_x&quot;: INTEGER,
+  &quot;pos_y&quot;: INTEGER,
+  &quot;requires&quot;: IDENTIFIER&lt;CHAPTER.id&gt;[],
   &quot;levels&quot;: LEVEL[]
 };</code></pre>
 <p>Example:</p>
@@ -609,6 +616,7 @@ complete course, but only a single level for debugging</li>
 and games.</p>
 <pre><code>LEVEL = {
   &quot;title&quot;: IDENTIFIER,
+  &quot;label&quot;: STRING,
   &quot;pos_x&quot;: INTEGER,
   &quot;pos_y&quot;: INTEGER,
   &quot;requires&quot;: IDENTIFIER&lt;LEVEL.id&gt;[],
