@@ -372,17 +372,17 @@ We highly recommend to generate files in the `SVG` (Scalable Vector Graphics) fo
   Part `@code` defines two functions $f(x)$ anf $g(x)$.
   Function `figures2d()` generates a new plot variable.
 
-  <!-- TODO: write more text -->
+<!-- TODO: write more text -->
 
-  <!--  OLD
-  Axis definition is done by &nbsp;&nbsp; `xaxis LABEL from MIN to MAX` &nbsp;&nbsp; for the x-axis and &nbsp;&nbsp; `yaxis LABEL from MIN to MAX` &nbsp;&nbsp; for the y-axis.
+<!--  OLD
+Axis definition is done by &nbsp;&nbsp; `xaxis LABEL from MIN to MAX` &nbsp;&nbsp; for the x-axis and &nbsp;&nbsp; `yaxis LABEL from MIN to MAX` &nbsp;&nbsp; for the y-axis.
 
-  `colorX` changes the current color. All subsequent plots are drawn in that color. `X` is an integer value for the color key.
+`colorX` changes the current color. All subsequent plots are drawn in that color. `X` is an integer value for the color key.
 
-  `plot F` renders a function curve `F` that is specified as term. An exact definition is essential. In particular, all multiplication operators (`*`) must be denoted explicitly. The exact syntax is described in the SMPL documentation.
+`plot F` renders a function curve `F` that is specified as term. An exact definition is essential. In particular, all multiplication operators (`*`) must be denoted explicitly. The exact syntax is described in the SMPL documentation.
 
-  Keyword `coord X Y` renders a small circle at position $(X,Y)$.
-  -->
+Keyword `coord X Y` renders a small circle at position $(X,Y)$.
+-->
 
 - `Figures`
 
@@ -849,6 +849,8 @@ Units are defined in index files (see below).
 Example folder hierarchy for a course _higher math 1_ (`hm1`):
 
 ```
+hm1/course.mbl
+...
 hm1/cmplx/index.mbl
 hm1/cmplx/start.mbl
 hm1/cmplx/intro.mbl
@@ -863,10 +865,12 @@ hm1/diff/...
 ...
 ```
 
+File `course.mbl` contains general meta data for the course and lists all chapters.
+
 Each chapter directory is organized by an index file, named `index.mbl`.
 The format of index files is described in the next section.
 
-## Index Files
+## Level Index Files (`index.mbl`)
 
 An index file defines meta data for a chapter. It also lists all files and its dependencies.
 
@@ -926,6 +930,25 @@ UNIT Complex Basics
 UNIT Complex Functions, Sequences, Series
 (0,0) fss-start
 ...
+```
+
+## Course Description File (`course.mbl`)
+
+The course description file `course.mbl` is similar organized to level index files.
+
+It mainly lists all chapters and its dependencies.
+
+Example:
+
+```
+TITLE A Short Demo Course
+
+AUTHOR TH Koeln
+
+CHAPTERS
+(0,0) basics
+(2,0) essentials  !basics
+(1,1) advanced    !basics !essentials
 ```
 
 _Author: Andreas Schwenk, TH Köln_
