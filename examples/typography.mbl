@@ -23,8 +23,8 @@ An itemization:
 - second item
 
 An enumeration
-# first item
-# second item
+#. first item
+#. second item
 
 An alpha enumeration
 -) first item
