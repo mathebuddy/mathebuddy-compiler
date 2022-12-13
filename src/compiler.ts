@@ -10,7 +10,6 @@
 
 import { Lexer } from '@multila/multila-lexer';
 import { LexerTokenType } from '@multila/multila-lexer/lib/token';
-import { BaseType } from '@mathebuddy/mathebuddy-smpl/src/symbol';
 
 import { Block, BlockPart } from './block';
 import {
@@ -58,7 +57,7 @@ export class Compiler {
     return this.course;
   }
 
-  public run(src: string): void {
+  public compile(src: string): void {
     // TODO: parse index files, i.e. complete courses
     this.course = new MBL_Course();
     this.chapter = new MBL_Chapter();
@@ -231,7 +230,7 @@ export class Compiler {
     const lexer = new Lexer();
     lexer.enableEmitNewlines(true);
     lexer.pushSource('', raw);
-    lexer.setTerminals(['**', '-)']);
+    lexer.setTerminals(['**', '#.', '-)']);
     const paragraph = new MBL_Text_Paragraph();
     while (lexer.isNotEND()) {
       paragraph.items.push(this.parseParagraph_part(lexer, ex));
@@ -243,7 +242,7 @@ export class Compiler {
   private parseParagraph_part(lexer: Lexer, exercise: MBL_Exercise): MBL_Text {
     if (
       lexer.getToken().col == 1 &&
-      (lexer.isTER('-') || lexer.isTER('#') || lexer.isTER('-)'))
+      (lexer.isTER('-') || lexer.isTER('#.') || lexer.isTER('-)'))
     ) {
       // itemize or enumerate
       return this.parseItemize(lexer, exercise);
@@ -285,14 +284,14 @@ export class Compiler {
   }
 
   private parseItemize(lexer: Lexer, exercise: MBL_Exercise): MBL_Text {
-    // '-' for itemize; '#' for enumerate
+    // '-' for itemize; '#.' for enumerate; '-)' for alpha enumerate
     const typeStr = lexer.getToken().token;
     let type: MBL_Text_Itemize_Type;
     switch (typeStr) {
       case '-':
         type = MBL_Text_Itemize_Type.Itemize;
         break;
-      case '#':
+      case '#.':
         type = MBL_Text_Itemize_Type.Enumerate;
         break;
       case '-)':
@@ -306,7 +305,7 @@ export class Compiler {
       itemize.items.push(span);
       while (lexer.isNotNEWLINE() && lexer.isNotEND())
         span.items.push(this.parseParagraph_part(lexer, exercise));
-      lexer.NEWLINE();
+      if (lexer.isNEWLINE()) lexer.NEWLINE();
     }
     return itemize;
   }
