@@ -124,21 +124,30 @@ export class Compiler {
         lexer.TER(',');
         const posY = lexer.INT();
         lexer.TER(')');
-        const chapterLabel = lexer.ID();
-        const chapterRequirements: string[] = [];
+        const directoryName = lexer.ID();
+        const requirements: string[] = [];
         while (lexer.isTER('!')) {
           lexer.next();
-          chapterRequirements.push(lexer.ID());
+          requirements.push(lexer.ID());
         }
         lexer.END();
         // compile chapter
         const dirname = path.match(/.*\//);
-        const chapterPath = dirname + chapterLabel + '/index.mbl';
+        const chapterPath = dirname + directoryName + '/index.mbl';
         this.compileChapter(chapterPath);
         // set chapter meta data
+        this.chapter.file_id = directoryName;
         this.chapter.pos_x = posX;
         this.chapter.pos_y = posY;
-        //this.chapter.requires = TODO: must be build AFTER processing all chapters;
+        this.chapter.requires_tmp.push(...requirements);
+      }
+    }
+    // build dependency graph
+    for (const chapter of this.course.chapters) {
+      for (const r of chapter.requires_tmp) {
+        const requiredChapter = this.course.getChapterByFileID(r);
+        if (requiredChapter == null) this.error('unknown chapter ' + r);
+        else chapter.requires.push(requiredChapter);
       }
     }
   }
@@ -172,6 +181,7 @@ export class Compiler {
         else if (line.startsWith('AUTHOR'))
           this.chapter.author = line.substring('AUTHOR'.length).trim();
         else if (line.startsWith('UNIT')) {
+          // TODO: handle units!!
           const unitTitle = line.substring('UNIT'.length).trim();
           state = 'unit';
         } else this.error('unexpected line ' + line);
@@ -185,21 +195,30 @@ export class Compiler {
         lexer.TER(',');
         const posY = lexer.INT();
         lexer.TER(')');
-        const levelLabel = lexer.ID();
-        const levelRequirements: string[] = [];
+        const fileName = lexer.ID();
+        const requirements: string[] = [];
         while (lexer.isTER('!')) {
           lexer.next();
-          levelRequirements.push(lexer.ID());
+          requirements.push(lexer.ID());
         }
         lexer.END();
         // compile level
         const dirname = path.match(/.*\//);
-        const levelPath = dirname + levelLabel + '.mbl';
+        const levelPath = dirname + fileName + '.mbl';
         this.compileLevel(levelPath);
         // set chapter meta data
+        this.level.file_id = fileName;
         this.level.pos_x = posX;
         this.level.pos_y = posY;
-        //this.level.requires = TODO: must be build AFTER processing all chapters;
+        this.level.requires_tmp.push(...requirements);
+      }
+    }
+    // build dependency graph
+    for (const level of this.chapter.levels) {
+      for (const r of level.requires_tmp) {
+        const requiredLevel = this.chapter.getLevelByFileID(r);
+        if (requiredLevel == null) this.error('unknown level ' + r);
+        else level.requires.push(requiredLevel);
       }
     }
   }
@@ -617,6 +636,7 @@ export class Compiler {
 
   private error(message: string): void {
     // TODO: include file path!
+    // TODO: process is not available in browser -> throw exception instead
     console.error('ERROR:' + (this.i + 1) + ': ' + message);
     process.exit(-1);
   }
