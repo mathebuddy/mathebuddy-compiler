@@ -595,28 +595,32 @@ purposes</li>
 <h2 id="chapters">Chapters</h2>
 <p>A chapter consists of a set of levels.</p>
 <pre><code>CHAPTER = {
+  &quot;file_id&quot;: STRING,
   &quot;title&quot;: STRING,
-  &quot;label&quot;: STRING,
   &quot;pos_x&quot;: INTEGER,
   &quot;pos_y&quot;: INTEGER,
-  &quot;requires&quot;: IDENTIFIER&lt;CHAPTER.id&gt;[],
+  &quot;requires&quot;: IDENTIFIER&lt;CHAPTER.file_id&gt;[],
   &quot;levels&quot;: LEVEL[]
 };</code></pre>
 <p>Example:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;title&quot;</span><span class="fu">:</span> <span class="st">&quot;Complex Numbers&quot;</span><span class="fu">,</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;label&quot;</span><span class="fu">:</span> <span class="st">&quot;cmplx&quot;</span><span class="fu">,</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;levels&quot;</span><span class="fu">:</span> <span class="ot">[]</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;file_id&quot;</span><span class="fu">:</span> <span class="st">&quot;cmplx&quot;</span><span class="fu">,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;title&quot;</span><span class="fu">:</span> <span class="st">&quot;Complex Numbers&quot;</span><span class="fu">,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;label&quot;</span><span class="fu">:</span> <span class="st">&quot;cmplx&quot;</span><span class="fu">,</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;pos_x&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;pos_y&quot;</span><span class="fu">:</span> <span class="dv">0</span><span class="fu">,</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;requires&quot;</span><span class="fu">:</span> <span class="ot">[]</span><span class="fu">,</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;levels&quot;</span><span class="fu">:</span> <span class="ot">[]</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <h2 id="levels">Levels</h2>
 <p>A level defines a part of course, consisting of e.g. text, exercises
 and games.</p>
 <pre><code>LEVEL = {
+  &quot;file_id&quot;: STRING,
   &quot;title&quot;: IDENTIFIER,
-  &quot;label&quot;: STRING,
   &quot;pos_x&quot;: INTEGER,
   &quot;pos_y&quot;: INTEGER,
-  &quot;requires&quot;: IDENTIFIER&lt;LEVEL.id&gt;[],
+  &quot;requires&quot;: IDENTIFIER&lt;LEVEL.file_id&gt;[],
   &quot;items&quot;: LEVEL_ITEM[]
 };</code></pre>
 <pre><code>LEVEL_ITEM = SECTION | TEXT | EQUATION | DEFINITION | EXERCISE
