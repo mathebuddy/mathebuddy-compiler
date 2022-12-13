@@ -22,7 +22,7 @@ import {
   MBL_Exercise_Text_Variable,
   MBL_Exercise_VariableType,
 } from './dataExercise';
-import { MBL_Course } from './dataCourse';
+import { MBL_Course, MBL_Course_Debug } from './dataCourse';
 import { MBL_Chapter } from './dataChapter';
 import { MBL_Level, MBL_LevelItem } from './dataLevel';
 import { MBL_Section, MBL_SectionType } from './dataSection';
@@ -43,6 +43,8 @@ import {
 } from './dataText';
 
 export class Compiler {
+  private loadFile: (path: string) => string = null;
+
   private course: MBL_Course = null;
   private chapter: MBL_Chapter = null;
   private level: MBL_Level = null;
@@ -57,14 +59,160 @@ export class Compiler {
     return this.course;
   }
 
-  public compile(src: string): void {
-    // TODO: parse index files, i.e. complete courses
+  public compile(path: string, loadFile: (path: string) => string): void {
+    // store load function
+    this.loadFile = loadFile;
+    // compile
+    if (path.endsWith('course.mbl')) {
+      // processing complete course
+      this.compileCourse(path);
+    } else if (path.endsWith('index.mbl')) {
+      // processing only a course chapter
+      this.course = new MBL_Course();
+      this.course.debug = MBL_Course_Debug.Chapter;
+      this.compileChapter(path);
+    } else {
+      // processing only a course level
+      this.course = new MBL_Course();
+      this.course.debug = MBL_Course_Debug.Level;
+      this.chapter = new MBL_Chapter();
+      this.course.chapters.push(this.chapter);
+      this.compileLevel(path);
+    }
+    // post processing
+    this.course.postProcess();
+  }
+
+  //G course = courseTitle courseAuthor courseChapters;
+  //G courseTitle = "TITLE" { ID } "\n";
+  //G courseAuthor = "AUTHOR" { ID } "\n";
+  //G courseChapters = "CHAPTERS" "\n" { courseChapter };
+  //G courseChapter = "(" INT "," INT ")" ID { "!" ID } "\n";
+  public compileCourse(path: string): void {
+    // create a new course
     this.course = new MBL_Course();
+    // get course description file source
+    const src = this.loadFile(path);
+    if (src.length == 0) {
+      this.error(
+        'course description file ' + path + ' does not exist or is empty',
+      );
+      return;
+    }
+    // parse
+    const lines = src.split('\n');
+    let state = 'global';
+    let rowIdx = 0;
+    for (let line of lines) {
+      rowIdx++;
+      line = line.split('%')[0];
+      if (line.trim().length == 0) continue;
+      if (state === 'global') {
+        if (line.startsWith('TITLE'))
+          this.course.title = line.substring('TITLE'.length).trim();
+        else if (line.startsWith('AUTHOR'))
+          this.course.author = line.substring('AUTHOR'.length).trim();
+        else if (line.startsWith('CHAPTERS')) state = 'chapter';
+        else this.error('unexpected line ' + line);
+      } else if (state === 'chapter') {
+        const lexer = new Lexer();
+        lexer.enableHyphenInID(true);
+        lexer.pushSource(path, line);
+        lexer.setTokenRow(rowIdx);
+        lexer.TER('(');
+        const posX = lexer.INT();
+        lexer.TER(',');
+        const posY = lexer.INT();
+        lexer.TER(')');
+        const chapterLabel = lexer.ID();
+        const chapterRequirements: string[] = [];
+        while (lexer.isTER('!')) {
+          lexer.next();
+          chapterRequirements.push(lexer.ID());
+        }
+        lexer.END();
+        // compile chapter
+        const dirname = path.match(/.*\//);
+        const chapterPath = dirname + chapterLabel + '/index.mbl';
+        this.compileChapter(chapterPath);
+        // set chapter meta data
+        this.chapter.pos_x = posX;
+        this.chapter.pos_y = posY;
+        //this.chapter.requires = TODO: must be build AFTER processing all chapters;
+      }
+    }
+  }
+
+  //G chapter = chapterTitle chapterAuthor { chapterUnit };
+  //G chapterTitle = "TITLE" { ID } "\n";
+  //G chapterAuthor = "AUTHOR" { ID } "\n";
+  //G chapterUnit = "UNIT" { ID } "\n" { chapterLevel };
+  //G chapterLevel = "(" INT "," INT ")" ID { "!" ID } "\n";
+  public compileChapter(path: string): void {
+    // create a new chapter
     this.chapter = new MBL_Chapter();
     this.course.chapters.push(this.chapter);
+    // get chapter index file source
+    const src = this.loadFile(path);
+    if (src.length == 0) {
+      this.error('chapter index file ' + path + ' does not exist or is empty');
+      return;
+    }
+    // parse
+    const lines = src.split('\n');
+    let state = 'global';
+    let rowIdx = 0;
+    for (let line of lines) {
+      rowIdx++;
+      line = line.split('%')[0];
+      if (line.trim().length == 0) continue;
+      if (state === 'global' || line.startsWith('UNIT')) {
+        if (line.startsWith('TITLE'))
+          this.chapter.title = line.substring('TITLE'.length).trim();
+        else if (line.startsWith('AUTHOR'))
+          this.chapter.author = line.substring('AUTHOR'.length).trim();
+        else if (line.startsWith('UNIT')) {
+          const unitTitle = line.substring('UNIT'.length).trim();
+          state = 'unit';
+        } else this.error('unexpected line ' + line);
+      } else if (state === 'unit') {
+        const lexer = new Lexer();
+        lexer.enableHyphenInID(true);
+        lexer.pushSource(path, line);
+        lexer.setTokenRow(rowIdx);
+        lexer.TER('(');
+        const posX = lexer.INT();
+        lexer.TER(',');
+        const posY = lexer.INT();
+        lexer.TER(')');
+        const levelLabel = lexer.ID();
+        const levelRequirements: string[] = [];
+        while (lexer.isTER('!')) {
+          lexer.next();
+          levelRequirements.push(lexer.ID());
+        }
+        lexer.END();
+        // compile level
+        const dirname = path.match(/.*\//);
+        const levelPath = dirname + levelLabel + '.mbl';
+        this.compileLevel(levelPath);
+        // set chapter meta data
+        this.level.pos_x = posX;
+        this.level.pos_y = posY;
+        //this.level.requires = TODO: must be build AFTER processing all chapters;
+      }
+    }
+  }
+
+  //G level = { levelTitle | sectionTitle | subSectionTitle | block | paragraph };
+  public compileLevel(path: string): void {
+    // create a new level
     this.level = new MBL_Level();
     this.chapter.levels.push(this.level);
-
+    // get level source
+    const src = this.loadFile(path);
+    if (src.length == 0)
+      this.error('level file ' + path + ' does not exist or is empty');
     // set source, split it into lines, trim these lines and
     // filter out comments of each line
     this.srcLines = src.split('\n');
@@ -78,9 +226,7 @@ export class Compiler {
     this.next();
     // parse
     while (this.line !== '§END') {
-      /*if (this.line.length == 0) {
-        this.next();
-      } else*/ if (this.line2.startsWith('#####')) {
+      if (this.line2.startsWith('#####')) {
         this.pushParagraph();
         this.parseLevelTitle();
       } else if (this.line2.startsWith('=====')) {
@@ -98,8 +244,6 @@ export class Compiler {
       }
     }
     this.pushParagraph();
-
-    this.course.postProcess();
   }
 
   private pushParagraph(): void {
@@ -203,7 +347,7 @@ export class Compiler {
   }
 
   /*G
-     paragraphCore =
+     paragraph =
         { paragraphPart };
      paragraphPart =
       | "**" {paragraphPart} "**"
@@ -229,6 +373,7 @@ export class Compiler {
     // create lexer
     const lexer = new Lexer();
     lexer.enableEmitNewlines(true);
+    lexer.enableUmlautInID(true);
     lexer.pushSource('', raw);
     lexer.setTerminals(['**', '#.', '-)']);
     const paragraph = new MBL_Text_Paragraph();
@@ -471,6 +616,7 @@ export class Compiler {
   }
 
   private error(message: string): void {
+    // TODO: include file path!
     console.error('ERROR:' + (this.i + 1) + ': ' + message);
     process.exit(-1);
   }
