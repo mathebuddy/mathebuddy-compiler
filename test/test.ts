@@ -7,12 +7,23 @@
  */
 
 import * as fs from 'fs';
-import { Compiler } from '../src';
 import * as lz_string from 'lz-string';
+
+import { Compiler } from '../src';
 
 console.log('mathe:buddy Compiler (c) 2022 by TH Koeln');
 
-// for all demo files
+// demo course
+function load(path: string): string {
+  if (fs.existsSync(path) == false) return '';
+  return fs.readFileSync(path, 'utf-8');
+}
+const compiler = new Compiler();
+compiler.compile('examples/demo-course/course.mbl', load);
+const output = JSON.stringify(compiler.getCourse().toJSON(), null, 2);
+fs.writeFileSync('examples/demo-course/course_COMPILED.json', output);
+
+// demo files
 const inputPath = 'examples/';
 const files = fs.readdirSync(inputPath).sort();
 for (const file of files) {
@@ -20,10 +31,10 @@ for (const file of files) {
   if (path.endsWith('.mbl') == false) continue;
   console.log('=== TESTING FILE ' + path + ' ===');
   // read MBL file
-  const src = fs.readFileSync(path, 'utf-8');
+  //const src = fs.readFileSync(path, 'utf-8');
   // compile file
   const compiler = new Compiler();
-  compiler.compile(src);
+  compiler.compile(path, load);
   // write output as JSON
   const output = JSON.stringify(compiler.getCourse().toJSON(), null, 2);
   const outputPath =
@@ -35,28 +46,3 @@ for (const file of files) {
     inputPath + file.substring(0, file.length - 4) + '_COMPILED.hex';
   fs.writeFileSync(outputPathCompressed, outputCompressed, 'base64');
 }
-
-const bp = 1337;
-
-/*const inputPath = 'testdata/testcourse/chapter1.txt'; // TODO: get from args
-const src = fs.readFileSync(inputPath, 'utf-8');
-
-const compiler = new Compiler();
-compiler.run(src);
-
-const output = JSON.stringify(compiler.getCourse().toJSON(), null, 2);
-console.log(output);
-
-const outputPath = inputPath + '_COMPILED.json';
-fs.writeFileSync(outputPath, output);
-
-const output_compressed = JSON.stringify(compiler.getCourse().toJSON());
-const output_compressed_lz = lz_string.compressToBase64(output_compressed);
-
-const outputPath_COMPRESSED = inputPath + '_COMPILED_COMPRESSED.hex';
-fs.writeFileSync(outputPath_COMPRESSED, output_compressed_lz, 'base64');
-
-const outputPath_COMPRESSED_2 =
-  '../mathebuddy-simulator/testdata/chapter1.txt' + '_COMPILED_COMPRESSED.hex';
-fs.writeFileSync(outputPath_COMPRESSED_2, output_compressed_lz, 'base64');
-*/
