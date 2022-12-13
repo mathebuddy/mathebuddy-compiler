@@ -421,12 +421,12 @@ Keyword `coord X Y` renders a small circle at position $(X,Y)$.
 
   ```
   My enumeration:
-  # first item
-  # second item
-  # third item
+  #. first item
+  #. second item
+  #. third item
   ```
 
-  A line that starts with a dash (`#`) is rendered with numbering (1, 2, ...).
+  A line that starts with a hashtag following a dot (`#.`) is rendered with numbering (1, 2, ...).
 
 - `Enumeration (letters)`
 
