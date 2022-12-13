@@ -14,6 +14,7 @@ import { JSONValue } from './dataJSON';
 // -------- COURSE --------
 
 export class MBL_Course {
+  single_chapter = true;
   single_level = true;
   title = '';
   author = '';
@@ -25,6 +26,7 @@ export class MBL_Course {
   }
   toJSON(): JSONValue {
     return {
+      single_chapter: this.single_chapter,
       single_level: this.single_level,
       title: this.title,
       author: this.author,
