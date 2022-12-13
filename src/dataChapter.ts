@@ -14,24 +14,39 @@ import { MBL_Level } from './dataLevel';
 // -------- CHAPTER --------
 
 export class MBL_Chapter {
+  file_id = ''; // all references go here; label is only used for searching
   title = '';
-  author = '';
   label = '';
+  author = '';
   pos_x = -1;
   pos_y = -1;
   requires: MBL_Chapter[] = [];
+  requires_tmp: string[] = []; // only used while compiling
   levels: MBL_Level[] = [];
+
+  getLevelByLabel(label: string): MBL_Level {
+    for (const level of this.levels) if (level.label === label) return level;
+    return null;
+  }
+
+  getLevelByFileID(fileID: string): MBL_Level {
+    for (const level of this.levels) if (level.file_id === fileID) return level;
+    return null;
+  }
+
   postProcess(): void {
     for (const l of this.levels) l.postProcess();
   }
+
   toJSON(): JSONValue {
     return {
+      file_id: this.file_id,
       title: this.title,
       author: this.author,
       label: this.label,
       pos_x: this.pos_x,
       pos_y: this.pos_y,
-      requires: this.requires.map((req) => req.label),
+      requires: this.requires.map((req) => req.file_id),
       levels: this.levels.map((level) => level.toJSON()),
     };
   }
