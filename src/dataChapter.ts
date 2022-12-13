@@ -15,6 +15,7 @@ import { MBL_Level } from './dataLevel';
 
 export class MBL_Chapter {
   title = '';
+  author = '';
   label = '';
   pos_x = -1;
   pos_y = -1;
@@ -26,6 +27,7 @@ export class MBL_Chapter {
   toJSON(): JSONValue {
     return {
       title: this.title,
+      author: this.author,
       label: this.label,
       pos_x: this.pos_x,
       pos_y: this.pos_y,
