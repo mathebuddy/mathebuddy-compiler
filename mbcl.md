@@ -144,14 +144,12 @@ COURSE = {
   "author": STRING,
   "mbcl_version": INTEGER,
   "date_modified": UNIX_TIMESTAMP,
-  "single_level": BOOLEAN,
-  "single_chapter": BOOLEAN,
+  "debug": "no" | "chapter" | "level",
   "chapters": CHAPTER[]
 };
 ```
 
-- if `single_chapter` is true, then the file does not contain a complete course, but only a single chapter (including its levels) for debugging
-- if `single_level` is true, then the file does not contain a complete course, but only a single level for debugging
+- if `debug` is not `no`, then only one `chapter` or one `level` is provided for debugging purposes
 
 Example:
 
