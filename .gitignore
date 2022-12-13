@@ -3,7 +3,7 @@ node_modules/
 js-dist/
 lib/
 *_COMPILED.json
-*_COMPILED_COMPRESSED.hex
+*_COMPILED.hex
 
 # ===== VS Code Extension =====
 
