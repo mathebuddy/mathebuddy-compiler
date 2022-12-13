@@ -145,11 +145,13 @@ COURSE = {
   "mbcl_version": INTEGER,
   "date_modified": UNIX_TIMESTAMP,
   "single_level": BOOLEAN,
+  "single_chapter": BOOLEAN,
   "chapters": CHAPTER[]
 };
 ```
 
-- `single_level` is true, then the file does not contain a complete course, but only a single level for debugging
+- if `single_chapter` is true, then the file does not contain a complete course, but only a single chapter (including its levels) for debugging
+- if `single_level` is true, then the file does not contain a complete course, but only a single level for debugging
 
 Example:
 
@@ -172,6 +174,9 @@ A chapter consists of a set of levels.
 CHAPTER = {
   "title": STRING,
   "label": STRING,
+  "pos_x": INTEGER,
+  "pos_y": INTEGER,
+  "requires": IDENTIFIER<CHAPTER.id>[],
   "levels": LEVEL[]
 };
 ```
@@ -193,6 +198,7 @@ A level defines a part of course, consisting of e.g. text, exercises and games.
 ```
 LEVEL = {
   "title": IDENTIFIER,
+  "label": STRING,
   "pos_x": INTEGER,
   "pos_y": INTEGER,
   "requires": IDENTIFIER<LEVEL.id>[],
