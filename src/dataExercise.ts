@@ -94,6 +94,7 @@ export class MBL_Exercise_Text_Variable extends MBL_Exercise_Text {
   }
   toJSON(): JSONValue {
     return {
+      type: 'variable',
       variable: this.variableId,
     };
   }
