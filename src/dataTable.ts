@@ -15,6 +15,7 @@ import { MBL_Text } from './dataText';
 // -------- TABLE --------
 
 export class MBL_Table extends MBL_BlockItem {
+  type = 'table';
   head: MBL_Table_Row = new MBL_Table_Row();
   rows: MBL_Table_Row[] = [];
   options: MBL_Table_Option[] = [];
@@ -24,7 +25,7 @@ export class MBL_Table extends MBL_BlockItem {
   }
   toJSON(): JSONValue {
     return {
-      type: 'table',
+      type: this.type,
       title: this.title,
       label: this.label,
       error: this.error,
