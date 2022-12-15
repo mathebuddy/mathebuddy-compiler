@@ -546,7 +546,7 @@ export class Compiler {
         input.variable = id;
         switch (v.type) {
           case MBL_Exercise_VariableType.Int:
-            input.type = MBL_Exercise_Text_Input_Type.Int;
+            input.input_type = MBL_Exercise_Text_Input_Type.Int;
             break;
           case MBL_Exercise_VariableType.Real:
             input.type = MBL_Exercise_Text_Input_Type.Real;
