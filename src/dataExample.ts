@@ -16,13 +16,14 @@ import { MBL_Text } from './dataText';
 // -------- EXAMPLE --------
 
 export class MBL_Example extends MBL_BlockItem {
+  type = 'example';
   items: (MBL_Equation | MBL_Text)[] = [];
   postProcess(): void {
     for (const i of this.items) i.postProcess();
   }
   toJSON(): JSONValue {
     return {
-      type: 'example',
+      type: this.type,
       title: this.title,
       label: this.label,
       error: this.error,
