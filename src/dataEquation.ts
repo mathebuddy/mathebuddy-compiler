@@ -21,6 +21,7 @@ export enum MBL_EquationOption {
 }
 
 export class MBL_Equation extends MBL_BlockItem {
+  type = 'equation';
   value = '';
   numbering = -1;
   options: MBL_EquationOption[] = [];
@@ -29,7 +30,7 @@ export class MBL_Equation extends MBL_BlockItem {
   }
   toJSON(): JSONValue {
     return {
-      type: 'equation',
+      type: this.type,
       title: this.title,
       label: this.label,
       error: this.error,
