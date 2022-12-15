@@ -6,7 +6,6 @@
  * License: GPL-3.0-or-later
  */
 
-import { aggregateMultipleChoice, aggregateSingleChoice } from './dataExercise';
 import { JSONValue } from './dataJSON';
 import { MBL_LevelItem } from './dataLevel';
 
@@ -15,12 +14,13 @@ import { MBL_LevelItem } from './dataLevel';
 // -------- NEWPAGE --------
 
 export class MBL_NewPage extends MBL_LevelItem {
+  type = 'new_page';
   postProcess(): void {
     /* empty */
   }
   toJSON(): JSONValue {
     return {
-      type: 'new_page',
+      type: this.type,
     };
   }
 }
