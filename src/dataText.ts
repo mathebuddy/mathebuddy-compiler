@@ -48,6 +48,7 @@ function simplifyText(items: MBL_Text[]): void {
 }
 
 export class MBL_Text_Paragraph extends MBL_Text {
+  type = 'paragraph';
   items: MBL_Text[] = [];
   postProcess(): void {
     for (const i of this.items) i.postProcess();
@@ -57,13 +58,14 @@ export class MBL_Text_Paragraph extends MBL_Text {
   }
   toJSON(): JSONValue {
     return {
-      type: 'paragraph',
+      type: this.type,
       items: this.items.map((item) => item.toJSON()),
     };
   }
 }
 
 export class MBL_Text_InlineMath extends MBL_Text {
+  type = 'inline_math';
   items: MBL_Text[] = [];
   postProcess(): void {
     for (const i of this.items) i.postProcess();
@@ -71,13 +73,14 @@ export class MBL_Text_InlineMath extends MBL_Text {
   }
   toJSON(): JSONValue {
     return {
-      type: 'inline_math',
+      type: this.type,
       items: this.items.map((item) => item.toJSON()),
     };
   }
 }
 
 export class MBL_Text_Bold extends MBL_Text {
+  type = 'bold';
   items: MBL_Text[] = [];
   postProcess(): void {
     for (const i of this.items) i.postProcess();
@@ -85,13 +88,14 @@ export class MBL_Text_Bold extends MBL_Text {
   }
   toJSON(): JSONValue {
     return {
-      type: 'bold',
+      type: this.type,
       items: this.items.map((item) => item.toJSON()),
     };
   }
 }
 
 export class MBL_Text_Italic extends MBL_Text {
+  type = 'italic';
   items: MBL_Text[] = [];
   postProcess(): void {
     for (const i of this.items) i.postProcess();
@@ -99,7 +103,7 @@ export class MBL_Text_Italic extends MBL_Text {
   }
   toJSON(): JSONValue {
     return {
-      type: 'italic',
+      type: this.type,
       items: this.items.map((item) => item.toJSON()),
     };
   }
@@ -131,6 +135,7 @@ export class MBL_Text_Itemize extends MBL_Text {
 }
 
 export class MBL_Text_Span extends MBL_Text {
+  type = 'span';
   items: MBL_Text[] = [];
   postProcess(): void {
     for (const i of this.items) i.postProcess();
@@ -138,7 +143,7 @@ export class MBL_Text_Span extends MBL_Text {
   }
   toJSON(): JSONValue {
     return {
-      type: 'span',
+      type: this.type,
       items: this.items.map((item) => item.toJSON()),
     };
   }
@@ -147,6 +152,7 @@ export class MBL_Text_Span extends MBL_Text {
 // TODO: aggregate next 3 classes into one!
 
 export class MBL_Text_AlignLeft extends MBL_Text {
+  type = 'align_left';
   items: MBL_Text[] = [];
   postProcess(): void {
     for (const i of this.items) i.postProcess();
@@ -154,13 +160,14 @@ export class MBL_Text_AlignLeft extends MBL_Text {
   }
   toJSON(): JSONValue {
     return {
-      type: 'align_left',
+      type: this.type,
       items: this.items.map((item) => item.toJSON()),
     };
   }
 }
 
 export class MBL_Text_AlignCenter extends MBL_Text {
+  type = 'align_center';
   items: MBL_Text[] = [];
   postProcess(): void {
     for (const i of this.items) i.postProcess();
@@ -168,13 +175,14 @@ export class MBL_Text_AlignCenter extends MBL_Text {
   }
   toJSON(): JSONValue {
     return {
-      type: 'align_center',
+      type: this.type,
       items: this.items.map((item) => item.toJSON()),
     };
   }
 }
 
 export class MBL_Text_AlignRight extends MBL_Text {
+  type = 'align_right';
   items: MBL_Text[] = [];
   postProcess(): void {
     for (const i of this.items) i.postProcess();
@@ -182,37 +190,40 @@ export class MBL_Text_AlignRight extends MBL_Text {
   }
   toJSON(): JSONValue {
     return {
-      type: 'align_right',
+      type: this.type,
       items: this.items.map((item) => item.toJSON()),
     };
   }
 }
 
 export class MBL_Text_Text extends MBL_Text {
+  type = 'text';
   value = '';
   postProcess(): void {
     /* empty */
   }
   toJSON(): JSONValue {
     return {
-      type: 'text',
+      type: this.type,
       value: this.value,
     };
   }
 }
 
 export class MBL_Text_Linefeed extends MBL_Text {
+  type = 'linefeed';
   postProcess(): void {
     /* empty */
   }
   toJSON(): JSONValue {
     return {
-      type: 'linefeed',
+      type: this.type,
     };
   }
 }
 
 export class MBL_Text_Color extends MBL_Text {
+  type = 'color';
   key = 0;
   items: MBL_Text[] = [];
   postProcess(): void {
@@ -220,7 +231,7 @@ export class MBL_Text_Color extends MBL_Text {
   }
   toJSON(): JSONValue {
     return {
-      type: 'color',
+      type: this.type,
       key: this.key,
       items: this.items.map((item) => item.toJSON()),
     };
@@ -228,19 +239,21 @@ export class MBL_Text_Color extends MBL_Text {
 }
 
 export class MBL_Text_Reference extends MBL_Text {
+  type = 'reference';
   label = '';
   postProcess(): void {
     /* empty */
   }
   toJSON(): JSONValue {
     return {
-      type: 'reference',
+      type: this.type,
       label: this.label,
     };
   }
 }
 
 export class MBL_Text_Error extends MBL_Text {
+  type = 'error';
   message = '';
   constructor(message: string) {
     super();
@@ -251,7 +264,7 @@ export class MBL_Text_Error extends MBL_Text {
   }
   toJSON(): JSONValue {
     return {
-      type: 'error',
+      type: this.type,
       message: this.message,
     };
   }
