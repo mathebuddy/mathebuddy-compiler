@@ -14,6 +14,7 @@ import { JSONValue } from './dataJSON';
 // -------- ERROR --------
 
 export class MBL_Error extends MBL_BlockItem {
+  type = 'error';
   message = '';
   constructor() {
     super();
@@ -23,7 +24,7 @@ export class MBL_Error extends MBL_BlockItem {
   }
   toJSON(): JSONValue {
     return {
-      type: 'error',
+      type: this.type,
       title: this.title,
       label: this.label,
       error: this.error,
