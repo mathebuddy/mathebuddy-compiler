@@ -40,6 +40,7 @@ export class MBL_Level {
 }
 
 export abstract class MBL_LevelItem {
+  abstract type: string;
   abstract postProcess(): void;
   abstract toJSON(): JSONValue;
 }
