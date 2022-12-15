@@ -15,6 +15,7 @@ import { MBL_Text, MBL_Text_Text } from './dataText';
 // -------- FIGURE --------
 
 export class MBL_Figure extends MBL_BlockItem {
+  type = 'figure';
   filePath = '';
   data = '';
   caption: MBL_Text = new MBL_Text_Text();
@@ -24,7 +25,7 @@ export class MBL_Figure extends MBL_BlockItem {
   }
   toJSON(): JSONValue {
     return {
-      type: 'figure',
+      type: this.type,
       title: this.title,
       label: this.label,
       error: this.error,
