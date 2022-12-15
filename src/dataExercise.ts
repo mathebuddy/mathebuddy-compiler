@@ -13,6 +13,7 @@ import { MBL_Text, MBL_Text_Paragraph } from './dataText';
 // refer to the specification at https://app.f07-its.fh-koeln.de/docs-mbcl.html
 
 export class MBL_Exercise extends MBL_BlockItem {
+  type = 'exercise';
   variables: { [id: string]: MBL_Exercise_Variable } = {};
   instances: MBL_Exercise_Instance[] = [];
   code = '';
@@ -44,7 +45,7 @@ export class MBL_Exercise extends MBL_BlockItem {
     }
     // TODO: do NOT output code when "single_level" == false
     return {
-      type: 'exercise',
+      type: this.type,
       title: this.title,
       label: this.label,
       error: this.error,
@@ -88,20 +89,22 @@ export class MBL_Exercise_Instance {
 export abstract class MBL_Exercise_Text extends MBL_Text {}
 
 export class MBL_Exercise_Text_Variable extends MBL_Exercise_Text {
+  type = 'variable';
   variableId = '';
   postProcess(): void {
     /* empty */
   }
   toJSON(): JSONValue {
     return {
-      type: 'variable',
+      type: this.type,
       variable: this.variableId,
     };
   }
 }
 
 export class MBL_Exercise_Text_Input extends MBL_Exercise_Text {
-  type: MBL_Exercise_Text_Input_Type;
+  type = 'text_input';
+  input_type: MBL_Exercise_Text_Input_Type;
   variable = '';
   inputRequire: string[] = [];
   inputForbid: string[] = [];
@@ -111,7 +114,7 @@ export class MBL_Exercise_Text_Input extends MBL_Exercise_Text {
   }
   toJSON(): JSONValue {
     return {
-      type: 'text_input',
+      type: this.type,
       input_type: this.type,
       input_require: this.inputRequire.map((i) => i.toString()),
       input_forbid: this.inputForbid.map((i) => i.toString()),
@@ -124,26 +127,28 @@ export class MBL_Exercise_Text_Input extends MBL_Exercise_Text {
 // TODO: export class MBL_Exercise_Text_Choices_Input
 
 export class MBL_Exercise_Text_Multiple_Choice extends MBL_Exercise_Text {
+  type = 'multiple_choice';
   items: MBL_Exercise_Text_Single_or_Multi_Choice_Option[] = [];
   postProcess(): void {
     for (const i of this.items) i.postProcess();
   }
   toJSON(): JSONValue {
     return {
-      type: 'multiple_choice',
+      type: this.type,
       items: this.items.map((i) => i.toJSON()),
     };
   }
 }
 
 export class MBL_Exercise_Text_Single_Choice extends MBL_Exercise_Text {
+  type = 'single_choice';
   items: MBL_Exercise_Text_Single_or_Multi_Choice_Option[] = [];
   postProcess(): void {
     for (const i of this.items) i.postProcess();
   }
   toJSON(): JSONValue {
     return {
-      type: 'single_choice',
+      type: this.type,
       items: this.items.map((i) => i.toJSON()),
     };
   }
