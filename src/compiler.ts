@@ -394,8 +394,6 @@ export class Compiler {
       | DEL;
    */
   public parseParagraph(raw: string, ex: MBL_Exercise = null): MBL_Text {
-    // TODO: this method should NOT be visible at API-side...
-
     // skip empty paragraphs
     if (raw.trim().length == 0)
       //return new ParagraphItem(ParagraphItemType.Text);
@@ -407,10 +405,8 @@ export class Compiler {
     lexer.pushSource('', raw);
     lexer.setTerminals(['**', '#.', '-)']);
     const paragraph = new MBL_Text_Paragraph();
-    while (lexer.isNotEND()) {
+    while (lexer.isNotEND())
       paragraph.items.push(this.parseParagraph_part(lexer, ex));
-    }
-    //paragraph.simplify(); TODO!!!!!
     return paragraph;
   }
 
@@ -436,7 +432,11 @@ export class Compiler {
     } else if (exercise != null && lexer.isTER('#')) {
       // input element(s)
       return this.parseInputElements(lexer, exercise);
-    } else if (exercise != null && (lexer.isTER('[') || lexer.isTER('('))) {
+    } else if (
+      exercise != null &&
+      lexer.getToken().col == 1 &&
+      (lexer.isTER('[') || lexer.isTER('('))
+    ) {
       // single or multiple choice answer
       return this.parseSingleOrMultipleChoice(lexer, exercise);
     } else if (lexer.isTER('\n')) {
@@ -549,10 +549,10 @@ export class Compiler {
             input.input_type = MBL_Exercise_Text_Input_Type.Int;
             break;
           case MBL_Exercise_VariableType.Real:
-            input.type = MBL_Exercise_Text_Input_Type.Real;
+            input.input_type = MBL_Exercise_Text_Input_Type.Real;
             break;
           case MBL_Exercise_VariableType.Matrix:
-            input.type = MBL_Exercise_Text_Input_Type.Matrix;
+            input.input_type = MBL_Exercise_Text_Input_Type.Matrix;
             break;
           default:
             error = 'UNIMPLEMENTED input type ' + v.type;
