@@ -6,7 +6,7 @@ EXERCISE Exponentialfunktion und Logarithmus
 @text
 Seien $a,b \in \R$ und $a>0$.
 Wähle die richtige Antwort:
-(x) $ a^b = e^{b ln(a)} $
-( ) $ a^b = e^{a ln(b)} $
+(x) $ a^b = e^{b \ln(a)} $
+( ) $ a^b = e^{a \ln(b)} $
 ( ) $ a^b = \ln{b \cdot e^a} $
 ---

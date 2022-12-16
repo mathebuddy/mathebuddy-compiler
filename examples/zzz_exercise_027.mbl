@@ -4,7 +4,7 @@ Exercise 27
 ---
 EXERCISE Rechenregeln für Potenzen
 @text
-Sei $q_1, q_2 \in \QQ$ und $x, x_1, x_2 > 0$.
+Sei $q_1, q_2 \in \Q$ und $x, x_1, x_2 > 0$.
 Wähle die richtigen Antworten:
 [x] $ {x_1 x_2}^q = x_1^q x_2^q $
 [x] $ x^{q_1+q_2} = x^{q_1} x^{q_2} $

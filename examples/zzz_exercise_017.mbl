@@ -6,7 +6,7 @@ EXERCISE Aussagenlogik
 @text
 Welche der folgenden Aussagen sind wahr?
 [ ]   $ \exists x \in \R ~~ x < x  $
-[x]   $ \forall y \in \z ~~ y^2 >= 0 $
+[x]   $ \forall y \in \Z ~~ y^2 >= 0 $
 [ ]   $ \forall z \in \R ~~ (z <= 0  \land  z > 0) $
 [x]   $ \forall z \in \R ~~ (z <= 0  \lor  z > 0) $
 ---

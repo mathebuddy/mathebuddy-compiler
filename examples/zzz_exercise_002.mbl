@@ -4,7 +4,7 @@ Exercise 2
 ---
 EXERCISE Mengenoperationen
 @text
-Seien $A$ und $B$ Mengen. $A \union B$ beschreibt:
+Seien $A$ und $B$ Mengen. $A \cup B$ beschreibt:
 (x) die **Vereinigung** von $A$ und $B$.
 ( ) den **Durchschnitt** von $A$ und $B$.
 ---

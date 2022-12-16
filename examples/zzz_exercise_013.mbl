@@ -12,7 +12,7 @@ let d = c + y;
 let m = a;
 let M = d;
 @text
-Sei $ X = [a, c[ \union [b, d[ $.
+Sei $ X = [a, c[ \cup [b, d[ $.
 Bestimmen Sie:
 - Infimum m = inf $(X)=$ #m
 - Supremum M = sup $(X)=$ #M

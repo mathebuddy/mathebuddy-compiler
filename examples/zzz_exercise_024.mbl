@@ -7,6 +7,6 @@ EXERCISE Polynome
 let n:u = rand(4,8);
 let grad = n + u;
 @text
-Sei $ f : \R \to \R, f(x) = \sum_{k=0}^n a{k} x^{k+u} $ mit $ a_n, ..., a_1, a_0 \in \R $ und $a_n != 0$
+Sei $ f : \R \to \R, f(x) = \sum_{k=0}^n a_{k} x^{k+u} $ mit $ a_n, ..., a_1, a_0 \in \R $ und $a_n != 0$
 Das Polynom $f$ hat den Grad #grad
 ---

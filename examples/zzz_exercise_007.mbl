@@ -8,6 +8,6 @@ let a = rand(2,4);
 let n = 3;
 let s = a * 6;
 @text
-Berechne $\sum_{i=1}^n a*i$:
+Berechne $\sum_{i=1}^n a \cdot i$:
 #s
 ---
