@@ -61,7 +61,7 @@ Calculate $ x + y = $ #z.
 ---
 
 ---
-EXERCISE Matrix Addition @ex:add-mat
+EXERCISE Matrix Multiplication @ex:add-mul
 @code
 let x:y = rand<2,2>(1, 5);
 let z = x * y;
