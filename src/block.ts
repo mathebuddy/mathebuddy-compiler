@@ -119,6 +119,7 @@ export class Block {
   private processTable(): MBL_Table {
     let i: number;
     const table = new MBL_Table();
+    table.title = this.title;
     for (const p of this.parts) {
       if (p instanceof BlockPart) {
         const part = <BlockPart>p;
