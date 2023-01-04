@@ -10,5 +10,5 @@ let z1 = complex(a,b);
 let z2 = complex(c,d);
 let res = z1^pow + z2;
 @text
-- Berechne den folgenden **komplexen Term** und gebe das Ergebnis in Normalform an: $ (z1)^pow + z2 = #res $
+- Berechne den folgenden **komplexen Term** und gebe das Ergebnis in Normalform an: $ {z1}^{pow} + z2 = $ #res
 ---

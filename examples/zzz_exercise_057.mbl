@@ -8,5 +8,6 @@ let f1(x) = exp(x);
 let f1_deriv(x) = diff(f1, x);
 @text
 $ f(x) = f1 $
+
 $ f'(x) = $ #f1_deriv
 ---

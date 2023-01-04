@@ -11,7 +11,10 @@ let f1_deriv_2(x) = diff(f1_deriv_1, x);
 let f1_deriv_3(x) = diff(f1_deriv_2, x);
 @text
 $ f(x) = f1 $
+
 $ f'(x) = $ #f1_deriv_1
+
 $ f''(x) = $ #f1_deriv_2
+
 $ f'''(x) = $ #f1_deriv_3
 ---

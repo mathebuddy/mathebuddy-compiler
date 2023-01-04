@@ -16,9 +16,9 @@ let c7 = rand(5,7);
 Welche der folgenden Funktionen sind auf ganz $RR$ stetig?
 [x] $f(x) = a1 \cdot x^3 + b1 \cdot x^2 + c1 \cdot x + d1$
 [x] $f(x) = a2 \cdot sin(b2 \cdot x)$
-[x] $f(x)= (a3 \cdot x^2)/(x)$
-[x] $f(x)= a4 \cdot \e^{b4 \cdot x+c4}$
+[x] $f(x)= \frac{a3 \cdot x^2}{x}$
+[x] $f(x)= a4 \cdot e^{b4 \cdot x+c4}$
 [ ] $f(x)= a5 \cdot \sqrt{b5 \cdot x}$
-[x] $f(x)= ( (x-a6) \cdot (x-b6) ) / (x-a6)$
-[ ] $f(x)= ( (x-a7) \cdot (x-b7) ) / (x-c7)$
+[x] $f(x)= \frac{ (x-a6) \cdot (x-b6) }{ x-a6 }$
+[ ] $f(x)= \frac{ (x-a7) \cdot (x-b7) }{ x-c7 }$
 ---

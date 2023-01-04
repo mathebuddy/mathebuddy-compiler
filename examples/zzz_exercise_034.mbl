@@ -9,7 +9,7 @@ let a1 = x/2;
 let a2 = 2*x/3;
 let a3 = 3*x/4;
 @text
-Bestimme die ersten drei Glieder der reellen Folge $ (a_n)_{n \in \N} = ( (x*n)/(n+1) )_{n \in \N} $
+Bestimme die ersten drei Glieder der reellen Folge $ (a_n)_{n \in \N} = ( \frac{x\cdot n}{n+1} )_{n \in \N} $
 - $n=1:$ #a1
 - $n=2:$ #a2
 - $n=3:$ #a3

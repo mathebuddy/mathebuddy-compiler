@@ -7,6 +7,6 @@ EXERCISE Häufungspunkte
 let x:y:z = rand(2,5);
 @text
 Welche der Folgen besitzt **zwei** Häufungspunkte?
-[x] $ (a_n)_{n \in \N} $ mit $ a_n = (-1)^n (n^2-x)/(n^2-y) $
-[ ] $ (a_n)_{n \in \N} $ mit $ a_n = 1^n (n^2-x)/(n^2-y) $
+[x] $ (a_n)_{n \in \N} $ mit $ a_n = (-1)^n \frac{n^2-x}{n^2-y} $
+[ ] $ (a_n)_{n \in \N} $ mit $ a_n = 1^n \frac{n^2-x}{n^2-y} $
 ---

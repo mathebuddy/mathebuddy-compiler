@@ -11,7 +11,7 @@ let res2 = x / y;
 let res3 = x / u;
 @text
 Bestimme:
-* $ \lim_{n \to \infty} x/n=$ #res1
-* $ \lim_{n \to \infty} (x*n)/(y*n+z)=$ #res2
-* $ \lim_{n \to \infty} (x*n^2 + y*n + z)/(u*n^2 + v*n + w)=$ #res3
+- $ \lim_{n \to \infty} \frac{x}{n}=$ #res1
+- $ \lim_{n \to \infty} \frac{x \cdot n}{y \cdot n+z}=$ #res2
+- $ \lim_{n \to \infty} \frac{x \cdot n^2 + y \cdot n + z}{u \cdot n^2 + v \cdot n + w}=$ #res3
 ---

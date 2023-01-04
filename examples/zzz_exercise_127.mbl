@@ -11,5 +11,5 @@ let z = complex(x,y);
 let r = abs(z);
 @text
 Sei $"z" \in \C$ und $"z"=z$.
-- Berechne $\abs{"z"}=$ #r
+- Berechne $|"z"|=$ #r
 ---

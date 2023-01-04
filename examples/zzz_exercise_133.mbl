@@ -7,7 +7,7 @@ EXERCISE Komplexe Reihen
 let a:b = rand(2,6);
 @text
 Ist die folgende geometrische Reihe **absolut konvergent**?
-- $\sum_{k=0}^{\infty} (1/a + 1/b \cdot i)^k$
+- $\sum_{k=0}^{\infty} (\frac{1}{a} + \frac{1}{b} \cdot i)^k$
 (x) ja
 ( ) nein
 ---

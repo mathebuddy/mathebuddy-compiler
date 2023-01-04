@@ -11,6 +11,6 @@ let a = rand(2,5);
 let A = rand<3,3>(1,3);
 let B = a * A;
 @text
-Berechne $a*A=$ #B
+Berechne $a \cdot A=$ #B
 *Hinweis: Dimensionieren Sie zunächst die Ergebnismatrix.*
 ---

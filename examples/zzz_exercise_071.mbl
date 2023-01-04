@@ -15,8 +15,8 @@ let p2(x) = f2(x0) / fac(2) * (x - x0)^2;
 let p3(x) = f3(x0) / fac(3) * (x - x0)^3;
 @text
 Bestimme das dritte Taylorpolynom $p_3(x) = \sum_{k=0}^3 ( "f"^{(k)}(x_0) ) / ( k ) (x-x_0)^k $ für $"f"(x)=f$ und $x_0=0$:
-* $ p_0(x) = $ #p0
-* $ p_1(x) = $ #p1
-* $ p_2(x) = $ #p2
-* $ p_3(x) = $ #p3
+- $ p_0(x) = $ #p0
+- $ p_1(x) = $ #p1
+- $ p_2(x) = $ #p2
+- $ p_3(x) = $ #p3
 ---

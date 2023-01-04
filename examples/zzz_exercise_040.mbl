@@ -7,7 +7,7 @@ EXERCISE Bestimmt divergent
 let x:y:z:w = rand(2,5);
 @text
 Welche der folgenden Folgen sind **bestimmt divergent**?
-[x] $ (a_n)_(n in NN) $ mit $ a_n = x*n $
-[x] $ (a_n)_(n in NN) $ mit $ a_n = (x*n^5+y*n)/(z*n^4+w) $
-[ ] $ (a_n)_(n in NN) $ mit $ a_n = (-1)^n * x + y $
+[x] $ (a_n)_{n \in \N} $ mit $ a_n = x \cdot n $
+[x] $ (a_n)_{n \in \N} $ mit $ a_n = \frac{x \cdot n^5+y \cdot n}{z \cdot n^4+w} $
+[ ] $ (a_n)_{n \in \N} $ mit $ a_n = (-1)^n \cdot x + y $
 ---

@@ -12,7 +12,7 @@ let sb = b mod b2;
 let sc = c2*c3 mod c2;
 @text
 Geben Sie jeweils den **Standardrepräsentanten** an:
-- $ \Z_c2: c2*c3 \equiv$ #sc $\mod c2 $
+- $ \Z_c2: c2 \cdot c3 \equiv$ #sc $\mod c2 $
 - $ \Z_a2: a \equiv$  #sa  $\mod a2 $
 - $ \Z_b2: b \equiv$  #sb  $\mod b2 $
 ---

@@ -12,6 +12,6 @@ let res3 = u^v;
 @text
 Bestimme die folgenden Grenzwerte:
 - $ lim_{x \to \infty} (a \cdot x-b)/x=$ #res1
-- $ lim_{x \to -\infty} \e^(c \cdot x)=$ #res2
+- $ lim_{x \to -\infty} e^(c \cdot x)=$ #res2
 - $ lim_{x \to \infty ( (u \cdot x^2+a)/(x^2+x+b) )^v=$ #res3
 ---

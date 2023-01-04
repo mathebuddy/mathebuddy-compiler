@@ -16,5 +16,5 @@ Bestimmen die **maximale Messunsicherheit** bei **linearer Fehlerfortpflanzung**
 - $ (\Delta z)_{\max} = \abs("a") \Delta "x" + \abs("b") \Delta "y" $; $"a"=$  #ex  ,  $"b"=$  #ey
 Seien nun $x=vx$, $y=vy$ und $\Delta x = \Delta y = \delta$.
 Berechnen die folgende Fehlergröße:
-* $ (\Delta z)_{\max} =$  #zmax
+- $ (\Delta z)_{\max} =$  #zmax
 ---
