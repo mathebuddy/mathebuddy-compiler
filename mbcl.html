@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content />
-  <meta name="dcterms.date" content="2022-12-16" />
+  <meta name="dcterms.date" content="2023-01-04" />
   <title>Mathe:Buddy Compiled Language (MBCL)</title>
   <style>
 code{white-space: pre-wrap;}
@@ -454,7 +454,7 @@ font-style: italic;
 <header id="title-block-header">
 [<a href="https://app.f07-its.fh-koeln.de">Home</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbl.html">MBL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-smpl.html">SMPL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-mbcl.html">MBCL Reference</a>] [<a href="https://app.f07-its.fh-koeln.de/docs-sim.html">Installation</a>] <h1 class="title">Mathe:Buddy Compiled Language (MBCL)</h1>
 <p class="author"></p>
-<p class="date">2022-12-16</p>
+<p class="date">2023-01-04</p>
 </header>
 <hr />
 <p><strong>NOTE</strong> This reference is in work-in-progress state. We
@@ -479,6 +479,9 @@ not repeated here.</p>
 <li><p><code>IDENTIFIER</code></p>
 <p>Examples: <code>&quot;hello&quot;</code>, <code>&quot;x314&quot;</code>,
 <code>&quot;_1337&quot;</code>, <code>&quot;AFFE&quot;</code></p></li>
+<li><p><code>UNIQUE_IDENTIFIER</code></p>
+<p>An identifier that is only given once per course.</p>
+<p>Example: <code>&quot;x123&quot;</code></p></li>
 <li><p><code>STRING</code></p>
 <p>Example: <code>&quot;hello, world!&quot;</code></p></li>
 <li><p><code>INTEGER</code></p>
@@ -732,6 +735,8 @@ instances.</p>
   &quot;instances&quot;: EXERCISE_INSTANCE[],
   &quot;text&quot;: EXERCISE_TEXT
 };</code></pre>
+<p><em>Note: a <code>label</code> is created automatically, if none is
+provided.</em></p>
 <p>Exercise text is extended to the following types:</p>
 <ul>
 <li><code>variable</code> refers to a question variable and displays the
@@ -760,6 +765,7 @@ single-choice question</li>
   &quot;variable&quot;: IDENTIFIER&lt;EXERCISE.VARIABLES&gt;
 } | {
   &quot;type&quot;: &quot;text_input&quot;,
+  &quot;input_id&quot;: UNIQUE_IDENTIFIER,
   &quot;input_type&quot;: &quot;int&quot; | &quot;real&quot;
               | &quot;complex_normal&quot; | &quot;complex_polar&quot;
               | &quot;int_set&quot; | &quot;int_set_n_args&quot;
@@ -772,10 +778,12 @@ single-choice question</li>
   &quot;width&quot;: INTEGER
 } | {
   &quot;type&quot;: &quot;choices_input&quot;,
+  &quot;input_id&quot;: UNIQUE_IDENTIFIER,
   &quot;variable&quot;: IDENTIFIER&lt;EXERCISE.VARIABLES&gt;,
   &quot;count&quot;: INTEGER
 } | {
   &quot;type&quot;: &quot;multiple_choice&quot; | &quot;single_choice&quot;,
+  &quot;input_id&quot;: UNIQUE_IDENTIFIER,
   &quot;items&quot;: EXERCISE_SINGLE_MULTIPLE_CHOICE_OPTION[]
 };</code></pre>
 <pre><code>EXERCISE_VARIABLE = {
