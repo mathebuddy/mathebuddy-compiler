@@ -104,6 +104,7 @@ export class MBL_Exercise_Text_Variable extends MBL_Exercise_Text {
 
 export class MBL_Exercise_Text_Input extends MBL_Exercise_Text {
   type = 'text_input';
+  input_id = 'NONE';
   input_type: MBL_Exercise_Text_Input_Type;
   variable = '';
   inputRequire: string[] = [];
@@ -115,6 +116,7 @@ export class MBL_Exercise_Text_Input extends MBL_Exercise_Text {
   toJSON(): JSONValue {
     return {
       type: this.type,
+      input_id: this.input_id,
       input_type: this.type,
       input_require: this.inputRequire.map((i) => i.toString()),
       input_forbid: this.inputForbid.map((i) => i.toString()),
@@ -156,6 +158,7 @@ export class MBL_Exercise_Text_Single_Choice extends MBL_Exercise_Text {
 
 export class MBL_Exercise_Text_Single_or_Multi_Choice_Option {
   variable = '';
+  input_id = 'NONE';
   text: MBL_Text;
   postProcess(): void {
     this.text.postProcess();
@@ -163,6 +166,7 @@ export class MBL_Exercise_Text_Single_or_Multi_Choice_Option {
   toJSON(): JSONValue {
     return {
       variable: this.variable,
+      input_id: this.input_id,
       text: this.text.toJSON(),
     };
   }
