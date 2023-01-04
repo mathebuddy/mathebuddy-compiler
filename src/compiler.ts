@@ -64,6 +64,12 @@ export class Compiler {
   private line2 = ''; // next line
   private paragraph = '';
 
+  private uniqueIdCounter = 0;
+
+  public createUniqueId(): number {
+    return this.uniqueIdCounter++;
+  }
+
   public getCourse(): MBL_Course {
     return this.course;
   }
@@ -539,6 +545,7 @@ export class Compiler {
     let id = '';
     let error = '';
     const input = new MBL_Exercise_Text_Input();
+    input.input_id = 'input' + this.createUniqueId();
     if (lexer.isID()) {
       id = lexer.ID();
       if (id in exercise.variables) {
@@ -604,6 +611,7 @@ export class Compiler {
       element = new MBL_Exercise_Text_Multiple_Choice();
     }
     const option = new MBL_Exercise_Text_Single_or_Multi_Choice_Option();
+    option.input_id = 'input' + this.createUniqueId();
     option.variable = varId;
     element.items.push(option);
     const span = new MBL_Text_Span();
