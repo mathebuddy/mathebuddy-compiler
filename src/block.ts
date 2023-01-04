@@ -44,10 +44,10 @@ export class Block {
   parts: (MBL_LevelItem | BlockPart)[] = [];
   srcLine = 0;
 
-  private parser: Compiler = null;
+  private compiler: Compiler = null;
 
-  constructor(parser: Compiler) {
-    this.parser = parser;
+  constructor(compiler: Compiler) {
+    this.compiler = compiler;
   }
 
   process(): MBL_LevelItem {
@@ -111,7 +111,7 @@ export class Block {
 
   private processText(): MBL_Text {
     // this block has no parts
-    return this.parser.parseParagraph(
+    return this.compiler.parseParagraph(
       (this.parts[0] as BlockPart).lines.join('\n'),
     );
   }
@@ -158,7 +158,7 @@ export class Block {
               if (i == 0) table.head = row;
               else table.rows.push(row);
               for (const columnString of columnStrings) {
-                const column = this.parser.parseParagraph(columnString);
+                const column = this.compiler.parseParagraph(columnString);
                 row.columns.push(column);
               }
               i++;
@@ -186,7 +186,9 @@ export class Block {
                 'Some of your code is not inside a tag (e.g. "@code")';
             break;
           case 'caption':
-            figure.caption = this.parser.parseParagraph(part.lines.join('\n'));
+            figure.caption = this.compiler.parseParagraph(
+              part.lines.join('\n'),
+            );
             break;
           case 'code':
             {
@@ -316,7 +318,7 @@ export class Block {
         switch (part.name) {
           case 'global':
             example.items.push(
-              this.parser.parseParagraph(part.lines.join('\n')),
+              this.compiler.parseParagraph(part.lines.join('\n')),
             );
             break;
           default:
@@ -349,7 +351,9 @@ export class Block {
         const part = <BlockPart>p;
         switch (part.name) {
           case 'global':
-            align.items.push(this.parser.parseParagraph(part.lines.join('\n')));
+            align.items.push(
+              this.compiler.parseParagraph(part.lines.join('\n')),
+            );
             break;
         }
       } else {
@@ -369,7 +373,7 @@ export class Block {
         const part = <BlockPart>p;
         switch (part.name) {
           case 'global':
-            def.items.push(this.parser.parseParagraph(part.lines.join('\n')));
+            def.items.push(this.compiler.parseParagraph(part.lines.join('\n')));
             break;
           default:
             def.error += 'unexpected part "' + part.name + '"';
@@ -386,6 +390,11 @@ export class Block {
   private processExercise(): MBL_Exercise {
     const exercise = new MBL_Exercise();
     exercise.title = this.title;
+    // TODO: must guarantee that no two exercises labels are same in entire course!!
+    exercise.label = this.label;
+    if (exercise.label.length == 0) {
+      exercise.label = 'ex' + this.compiler.createUniqueId();
+    }
     for (const p of this.parts) {
       if (p instanceof BlockPart) {
         const part = <BlockPart>p;
@@ -453,7 +462,7 @@ export class Block {
             }
             break;
           case 'text':
-            exercise.text = this.parser.parseParagraph(
+            exercise.text = this.compiler.parseParagraph(
               part.lines.join('\n'),
               exercise,
             );
