@@ -33,6 +33,12 @@ We use the following intrinsic data types.
 
   Examples: `"hello"`, `"x314"`, `"_1337"`, `"AFFE"`
 
+- `UNIQUE_IDENTIFIER`
+
+  An identifier that is only given once per course.
+
+  Example: `"x123"`
+
 - `STRING`
 
   Example: `"hello, world!"`
@@ -361,6 +367,8 @@ EXERCISE extends BLOCK_ITEM = {
 };
 ```
 
+_Note: a `label` is created automatically, if none is provided._
+
 Exercise text is extended to the following types:
 
 - `variable` refers to a question variable and displays the value of the the chosen instance.
@@ -378,6 +386,7 @@ EXERCISE_TEXT extends TEXT = {
   "variable": IDENTIFIER<EXERCISE.VARIABLES>
 } | {
   "type": "text_input",
+  "input_id": UNIQUE_IDENTIFIER,
   "input_type": "int" | "real"
               | "complex_normal" | "complex_polar"
               | "int_set" | "int_set_n_args"
@@ -390,10 +399,12 @@ EXERCISE_TEXT extends TEXT = {
   "width": INTEGER
 } | {
   "type": "choices_input",
+  "input_id": UNIQUE_IDENTIFIER,
   "variable": IDENTIFIER<EXERCISE.VARIABLES>,
   "count": INTEGER
 } | {
   "type": "multiple_choice" | "single_choice",
+  "input_id": UNIQUE_IDENTIFIER,
   "items": EXERCISE_SINGLE_MULTIPLE_CHOICE_OPTION[]
 };
 ```
