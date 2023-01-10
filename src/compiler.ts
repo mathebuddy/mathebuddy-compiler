@@ -543,7 +543,6 @@ export class Compiler {
   private parseInputElements(lexer: Lexer, exercise: MBL_Exercise): MBL_Text {
     lexer.next();
     let id = '';
-    let error = '';
     const input = new MBL_Exercise_Text_Input();
     input.input_id = 'input' + this.createUniqueId();
     if (lexer.isID()) {
@@ -562,16 +561,14 @@ export class Compiler {
             input.input_type = MBL_Exercise_Text_Input_Type.Matrix;
             break;
           default:
-            error = 'UNIMPLEMENTED input type ' + v.type;
+            exercise.error += 'UNIMPLEMENTED input type ' + v.type + '. ';
         }
       } else {
-        error = 'there is no variable "' + id + '"';
+        exercise.error = 'there is no variable "' + id + '". ';
       }
     } else {
-      error = 'no variable for input field given';
+      exercise.error = 'no variable for input field given. ';
     }
-    if (error.length > 0)
-      exercise.error = 'unknown variable for input field: "' + id + '"';
     return input;
   }
 
