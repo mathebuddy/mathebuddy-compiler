@@ -557,6 +557,9 @@ export class Compiler {
           case MBL_Exercise_VariableType.Real:
             input.input_type = MBL_Exercise_Text_Input_Type.Real;
             break;
+          case MBL_Exercise_VariableType.Complex:
+            input.input_type = MBL_Exercise_Text_Input_Type.ComplexNormal;
+            break;
           case MBL_Exercise_VariableType.Matrix:
             input.input_type = MBL_Exercise_Text_Input_Type.Matrix;
             break;
