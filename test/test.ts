@@ -39,9 +39,9 @@ fs.writeFileSync(
 const inputPath = 'examples/';
 const files = fs.readdirSync(inputPath).sort();
 for (const file of files) {
-  if (file.includes('hello.mbl')) {
+  /*if (file.includes('hello.mbl')) {
     const bp = 1337;
-  }
+  }*/
   const path = inputPath + file;
   if (path.endsWith('.mbl') == false) continue;
   console.log('=== TESTING FILE ' + path + ' ===');
